@@ -1,0 +1,7 @@
+{
+  "name": "facture",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
