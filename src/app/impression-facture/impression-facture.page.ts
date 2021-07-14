@@ -61,7 +61,6 @@ facturation: Observable<any>;
 
      }else{
        console.log('other');
-       this.printMobile();
 
       this.printWeb();
      }
