@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  >
+
+
+
+
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size-md="6" offset-md="3">
+
+  <ion-card >
+    <ion-card-header>
+
+      <ion-card-title class="ion-text-center" >Login</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
+        <ion-item class="ion-margin">
+          <ion-label position="floating">username <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="username" type="text" autofocus="true"></ion-input>
+        </ion-item>
+        <ion-item class="ion-margin" >
+
+          <ion-icon position= "inline" slot="end"   [name]="isVisible" (click)="ontogleHide()"></ion-icon>
+          <ion-label position="floating">password<ion-text color="danger">*</ion-text></ion-label>
+
+          <ion-input required formControlName="password" [type]="mytype" inputmode="password"></ion-input>
+
+
+        </ion-item>
+        <div class="button ion-align-items-center" >
+          <ion-button block color="secondary" type="submit" [disabled]="loginForm.invalid" class="ion-margin-bottom" expand="block">
+            Login
+          </ion-button>
+        </div>
+
+      </form>
+
+
+
+    </ion-card-content>
+
+  </ion-card>
+
+    </ion-col>
+
+  </ion-row>
+</ion-grid>
+
+
+
+</ion-content>

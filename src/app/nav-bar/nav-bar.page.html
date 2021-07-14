@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar >
+    <ion-title>Factures</ion-title>
+    <ion-buttons class="ion-no-margin ion-no-padding"  slot="end" >
+      <ion-label>{{user}}</ion-label>
+      <ion-button slot="end" class="ion-no-padding"class="ion-no-padding" (click)="logout()" >
+        <ion-icon slot="icon-only" color="primary" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+
+  <ion-tabs color="primary" class="ion-no-padding">
+    <ion-tab-bar slot="top"  >
+
+      <ion-tab-button tab="ajout-facture" >
+        <ion-label>Ajouter</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="impression-facture" class="ion-no-padding marge">
+
+        <ion-label>Imprimer</ion-label>
+      </ion-tab-button>
+
+
+
+
+
+
+    </ion-tab-bar>
+
+
+
+  </ion-tabs>
+
+
+
+
+</ion-content>

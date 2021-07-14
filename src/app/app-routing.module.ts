@@ -1,16 +1,25 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { UnauthGuard } from './guards/unauth.guard';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'nav-bar',
     pathMatch: 'full'
   },
+  {
+    path: 'nav-bar',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./nav-bar/nav-bar.module').then( m => m.NavBarPageModule)
+  },
+  {
+    path: 'login',
+    canActivate: [UnauthGuard],
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+
 ];
 
 @NgModule({

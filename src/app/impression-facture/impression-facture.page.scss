@@ -1,0 +1,74 @@
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+
+
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 170px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: var(--ion-color-primary);
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 2.5vh  3.5vh;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid var(--ion-color-primary);
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid var(--ion-color-primary);
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+
+ion-fab-button{
+  position: fixed;
+   bottom: 2%;
+   right: 2%;
+}
+
+.content:nth-child(2){
+  background-color: red;
+
+}
+
+
+
+@media (max-width : 650px){
+
+  .content-table {
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.9em;
+    min-width: 150px;
+    border-radius: 4px 4px 0 0;
+
+  }
+  .content-table th,
+.content-table td {
+  padding: 1.5vh  2vh;
+}
+}

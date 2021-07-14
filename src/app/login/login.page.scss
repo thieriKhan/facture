@@ -1,0 +1,39 @@
+ion-img{
+  width: 300px;
+  height: 200px;
+}
+.auth{
+  float: right;
+}
+
+.button{
+  width: 60%;
+  margin: auto;
+
+
+}
+
+ion-header{
+  ion-toolbar{
+    .auth{
+      a{
+        text-decoration: none;
+      }
+
+    }
+  }
+}
+ion-grid{
+  ion-row{
+    ion-col{
+      ion-card{
+        .button{
+          min-width:100px;
+        }
+        ion-footer{
+          transform: translateX(40%);
+        }
+      }
+    }
+  }
+}

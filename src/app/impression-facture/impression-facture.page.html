@@ -1,0 +1,69 @@
+<ion-header>
+
+</ion-header>
+
+<ion-content >
+
+
+
+
+
+<ion-grid >
+
+
+  <ion-row>
+    <ion-col size-md="6" offset-md=3>
+      <div class="content">
+        <ion-item>
+          <ion-label>Pizza</ion-label>
+          <ion-select value="peperoni"  placeholder="Select Pizza" >
+            <ion-select-option value="peperoni">Peperoni</ion-select-option>
+            <ion-select-option value="hawaii">Hawaii</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div id="maTable">
+
+          <table class="content-table" >
+            <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Pu(FCFA)</th>
+                  <th>Qte</th>
+                  <th>montant(FCFA)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let obs  of facturation |async" >
+                    <td>{{obs.produit }}</td>
+                    <td> {{obs.montant  }}</td>
+                    <td>{{obs.quantite}}</td>
+                    <td>{{obs.quantite * obs.montant }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+
+
+
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+
+
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+
+<ion-fab-button >
+  <ion-icon name="print" (click)="print()"></ion-icon>
+</ion-fab-button>
+
+</ion-content>
