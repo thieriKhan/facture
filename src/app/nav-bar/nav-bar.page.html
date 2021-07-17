@@ -1,10 +1,17 @@
 <ion-header class="ion-no-border">
   <ion-toolbar >
-    <ion-title>Factures</ion-title>
+
+
+
+
+    <ion-label  slot="start"><ion-icon slot="icon-only" name="person"></ion-icon>
+      {{user}}</ion-label>
+
+
     <ion-buttons class="ion-no-margin ion-no-padding"  slot="end" >
-      <ion-label>{{user}}</ion-label>
+
       <ion-button slot="end" class="ion-no-padding"class="ion-no-padding" (click)="logout()" >
-        <ion-icon slot="icon-only" color="primary" name="log-out"></ion-icon>
+        <ion-icon slot="icon-only"  name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

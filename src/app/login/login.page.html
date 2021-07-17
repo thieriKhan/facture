@@ -23,13 +23,13 @@
     <ion-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
         <ion-item class="ion-margin">
-          <ion-label position="floating">username <ion-text color="danger">*</ion-text></ion-label>
+          <ion-label position="floating">utlisateur<ion-text color="danger">*</ion-text></ion-label>
           <ion-input required formControlName="username" type="text" autofocus="true"></ion-input>
         </ion-item>
         <ion-item class="ion-margin" >
 
           <ion-icon position= "inline" slot="end"   [name]="isVisible" (click)="ontogleHide()"></ion-icon>
-          <ion-label position="floating">password<ion-text color="danger">*</ion-text></ion-label>
+          <ion-label position="floating">mot de passe<ion-text color="danger">*</ion-text></ion-label>
 
           <ion-input required formControlName="password" [type]="mytype" inputmode="password"></ion-input>
 

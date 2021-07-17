@@ -10,9 +10,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { Printer} from '@ionic-native/printer/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HistoriquePipe } from './historique.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HistoriquePipe],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(),
    AppRoutingModule, NgxDatatableModule,

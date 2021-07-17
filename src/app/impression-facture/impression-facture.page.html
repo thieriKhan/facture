@@ -14,15 +14,46 @@
   <ion-row>
     <ion-col size-md="6" offset-md=3>
       <div class="content">
-        <ion-item>
-          <ion-label>Pizza</ion-label>
-          <ion-select value="peperoni"  placeholder="Select Pizza" >
-            <ion-select-option value="peperoni">Peperoni</ion-select-option>
-            <ion-select-option value="hawaii">Hawaii</ion-select-option>
-          </ion-select>
-        </ion-item>
 
-        <div id="maTable">
+
+         <div class="myicon" slot="end">
+
+            <ion-icon style="width: 25px; height:25px" slot="icon-only" [name]="icon" (click)="printView()"></ion-icon>
+
+
+         </div>
+
+
+
+         <div class="select">
+
+          <ion-item  class="ion-margin">
+            <ion-label position=" floating" >Client</ion-label>
+            <ion-select   placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected">
+
+              <ng-container *ngFor="let item of clients|async"  >
+                <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
+
+         </div>
+
+         <div class="list" *ngIf="content && facturation">
+           <ion-virtual-scroll [items]="facturation |async" >
+             <ion-item *virtualItem="let item">
+              <ion-icon slot="start" name="receipt"></ion-icon>
+                <ion-label>{{ item.produit }}</ion-label>
+                <ion-label>{{ item.date|date}}</ion-label>
+                <ion-label>{{ item.date |slice : 11:16}}</ion-label>
+             </ion-item>
+           </ion-virtual-scroll>
+
+         </div>
+
+
+        <div id="maTable" class="list" *ngIf="facturation && !content">
+          <ion-title class="ion-text-center ion-margin">Facture de {{client | async}}</ion-title>
 
           <table class="content-table" >
             <thead>
@@ -52,17 +83,12 @@
 
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col size="12">
 
-
-    </ion-col>
-  </ion-row>
 </ion-grid>
 
 
 
-<ion-fab-button >
+<ion-fab-button id="print" color="secondary">
   <ion-icon name="print" (click)="print()"></ion-icon>
 </ion-fab-button>
 

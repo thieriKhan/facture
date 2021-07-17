@@ -4,7 +4,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { FacturesService } from '../services/factures.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-import {Platform} from '@ionic/angular'
+import {Platform} from '@ionic/angular';
+import { tap } from 'rxjs/operators';
 
 
 export interface Produit {
@@ -18,19 +19,12 @@ export interface Produit {
   styleUrls: ['./impression-facture.page.scss'],
 })
 export class ImpressionFacturePage implements OnInit {
-finalSub: Subject<any> = new Subject<any>();
-values: Observable<any> = this.finalSub.asObservable();
 clientFom: FormGroup;
-clentSelected: string;
-factSub: Subscription;
-allFacts: Observable<Produit[]>;
-solution: Subject<any> = new Subject<any>();
-mysolution: Observable<any> = this.solution.asObservable();
-columns =[
-  {name: 'numero'},
-  {name: 'produit'}
-];
-
+clients: Observable<any>;
+clientSelected: any;
+client: Observable<any>;
+icon = 'calendar';
+content = true;
 
 facturation: Observable<any>;
 
@@ -53,6 +47,11 @@ facturation: Observable<any>;
 
 
   }
+
+  printView(){
+    this.icon = this.icon ==='list'? 'calendar': 'list';
+    this.content = this.icon ==='list'? true: false;
+  }
   print() {
      if(this.platform.is('android') || this.platform.is('ios') ){
       console.log('mobile');
@@ -70,13 +69,17 @@ facturation: Observable<any>;
   }
 
   async ionViewWillEnter(){
+   this.clients = await  this.fact.getClient();
+   }
+   async ionViewDidEnter(){
 
-    this.facturation =  await this.fact.getFacture(1);
-
+    this.facturation = await this.fact.getFacture(this.clientSelected);
    }
 
+
    printMobile(){
-    const content = document.getElementById('maTable').innerHTML;
+     const content = document.getElementById('maTable').innerHTML;
+
 
     this.printer.isAvailable().then(
       ()=>{ console.log('printer is available');},
@@ -93,11 +96,20 @@ facturation: Observable<any>;
    }
    printWeb(){
      const myBody = document.body.innerHTML;
-     document.body.innerHTML = document.getElementById('maTable').innerHTML;
+
+      document.body.innerHTML =  document.getElementsByClassName('list')[0].innerHTML;
+
+
      window.print();
      document.body.innerHTML = myBody;
 
+   }
 
+  async select(event){
+     const val =event.detail.value;
+     console.log(event);
+     this.facturation = await this.fact.getFacture(val);
+     this.client = await this.fact.getUniqueClient(this.clientSelected);
    }
 
 

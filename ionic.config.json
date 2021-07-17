@@ -1,7 +1,8 @@
 {
   "name": "facture",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

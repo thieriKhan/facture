@@ -19,6 +19,10 @@ const routes: Routes = [
     canActivate: [UnauthGuard],
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'historique',
+    loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
+  },
 
 ];
 

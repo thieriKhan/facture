@@ -78,10 +78,16 @@
   --ion-color-light-tint: #f5f6f9;
 
 
-  --ion-toolbar-bacground : var(var(--ion-color-primary));
-  --ion-toolbar-color : var(var(--ion-color-primary-contrast));
+  --ion-toolbar-background : var(--ion-color-secondary);
+  --ion-toolbar-color : var(--ion-color-secondary-contrast);
 
 }
+ion-button{
+  --background: var(--ion-color-secondary);
+  --color: var(--ion-color-secondary-contrast);
+  --border-radius: 30px;
+}
+
 
 @media (prefers-color-scheme: dark) {
   /*
@@ -153,6 +159,7 @@
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
   }
+
 
   /*
    * iOS Dark Theme
