@@ -23,4 +23,24 @@ async canActivate(
 
   }
 
+  async canLoad(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot):  Promise<boolean | UrlTree>{
+      const val =  await this.storage.get('token');
+      if(val === null){
+        this.route.navigate(['login']);
+        return false;
+      }else{
+        return true;
+      }
+
+  }
+
+
+
+
+
+
+
+
 }

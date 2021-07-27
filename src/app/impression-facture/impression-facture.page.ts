@@ -6,6 +6,7 @@ import { FacturesService } from '../services/factures.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 import {Platform} from '@ionic/angular';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 export interface Produit {
@@ -33,7 +34,8 @@ facturation: Observable<any>;
     private fact: FacturesService,
     private formBuilder: FormBuilder,
     private printer: Printer,
-    private platform: Platform
+    private platform: Platform,
+    private route: Router
   ) {
 
 
@@ -41,6 +43,7 @@ facturation: Observable<any>;
      }
 
   ngOnInit() {
+    this.icon = 'calendar';
     this.clientFom = this.formBuilder.group(
       {choix: ['']}
     );
@@ -50,7 +53,7 @@ facturation: Observable<any>;
 
   printView(){
     this.icon = this.icon ==='list'? 'calendar': 'list';
-    this.content = this.icon ==='list'? true: false;
+    this.content = this.icon =='calendar'? true: false;
   }
   print() {
      if(this.platform.is('android') || this.platform.is('ios') ){
@@ -60,10 +63,13 @@ facturation: Observable<any>;
 
      }else{
        console.log('other');
-       this.printMobile();
+
 
       this.printWeb();
      }
+
+
+     window.location.reload();
 
 
   }
@@ -72,7 +78,6 @@ facturation: Observable<any>;
    this.clients = await  this.fact.getClient();
    }
    async ionViewDidEnter(){
-
     this.facturation = await this.fact.getFacture(this.clientSelected);
    }
 
@@ -90,7 +95,7 @@ facturation: Observable<any>;
          name: 'MyDocument',
          duplex: true,
          orientation: 'landscape',
-         monochrome: true
+         monochrome: false
     };
     this.printer.print(content, options);
    }

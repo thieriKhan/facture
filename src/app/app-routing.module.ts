@@ -11,12 +11,12 @@ const routes: Routes = [
   },
   {
     path: 'nav-bar',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import('./nav-bar/nav-bar.module').then( m => m.NavBarPageModule)
   },
   {
     path: 'login',
-    canActivate: [UnauthGuard],
+    canLoad: [UnauthGuard],
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {

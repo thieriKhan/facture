@@ -16,13 +16,13 @@
    <form [formGroup]="ajoutForm" (ngSubmit)="onSubmit()">
     <ion-card class="ion-padding">
       <ion-item class="ion-align-items-center">
-        <ion-title  color="primary" >Ajouter une facture</ion-title>
+        <ion-title class="ion-align-self-center" color="secondary" >Ajouter une facture</ion-title>
 
       </ion-item>
 
         <ion-item class="ion-margin">
           <ion-label  >Client</ion-label>
-          <ion-select   placeholder="Select client" formControlName="client" >
+          <ion-select required   placeholder="Select client" formControlName="client" >
 
             <ng-container *ngFor="let item of clients|async" >
               <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
@@ -32,7 +32,7 @@
 
      <ion-item class="ion-margin" >
        <ion-label  >Produit</ion-label>
-      <ion-select  placeholder="Select produit" formControlName="produit" >
+      <ion-select required placeholder="Select produit" formControlName="produit" >
 
         <ng-container *ngFor="let item of produits|async" >
           <ion-select-option [value]="item"> {{item.nom}}</ion-select-option>
@@ -43,7 +43,7 @@
 
       <ion-item class="ion-margin ">
         <ion-label class="ion-align-items-start" position="floating">Quantite</ion-label>
-        <ion-input formControlName="quantite" type="number"></ion-input>
+        <ion-input formControlName="quantite" type="number" required  min="1"></ion-input>
       </ion-item>
 
 
