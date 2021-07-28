@@ -34,7 +34,13 @@ border-bottom : 2px solid var(--ion-color-secondary-tint);
 
 
 
+ion-tab-button {
 
+
+
+  --color-selected: var(--ion-color-secondary-tint);
+
+}
 // ion-buttons{
 //   position: absolute;
 //   top: 10px;

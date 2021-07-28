@@ -73,7 +73,7 @@ ion-list{
 
 
 @media (max-width : 600px){
- 
+
   .content{
     margin: auto;
 
@@ -143,4 +143,18 @@ ion-list{
     color: var(--ion-color-secondary);
   }
 
+  }
+
+  ion-checkbox {
+
+    --background-checked: var(--ion-color-secondary-contrast);
+
+
+    --border-radius: 50%;
+
+    --border-width: 1px;
+    --checkmark-color: var(--ion-color-secondary-contrast);
+    --checkmark-width: 16px;
+    --size: 18px;
+    --transition: background-color 15ms linear;
   }

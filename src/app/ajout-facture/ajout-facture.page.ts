@@ -34,9 +34,19 @@ export class AjoutFacturePage implements OnInit {
 
  async ngOnInit() {
   this.init();
+  const toast = await this.toast.create({
+    message: 'vous etes hors ligne',
+    duration: 2000
+  });
 
-window.addEventListener('online', ()=>{
+window.addEventListener('online', async()=>{
+  const data =JSON.parse(await  this.storage.get('failed'))|| [];
+  this.failedPost(data);
 
+});
+
+window.addEventListener('offline', (event)=>{
+  toast.present();
 });
 
 
@@ -65,18 +75,10 @@ window.addEventListener('online', ()=>{
     window.addEventListener('online', async (event)=>{
 
       const data =JSON.parse(await  this.storage.get('failed'))|| [];
-
         this.failedPost(data);
-
-
-
-      console.log('online', event);
-      console.log(data);
     });
     window.addEventListener('offline', (event)=>{
-      console.log('offline', event);
       toast.present();
-
     });
 
   this.clients = await this.fact.getClient();
@@ -84,15 +86,12 @@ window.addEventListener('online', ()=>{
 
   }
 
-
-
-
  async onSubmit(){
   const form =  await this.ajoutForm.value;
   console.log(form);
   console.log(form.quantite);
    if(form.quantite <1){
-     console.log('this.form is not valid');
+     return 0;
    }else{
     const alert = await  this.alertC.create(
       {
@@ -131,8 +130,7 @@ window.addEventListener('online', ()=>{
     }
   );
   const formated= {facture_client: form.client, produit: form.produit.id, quantite: form.quantite};
-  console.log(formated);
-    this.obs = await this.fact.postFacture(formated);
+  this.obs = await this.fact.postFacture(formated);
 
  this.obs.subscribe(
    ()=> this.router.navigate(['nav-bar/impression-facture']),
@@ -153,7 +151,6 @@ window.addEventListener('online', ()=>{
   async failedPost(data: any[]){
     if(data.length > 0){
       for( let i = 0 ; i <= data.length ; i++){
-        console.log('current data', data[i]);
         this.obs = await this.fact.postFacture(data[i]);
         this.obs.subscribe(
           async (val)=> {

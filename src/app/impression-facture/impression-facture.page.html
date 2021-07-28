@@ -20,10 +20,7 @@
 
             <ion-icon style="width: 25px; height:25px" color="secondary" slot="icon-only" [name]="icon" (click)="printView()"></ion-icon>
 
-
          </div>
-
-
 
          <div class="select">
 
@@ -35,22 +32,45 @@
                 <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
               </ng-container>
             </ion-select>
-            
+
           </ion-item>
 
          </div>
 
          <div class="list" *ngIf="!content && clientSelected">
-           <ion-virtual-scroll [items]="facturation |async" >
-             <ion-item *virtualItem="let item">
-              <ion-icon slot="start" name="receipt"></ion-icon>
-                <ion-label>{{ item.produit }}</ion-label>
-                <ion-label><h5>{{ item.date|date}}</h5></ion-label>
-                <ion-label>
-                  {{ item.date |slice : 11:16}}
-               </ion-label>
-             </ion-item>
-           </ion-virtual-scroll>
+
+             <ion-list>
+               <ion-item-sliding *ngFor="let item of facturation| async">
+                <ion-item-options side="start">
+                  <ion-button >
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                  </ion-button>
+                </ion-item-options>
+
+                 <ion-item >
+
+
+                        <ion-checkbox class="ion-padding"><ion-icon slot="icon-only" name="receipt"></ion-icon></ion-checkbox>
+
+
+
+
+                  <ion-label>{{ item.produit }}</ion-label>
+                    <ion-label><h5>{{ item.date|date}}</h5></ion-label>
+                    <ion-label>
+                      {{ item.date |slice : 11:16}}
+                   </ion-label>
+
+                 </ion-item>
+                 <ion-item-options side="end" >Unread</ion-item-options>
+
+
+
+
+               </ion-item-sliding>
+             </ion-list>
+
+
 
          </div>
 
