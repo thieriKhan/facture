@@ -1,6 +1,16 @@
 
 
+ion-list{
+  ion-item-sliding{
+    ion-item-options{
+      ion-fab-button{
+        width:35px;
+         height: 35px;
+      }
 
+    }
+  }
+}
 
 .content-table {
   border-collapse: collapse;
@@ -153,8 +163,7 @@ ion-list{
     --border-radius: 50%;
 
     --border-width: 1px;
-    --checkmark-color: var(--ion-color-secondary-contrast);
-    --checkmark-width: 16px;
-    --size: 18px;
+    --checkmark-color: var(--ion-color-secondary);
+
     --transition: background-color 15ms linear;
   }

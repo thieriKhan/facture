@@ -40,32 +40,33 @@
          <div class="list" *ngIf="!content && clientSelected">
 
              <ion-list>
-               <ion-item-sliding *ngFor="let item of facturation| async">
+               <ion-item-sliding *ngFor="let item of facturation| async"   >
                 <ion-item-options side="start">
-                  <ion-button >
-                    <ion-icon slot="icon-only" name="add"></ion-icon>
-                  </ion-button>
+
+                    <ion-fab-button color="danger" (click)="delete(item.id)">
+                      <ion-icon  name="trash"></ion-icon>
+                    </ion-fab-button>
+
+
                 </ion-item-options>
-
                  <ion-item >
-
-
-                        <ion-checkbox class="ion-padding"><ion-icon slot="icon-only" name="receipt"></ion-icon></ion-checkbox>
-
-
-
-
-                  <ion-label>{{ item.produit }}</ion-label>
+                  <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
+                  <ion-label >{{ item.produit }}</ion-label>
                     <ion-label><h5>{{ item.date|date}}</h5></ion-label>
                     <ion-label>
                       {{ item.date |slice : 11:16}}
                    </ion-label>
-
                  </ion-item>
-                 <ion-item-options side="end" >Unread</ion-item-options>
+                 <ion-item-options side="end" >
+
+
+                    <ion-fab-button  (click)="edit(item.id, isChecked)" color="secondary">
+                      <ion-icon  name="pencil"></ion-icon>
+                    </ion-fab-button>
 
 
 
+                 </ion-item-options>
 
                </ion-item-sliding>
              </ion-list>

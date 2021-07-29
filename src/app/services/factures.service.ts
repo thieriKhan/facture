@@ -12,7 +12,7 @@ import { timeStamp } from 'console';
   providedIn: 'root'
 })
 export class FacturesService {
-
+  printItemID: string[]= [];
 
   constructor(
     private http: HttpClient,
@@ -63,7 +63,6 @@ export class FacturesService {
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);
-
   }
  const credential = JSON.parse(token);
 
@@ -114,14 +113,15 @@ return this.http.get(url,   {headers :auth}).pipe(
 
 // modifier une facture
 
- async updateFacture(id, form): Promise<Observable<any>>{
+ async updateFacture(id, quantite): Promise<Observable<any>>{
   const load = await this.loadC.create();
    load.present();
-  const url = 'http://192.168.8.100:8000/api/facture/'+id+'/';
+  const url = 'http://192.168.8.100:8000/api/facturation/'+id;
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);
   }
+  const form = {'quantite': quantite}
  const credential = JSON.parse(token);
  const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
 return this.http.put(url, form,{headers :auth } ).pipe(
@@ -133,15 +133,19 @@ return this.http.put(url, form,{headers :auth } ).pipe(
 }
 
 
+// supprimer une facture
 
-//   async getProduit(produiID): Promise<Observable<any>>{
-//     const url = 'http://192.168.8.100:8000/api/produit/?search='+produiID;
-//     const token = await  this.storage.get('token');
-//    const credential = JSON.parse(token);
+async deleteFacture(id){
+  const url = 'http://192.168.8.100:8000/api/facturation/'+id;
+  const token = await  this.storage.get('token');
+  if(token == null){
+    this.route.navigate(['login']);
 
-//    const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-//   return this.http.get(url,   {headers :auth});
-//  }
+  }
 
+  const credential = JSON.parse(token);
+  const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
+  return this.http.delete(url, {headers :auth });
+}
 
 }
