@@ -36,6 +36,7 @@ export class AjoutFacturePage implements OnInit {
   this.init();
   const toast = await this.toast.create({
     message: 'vous etes hors ligne',
+    cssClass: 'errorToast',
     duration: 2000
   });
 
@@ -96,14 +97,15 @@ window.addEventListener('offline', (event)=>{
     const alert = await  this.alertC.create(
       {
         cssClass: 'alertctrl',
-        message: 'Voulez vous enregistrer commande',
+        message: 'Voulez vous vraiment enregistrer commande',
         header: 'confirmation',
         buttons: [{
-          text: 'cancel',
+          cssClass: 'alert',
+          text: 'non',
            role: 'cancel'
               },
               {
-                text :'ok',
+                text :'oui',
                 handler: ()=>{
                   this.post(form);
                 }

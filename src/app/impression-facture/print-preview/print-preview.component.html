@@ -1,3 +1,47 @@
-<p>
-  print-preview works!
-</p>
+<ion-content>
+  <p>{{date| date}}</p>
+<ion-button color="grey"  fill="clear">
+  imprimer
+</ion-button>
+<div class="content">
+  <h4>NOM DU CLIENT: thieri</h4>
+
+<table class="content-table" >
+
+  <thead>
+   <tr >
+
+     <th class="first"> Produit</th>
+     <th>Quantite</th>
+     <th>Prix unitaire</th>
+     <th>Montant</th>
+
+   </tr>
+  </thead>
+  <tbody>
+
+    <tr *ngFor="let item of (facturation| async) ; ">
+
+      <td class="first">{{item.produit}}</td>
+      <td>{{item.quantite}}</td>
+      <td>{{item.montant}}</td>
+      <td>{{item.montant * item.quantite}} </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <div class="footer">
+      <h4 >Total:{{total| async}}FCFA</h4>
+    </div>
+
+
+
+
+
+  </tfoot>
+</table>
+
+
+</div>
+
+</ion-content>
+

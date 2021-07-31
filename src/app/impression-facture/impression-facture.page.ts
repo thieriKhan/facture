@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { FacturesService } from '../services/factures.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-import {Platform, ModalController, AlertController, IonCheckbox} from '@ionic/angular';
+import {Platform, ModalController, AlertController, IonCheckbox, IonItemSliding} from '@ionic/angular';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
@@ -22,6 +22,7 @@ export interface Produit {
 })
 export class ImpressionFacturePage implements OnInit {
 clientFom: FormGroup;
+
 clients: Observable<any>;
 clientSelected: any;
 client: Observable<any>;
@@ -57,7 +58,7 @@ facturation: Observable<any>;
 
   printView(){
     this.icon = this.icon ==='list'? 'calendar': 'list';
-    this.content = this.icon =='calendar'? true: false;
+    this.content = this.icon ==='calendar'? true: false;
   }
 
   changed(event){
@@ -68,17 +69,16 @@ if(event.detail.checked){
   }
 }else{
 
-  // this.fact.printItemID.splice(this.fact.printItemID[event.detail.value] );
-  console.log(event.detail.value);
-  console.log('index', this.fact.printItemID.indexOf(event.detail.value));
+  this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
 
-
+  console.log('index', );
 }
 console.log(this.fact.printItemID);
 
 
   }
-  async print() {
+  async print(client) {
+    this.fact.selectedclient = client;
 
    const ch =  document.querySelectorAll('ion-checkbox');
 
@@ -93,22 +93,25 @@ console.log(this.fact.printItemID);
 
 
     const printView = await this.modalCtrl.create({
-      component: PrintPreviewComponent
+      backdropDismiss: true,
+      showBackdrop: true,
+      component: PrintPreviewComponent,
     });
      printView.present();
   }
 
   async ionViewWillEnter(){
    this.clients = await  this.fact.getClient();
+   }
 
+  async ionViewDidEnter(){
+     this.fact.selectedclient = this.clientSelected;
    }
-   async ionViewDidEnter(){
-    this.facturation = await this.fact.getFacture(this.clientSelected);
-   }
-  async  edit(id,  checked: IonCheckbox){
-    console.log('checked', checked);
+  async  edit(id,  checked: IonCheckbox, slide: IonItemSliding){
+    slide.close();
    const alert = await  this.alertCtrl.create({
     header: 'modification',
+    cssClass: 'alert',
     inputs: [
       {
         name: 'quantite',
@@ -119,26 +122,58 @@ console.log(this.fact.printItemID);
     ],
     buttons: [
       {
+        text: 'fermer',
+        role: 'cancel'
+      },
+      {
         text: 'ok',
         handler: async (data)=>{
          const up = await  this.fact.updateFacture(id, data.quantite);
-         up.subscribe();
-        console.log('facture num:');
+         up.subscribe(async ()=>
+         {
+          this.facturation = await this.fact.getFacture(this.fact.currentClient);
+         });
+
+
 
         }
-      },
-      {
-        text: 'close',
-        role: 'cancel'
-
       }
+
     ]
    });
    alert.present();
+
    }
-  async delete(id){
-   const del = await this.fact.deleteFacture(id);
-   del.subscribe();
+  async delete(id, slide: IonItemSliding){
+    slide.close();
+    const alert = await  this.alertCtrl.create({
+      header: 'Confirmation',
+      cssClass: 'alert',
+      message: 'voulez vous vraiment suprimer cette commande?',
+      buttons: [
+        {
+          text: 'NON',
+          role: 'cancel'
+        },
+        {
+          text: 'OUI',
+          handler: async (data)=>{
+            const del = await this.fact.deleteFacture(id);
+            del.subscribe(
+              async ()=>
+         {
+          this.facturation = await this.fact.getFacture(this.fact.currentClient);
+         }
+            );
+
+
+          }
+        }
+      ]
+     });
+     console.log('alert', alert);
+     alert.present();
+
 
    }
 
@@ -160,23 +195,18 @@ console.log(this.fact.printItemID);
    }
    printWeb(){
      const myBody = document.body.innerHTML;
-
-      document.body.innerHTML =  document.getElementsByClassName('list')[0].innerHTML;
-
-
+    document.body.innerHTML =  document.getElementsByClassName('list')[0].innerHTML;
      window.print();
      document.body.innerHTML = myBody;
 
    }
 
   async select(event){
-     const val =event.detail.value;
-     console.log(event);
+     const val = event.detail.value;
+     this.fact.currentClient = val;
      this.facturation = await this.fact.getFacture(val);
      this.client = await this.fact.getUniqueClient(this.clientSelected);
    }
-
-
 
 
 

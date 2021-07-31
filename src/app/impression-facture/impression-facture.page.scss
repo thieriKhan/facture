@@ -6,6 +6,7 @@ ion-list{
       ion-fab-button{
         width:35px;
          height: 35px;
+         margin-top: 8px;
       }
 
     }
@@ -84,9 +85,21 @@ ion-list{
 
 @media (max-width : 600px){
 
+ion-list{
+  ion-item-sliding{
+    ion-item-options{
+      ion-fab-button{
+        width:30px;
+         height: 30px;
+         margin-top: 10px;
+      }
+
+    }
+  }
+}
+
   .content{
     margin: auto;
-
   }
 
 
@@ -100,7 +113,7 @@ ion-list{
 
 
   }
-  .content-table th,
+.content-table th,
 .content-table td {
   padding: 1.5vh  2vh;
 }

@@ -40,10 +40,10 @@
          <div class="list" *ngIf="!content && clientSelected">
 
              <ion-list>
-               <ion-item-sliding *ngFor="let item of facturation| async"   >
+               <ion-item-sliding *ngFor="let item of facturation| async"  #sliding >
                 <ion-item-options side="start">
 
-                    <ion-fab-button color="danger" (click)="delete(item.id)">
+                    <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
                       <ion-icon  name="trash"></ion-icon>
                     </ion-fab-button>
 
@@ -51,8 +51,8 @@
                 </ion-item-options>
                  <ion-item >
                   <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
-                  <ion-label >{{ item.produit }}</ion-label>
-                    <ion-label><h5>{{ item.date|date}}</h5></ion-label>
+                  <ion-label class="ion-margin"  > {{item.quantite}} {{ item.produit }}</ion-label>
+                    <ion-label class="ion-margin"><h5 class="ion-margin">{{ item.date|date}}</h5></ion-label>
                     <ion-label>
                       {{ item.date |slice : 11:16}}
                    </ion-label>
@@ -60,7 +60,7 @@
                  <ion-item-options side="end" >
 
 
-                    <ion-fab-button  (click)="edit(item.id, isChecked)" color="secondary">
+                    <ion-fab-button  (click)="edit(item.id, isChecked, sliding)" color="secondary">
                       <ion-icon  name="pencil"></ion-icon>
                     </ion-fab-button>
 
@@ -113,7 +113,7 @@
 
 
 <ion-fab-button id="print" color="secondary">
-  <ion-icon name="print" (click)="print()"></ion-icon>
+  <ion-icon name="print" (click)="print(clientSelected)"></ion-icon>
 </ion-fab-button>
 
 </ion-content>

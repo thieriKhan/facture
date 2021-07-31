@@ -13,6 +13,8 @@ import { timeStamp } from 'console';
 })
 export class FacturesService {
   printItemID: string[]= [];
+  selectedclient;
+  currentClient;
 
   constructor(
     private http: HttpClient,
@@ -22,7 +24,7 @@ export class FacturesService {
   ) {}
 
 // recuperer toutes les factures
-  async getFacture(client: number): Promise<Observable<any>>{
+  async getFacture(client): Promise<Observable<any>>{
      const url = 'http://192.168.8.100:8000/api/facturation/'+client;
      const token = await  this.storage.get('token');
      if(token == null){

@@ -8,49 +8,58 @@
 
 
 
-<ion-grid class="ion-align-self-auto">
+<ion-grid class="ion-align-self-baseline">
+  <!-- <ion-row>
+    <ion-col size="12">
+      <div class="spacer">
+
+      </div>
+    </ion-col>
+  </ion-row> -->
   <ion-row>
     <ion-col size-md="6" offset-md="3" size-sm="8" offset-sm="2">
 
 
    <form [formGroup]="ajoutForm" (ngSubmit)="onSubmit()">
-    <ion-card class="ion-padding">
-      <ion-item class="ion-align-items-center">
-        <ion-title class="ion-align-self-center" color="secondary" >Ajouter une facture</ion-title>
+     <div class="ion-align-items-center ion-margin-top">
 
-      </ion-item>
+      <ion-card class="ion-padding ">
+        <ion-item class="ion-align-items-center">
+          <ion-title class="ion-align-self-center" color="secondary" >Ajouter une facture</ion-title>
 
-        <ion-item class="ion-margin">
-          <ion-label  >Client</ion-label>
-          <ion-select required   placeholder="Select client" formControlName="client" >
-
-            <ng-container *ngFor="let item of clients|async" >
-              <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
-            </ng-container>
-          </ion-select>
         </ion-item>
 
-     <ion-item class="ion-margin" >
-       <ion-label  >Produit</ion-label>
-      <ion-select required placeholder="Select produit" formControlName="produit" >
+          <ion-item class="ion-margin">
+            <ion-label  >Client</ion-label>
+            <ion-select required   placeholder="Select client" formControlName="client" >
 
-        <ng-container *ngFor="let item of produits|async" >
-          <ion-select-option [value]="item"> {{item.nom}}</ion-select-option>
-        </ng-container>
+              <ng-container *ngFor="let item of clients|async" >
+                <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
 
-      </ion-select>
-    </ion-item>
+       <ion-item class="ion-margin" >
+         <ion-label  >Produit</ion-label>
+        <ion-select required placeholder="Select produit" formControlName="produit" >
 
-      <ion-item class="ion-margin ">
-        <ion-label class="ion-align-items-start" position="floating">Quantite</ion-label>
-        <ion-input formControlName="quantite" type="number" required  min="1"></ion-input>
+          <ng-container *ngFor="let item of produits|async" >
+            <ion-select-option [value]="item"> {{item.nom}}</ion-select-option>
+          </ng-container>
+
+        </ion-select>
       </ion-item>
 
+        <ion-item class="ion-margin ">
+          <ion-label class="ion-align-items-start" position="floating">Quantite</ion-label>
+          <ion-input formControlName="quantite" type="number" required  min="1"></ion-input>
+        </ion-item>
+      </ion-card>
+
+     </div>
 
 
-    </ion-card>
-
-      <ion-button fill ="outline"  color="danger" expand="block"  (click)= "init()" class="cancel ion-padding ion-margin">
+      <ion-button fill ="outline"    color="danger" expand="block"  (click)= "init()" class="cancel ion-padding ion-margin ">
         <ion-icon slot="start" name="delete" color="danger"></ion-icon>
         cancel
       </ion-button>

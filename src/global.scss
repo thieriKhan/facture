@@ -26,7 +26,26 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
-.alertctrl{
-  color: red;
-  --background: aqua;
+.alert{
+
+  .alert-button{
+    color: var(--ion-color-secondary);
+  }
+  .alert-head{
+    background: var(--ion-color-warning-tint);
+    color: var(--ion-color-warning-contrast);
+  }
+  .alert-button-role-cancel{
+    color: var(--ion-color-danger);
+
+  }
+
+  .alert-message{
+
+    margin-top: 20px;
+  }
+
 }
+.errorToast{
+  --background: var(--ion-color-danger-tint)
+  }
