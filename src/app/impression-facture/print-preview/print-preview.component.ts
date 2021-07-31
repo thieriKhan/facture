@@ -32,7 +32,7 @@ export class PrintPreviewComponent implements OnInit {
         tot  += i.montant  * i.quantite ;
 
       }
-      console.log('tot', tot, data);
+
       this.totalsub.next(tot);
 
     })

@@ -37,7 +37,7 @@
 
          </div>
 
-         <div class="list" *ngIf="!content && clientSelected">
+         <div class="list" *ngIf="content && clientSelected">
 
              <ion-list>
                <ion-item-sliding *ngFor="let item of facturation| async"  #sliding >
@@ -76,7 +76,7 @@
          </div>
 
 
-        <div id="maTable" class="list" *ngIf=" content && clientSelected ">
+        <div id="maTable" class="list" *ngIf=" !content && clientSelected ">
           <h2 class="ion-text-center ion-margin">Facture de {{client | async}}</h2>
 
           <table class="content-table" >

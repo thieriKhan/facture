@@ -3,6 +3,10 @@ ion-card{
 
 
 }
+ion-button#cancel{
+  opacity: 0.5;
+  --background: var(--ion-color-danger-tint);
+}
 
 
 

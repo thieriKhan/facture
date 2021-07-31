@@ -89,8 +89,7 @@ window.addEventListener('offline', (event)=>{
 
  async onSubmit(){
   const form =  await this.ajoutForm.value;
-  console.log(form);
-  console.log(form.quantite);
+
    if(form.quantite <1){
      return 0;
    }else{
@@ -127,6 +126,7 @@ window.addEventListener('offline', (event)=>{
 
   const toastError = await  this.toast.create(
     {
+      cssClass: "errorToast",
       message:'desole la commande n\' pas ete enregistre ',
       duration: 5000
     }

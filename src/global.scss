@@ -32,8 +32,8 @@
     color: var(--ion-color-secondary);
   }
   .alert-head{
-    background: var(--ion-color-warning-tint);
-    color: var(--ion-color-warning-contrast);
+    background: var(--ion-color-secondary-tint);
+    color: var(--ion-color-econdary-contrast);
   }
   .alert-button-role-cancel{
     color: var(--ion-color-danger);
@@ -43,9 +43,67 @@
   .alert-message{
 
     margin-top: 20px;
+
+
   }
 
 }
 .errorToast{
-  --background: var(--ion-color-danger-tint)
+  --background: var(--ion-color-danger) ;
+  --color: var(--ion-color-danger-contrast);
+  --border-radius: 50px;
+ --width: fit-content;
+ animation: fade  5s forwards ;
+
+
+
+
   }
+  @keyframes fade {
+    0%{
+      opacity: 0;
+    }
+    10%{
+      opacity: 1;
+
+    }
+    20%{
+      opacity: 0.8;
+
+    }
+    // 30%{
+    //   opacity: 0.7;
+
+    // }
+    // 40%{
+    //   opacity: 0.6;
+
+    // }
+    50%{
+      opacity: 0.5;
+
+    }
+    // 60%{
+    //   opacity: 0.4;
+
+    // }
+    // 70%{
+    //   opacity: 0.3;
+
+    // }
+    80%{
+      opacity: 0.2;
+
+    }
+    90%{
+      opacity: 0.1;
+
+    }
+    100%{
+      opacity: 0;
+
+    }
+
+  }
+
+

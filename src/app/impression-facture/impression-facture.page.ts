@@ -8,6 +8,7 @@ import {Platform, ModalController, AlertController, IonCheckbox, IonItemSliding}
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
+import { Facture } from '../containers';
 
 
 export interface Produit {
@@ -26,11 +27,11 @@ clientFom: FormGroup;
 clients: Observable<any>;
 clientSelected: any;
 client: Observable<any>;
-icon = 'calendar';
+icon = 'list';
 content = true;
 test;
 
-facturation: Observable<any>;
+facturation: Observable<Facture>;
 
 
   constructor(
@@ -48,7 +49,7 @@ facturation: Observable<any>;
      }
 
   ngOnInit() {
-    this.icon = 'calendar';
+    this.icon = 'list';
     this.clientFom = this.formBuilder.group(
       {choix: ['']}
     );
@@ -58,11 +59,11 @@ facturation: Observable<any>;
 
   printView(){
     this.icon = this.icon ==='list'? 'calendar': 'list';
-    this.content = this.icon ==='calendar'? true: false;
+    this.content = this.icon ==='list'? true: false;
   }
 
   changed(event){
-console.log('ev', event.detail.checked, event.detail.value);
+
 if(event.detail.checked){
   if(!this.fact.printItemID.includes(event.detail.value)){
     this.fact.printItemID.push(event.detail.value);
@@ -71,9 +72,9 @@ if(event.detail.checked){
 
   this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
 
-  console.log('index', );
+
 }
-console.log(this.fact.printItemID);
+
 
 
   }
@@ -171,7 +172,7 @@ console.log(this.fact.printItemID);
         }
       ]
      });
-     console.log('alert', alert);
+
      alert.present();
 
 

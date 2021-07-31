@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -5,13 +6,15 @@ import { StorageService } from './storage.service';
 import { Observable } from 'rxjs';
 import { catchError, finalize,tap, map, shareReplay } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
-import { timeStamp } from 'console';
+
+import { Facture } from '../containers';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturesService {
+  baseUrl = 'http://192.168.8.100:8000/api';
   printItemID: string[]= [];
   selectedclient;
   currentClient;
@@ -24,8 +27,9 @@ export class FacturesService {
   ) {}
 
 // recuperer toutes les factures
-  async getFacture(client): Promise<Observable<any>>{
-     const url = 'http://192.168.8.100:8000/api/facturation/'+client;
+
+  async getFacture<Facture>(client): Promise<Observable<any>>{
+     const url = this.baseUrl + '/facturation/'+client;
      const token = await  this.storage.get('token');
      if(token == null){
       this.route.navigate(['login']);
@@ -34,7 +38,10 @@ export class FacturesService {
 
     const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
    return this.http.get(url,   {headers :auth}).pipe(
-     map((val: any) => val.resp),
+     map((val: any) => val.resp ),
+     tap((resp)=>{
+       console.log('fact', resp);
+     }),
 
      shareReplay()
    );
@@ -43,7 +50,7 @@ export class FacturesService {
 // recuperer tous les clients
 
   async getClient(): Promise<Observable<any>>{
-    const url = 'http://192.168.8.100:8000/api/client/';
+    const url = this.baseUrl+'/client/';
     const token = await  this.storage.get('token');
     if(token == null){
       this.route.navigate(['login']);
@@ -61,7 +68,7 @@ export class FacturesService {
 //  recuperer les donnees d'un client
 
  async getUniqueClient(id): Promise<Observable<any>>{
-  const url = 'http://192.168.8.100:8000/api/client/'+id;
+  const url = this.baseUrl +'/client/'+id;
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);
@@ -76,7 +83,7 @@ return this.http.get(url,   {headers :auth }).pipe(
 }
   //  recupperer tous les produits du backend
  async getProduit(): Promise<Observable<any>>{
-  const url = 'http://192.168.8.100:8000/api/produit/';
+  const url = this.baseUrl + '/produit/';
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);
@@ -96,13 +103,13 @@ return this.http.get(url,   {headers :auth}).pipe(
   async postFacture(form): Promise<Observable<any>>{
     const load = await this.loadC.create();
      load.present();
-    const url = 'http://192.168.8.100:8000/api/facture/';
+    const url = this.baseUrl+'/facture/';
     const token = await  this.storage.get('token');
     if(token == null){
       this.route.navigate(['login']);
     }
    const credential = JSON.parse(token);
-   console.log(credential);
+
 
    const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
   return this.http.post(url, form,{headers :auth } ).pipe(
@@ -118,7 +125,7 @@ return this.http.get(url,   {headers :auth}).pipe(
  async updateFacture(id, quantite): Promise<Observable<any>>{
   const load = await this.loadC.create();
    load.present();
-  const url = 'http://192.168.8.100:8000/api/facturation/'+id;
+  const url = this.baseUrl +  '/facturation/'+id;
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);
@@ -138,7 +145,7 @@ return this.http.put(url, form,{headers :auth } ).pipe(
 // supprimer une facture
 
 async deleteFacture(id){
-  const url = 'http://192.168.8.100:8000/api/facturation/'+id;
+  const url = this.baseUrl + '/facturation/'+id;
   const token = await  this.storage.get('token');
   if(token == null){
     this.route.navigate(['login']);

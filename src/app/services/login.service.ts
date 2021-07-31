@@ -39,12 +39,12 @@ export class LoginService {
         finalize(
           () =>{
             load.dismiss();
-            console.log('loading done');
+
           }
       )).subscribe(
        async  (data)=> {
          this.isLogin = true;
-         console.log('islogin', this.isLogin);
+
          token =  JSON.stringify(data);
 
          await this.storage.set('token', token);
@@ -56,7 +56,7 @@ export class LoginService {
       },
      async  (error: any) => {
         let message = 'umknown error';
-        console.log(error.message);
+
         if(error.status === 400){
           message = error.error.message;
         }else if (error.status === 500){
@@ -86,7 +86,7 @@ export class LoginService {
      this.isLogin = false;
       this.route.navigate(['/login']);
     }catch(error: any){
-      console.log('the error is:', error);
+      return 0;
     }
 
   }
