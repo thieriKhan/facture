@@ -26,24 +26,67 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
+.loadingClass{
+  --spinner-color: var(--ion-color-secondary);
+}
+
+.alertClass{
+.alert-wrapper{
+
+
+  .alert-radio-inner{
+    background: var(--ion-color-secondary);
+  }
+  [aria-checked=true].alert-radio .alert-radio-icon{
+    border-color: var(--ion-color-secondary) ;
+  }
+
+}
+
+}
+.alertError{
+  .alert-head{
+    background: var(--ion-color-danger-tint);
+    color: var(--ion-color-danger-contrast);
+    opacity: 0.7;
+  }
+
+}
+ .select-alert{
+
+ .alert-button{
+   color: var(--ion-color-secondary);
+ }
+ .alert-button-role-cancel{
+  color: var(--ion-color-danger-tint);
+  opacity: 0.8;
+ }
+
+}
+
+
 .alert{
+  border-radius: 20px;
 
   .alert-button{
     color: var(--ion-color-secondary);
   }
   .alert-head{
     background: var(--ion-color-secondary-tint);
-    color: var(--ion-color-econdary-contrast);
+    color: var(--ion-color-secondary-contrast);
   }
   .alert-button-role-cancel{
-    color: var(--ion-color-danger);
+    color: var(--ion-color-danger-tint);
+    opacity: 0.8;
 
   }
+  .alert-input:focus{
+    border-bottom-color: var(--ion-color-secondary);
+  }
+
 
   .alert-message{
-
     margin-top: 20px;
-
 
   }
 
@@ -71,26 +114,26 @@
       opacity: 0.8;
 
     }
-    // 30%{
-    //   opacity: 0.7;
+    30%{
+      opacity: 0.7;
 
-    // }
-    // 40%{
-    //   opacity: 0.6;
+    }
+    40%{
+      opacity: 0.6;
 
-    // }
+    }
     50%{
       opacity: 0.5;
 
     }
-    // 60%{
-    //   opacity: 0.4;
+    60%{
+      opacity: 0.4;
 
-    // }
-    // 70%{
-    //   opacity: 0.3;
+    }
+    70%{
+      opacity: 0.3;
 
-    // }
+    }
     80%{
       opacity: 0.2;
 
@@ -105,5 +148,63 @@
     }
 
   }
+
+
+
+
+  .successToast{
+    --background: var(--ion-color-success) ;
+    --color: var(--ion-color-success-contrast);
+    --border-radius: 50px;
+   --width: fit-content;
+   animation: fade  4s forwards ;
+    }
+    @keyframes fade {
+      0%{
+        opacity: 0;
+      }
+      10%{
+        opacity: 1;
+      }
+      20%{
+        opacity: 0.8;
+      }
+      30%{
+        opacity: 0.7;
+
+      }
+      40%{
+        opacity: 0.6;
+
+      }
+      50%{
+        opacity: 0.5;
+
+      }
+      60%{
+        opacity: 0.4;
+
+      }
+      70%{
+        opacity: 0.3;
+
+      }
+      80%{
+        opacity: 0.2;
+
+      }
+      90%{
+        opacity: 0.1;
+
+      }
+      100%{
+        opacity: 0;
+
+      }
+
+    }
+
+
+
 
 

@@ -27,7 +27,12 @@ export class LoginService {
 
    async login(loginForm){
       let token: string;
-       const load =  await this.loadingCtrl.create();
+       const load =  await this.loadingCtrl.create(
+         {
+           cssClass: 'loadingClass',
+           spinner: 'bubbles'
+         }
+       );
        await load.present();
       const url = 'http://192.168.8.100:8000/api/login/';
       const form = loginForm.value;
@@ -60,19 +65,19 @@ export class LoginService {
         if(error.status === 400){
           message = error.error.message;
         }else if (error.status === 500){
-          message= 'internal server error';
+          message= 'l\'erreur vient du serveur ';
         }
         const alert = await this.alertController.create({
-          header: 'ERROR',
-          cssClass: '.myclass{ color: red}',
-          subHeader: 'retry',
+          header: 'ERREUR',
+          cssClass: 'alertError',
+          subHeader: 'Ressayez',
           message
         });
         await alert.present();
         setTimeout(
          async ()=>{
             await alert.dismiss();
-          }, 1000
+          }, 2000
         );
       }
       );

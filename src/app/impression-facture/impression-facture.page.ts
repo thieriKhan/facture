@@ -22,8 +22,10 @@ export interface Produit {
   styleUrls: ['./impression-facture.page.scss'],
 })
 export class ImpressionFacturePage implements OnInit {
+  alertInterface;
 clientFom: FormGroup;
-
+trackBy;
+testons: Facture[];
 clients: Observable<any>;
 clientSelected: any;
 client: Observable<any>;
@@ -31,7 +33,8 @@ icon = 'list';
 content = true;
 test;
 
-facturation: Observable<Facture>;
+
+facturation: Observable<Facture[]>;
 
 
   constructor(
@@ -44,11 +47,20 @@ facturation: Observable<Facture>;
     private modalCtrl: ModalController
   ) {
 
+    this.alertInterface = {
+      cssClass: 'alertClass',
+      backdropDismiss: true,
+      animated: true
+    };
 
-
+     }
+     load(nom){
+       console.log(nom);
+       this.trackBy = nom;
      }
 
   ngOnInit() {
+
     this.icon = 'list';
     this.clientFom = this.formBuilder.group(
       {choix: ['']}
@@ -102,7 +114,7 @@ if(event.detail.checked){
   }
 
   async ionViewWillEnter(){
-   this.clients = await  this.fact.getClient();
+   this.clients = await  (await this.fact.getClient());
    }
 
   async ionViewDidEnter(){
@@ -115,6 +127,7 @@ if(event.detail.checked){
     cssClass: 'alert',
     inputs: [
       {
+
         name: 'quantite',
         placeholder: 'quantite',
         type: 'number',
@@ -127,13 +140,16 @@ if(event.detail.checked){
         role: 'cancel'
       },
       {
-        text: 'ok',
+        text: 'modifier',
         handler: async (data)=>{
-         const up = await  this.fact.updateFacture(id, data.quantite);
-         up.subscribe(async ()=>
-         {
-          this.facturation = await this.fact.getFacture(this.fact.currentClient);
-         });
+
+          if(data.quantite.length !== 0){
+            const up = await  this.fact.updateFacture(id, data.quantite);
+            up.subscribe(async ()=>
+            {
+             this.facturation = await this.fact.getFacture(this.fact.currentClient);
+            });
+          }
 
 
 
@@ -173,7 +189,8 @@ if(event.detail.checked){
       ]
      });
 
-     alert.present();
+     await alert.present();
+
 
 
    }
@@ -205,8 +222,20 @@ if(event.detail.checked){
   async select(event){
      const val = event.detail.value;
      this.fact.currentClient = val;
-     this.facturation = await this.fact.getFacture(val);
+     this.facturation = await(await this.fact.getFacture(val))
+     .pipe(tap(
+      (data: Facture[])=>{
+       this.testons = data;
+
+
+      }
+    ));
      this.client = await this.fact.getUniqueClient(this.clientSelected);
+   }
+
+   track(index, item){
+
+     return item.id;
    }
 
 

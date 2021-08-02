@@ -70,8 +70,8 @@ ion-fab-button#print{
   max-width: 50px;
   max-height: 50px;
   position: fixed;
-   bottom: 2%;
-   right: 2%;
+   bottom: 4%;
+   right: 4%;
 }
 
 ion-list{
@@ -84,6 +84,25 @@ ion-list{
 
 
 @media (max-width : 600px){
+  .alert-radio-group{
+    background:red;
+  }
+
+    .alert-button-inner.alert-button-role-cancel{
+      --background:red;
+    }
+    .alert-button-inner{
+      --color: var(--ion-color-secondary);
+    }
+
+
+
+
+  .select-alert{
+
+    --color: red;
+
+  }
 
 ion-list{
   ion-item-sliding{
@@ -91,7 +110,7 @@ ion-list{
       ion-fab-button{
         width:30px;
          height: 30px;
-         margin-top: 10px;
+         margin-top: 17px;
       }
 
     }

@@ -44,7 +44,6 @@ export class LoginPage implements OnInit, OnDestroy {
     });
   }
   async onSubmitForm(){
-
    this.loginSubscription =  await this.log.login(this.loginForm);
    const user = this.loginForm.get('username').value;
    this.storage.set('user', user);

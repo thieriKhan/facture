@@ -1,3 +1,16 @@
+ion-content {
+  --background: linear-gradient( 80% var(--ion-color-secondary),   red );
+  --color: #3880ff;
+  --keyboard-offset: 0px;
+  --offset-bottom: 0px;
+  --offset-top: 20%;
+  --padding-bottom: 20%;
+  --padding-end: 0px;
+  --padding-start: 0px;
+  --padding-top: 0px;
+}
+
+
 ion-img{
   width: 300px;
   height: 200px;

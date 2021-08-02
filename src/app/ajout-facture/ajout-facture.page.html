@@ -31,7 +31,7 @@
 
           <ion-item class="ion-margin">
             <ion-label  >Client</ion-label>
-            <ion-select required   placeholder="Select client" formControlName="client" >
+            <ion-select [interfaceOptions]="alertInterface" required   placeholder="Select client" formControlName="client" >
 
               <ng-container *ngFor="let item of clients|async" >
                 <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
@@ -41,7 +41,7 @@
 
        <ion-item class="ion-margin" >
          <ion-label  >Produit</ion-label>
-        <ion-select required placeholder="Select produit" formControlName="produit" >
+        <ion-select [interfaceOptions]="alertInterface" required placeholder="Select produit" formControlName="produit" >
 
           <ng-container *ngFor="let item of produits|async" >
             <ion-select-option [value]="item"> {{item.nom}}</ion-select-option>

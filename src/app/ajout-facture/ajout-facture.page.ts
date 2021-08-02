@@ -22,6 +22,7 @@ export class AjoutFacturePage implements OnInit {
   produits: Observable<any>;
   produitSelect: any;
   clientSelect: any;
+  alertInterface
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,7 +31,15 @@ export class AjoutFacturePage implements OnInit {
     private router: Router,
     private network: Network,
     private toast: ToastController,
-    private storage: StorageService) { }
+    private storage: StorageService) {
+
+
+      this.alertInterface = {
+        cssClass: 'alertClass',
+        backdropDismiss: true,
+        animated: true
+      };
+     }
 
  async ngOnInit() {
   this.init();
@@ -107,6 +116,7 @@ window.addEventListener('offline', (event)=>{
                 text :'oui',
                 handler: ()=>{
                   this.post(form);
+                  this.init();
                 }
               }
           ]
@@ -127,7 +137,14 @@ window.addEventListener('offline', (event)=>{
   const toastError = await  this.toast.create(
     {
       cssClass: "errorToast",
-      message:'desole la commande n\' pas ete enregistre ',
+      message:'Erreur: desole la commande n\' pas ete enregistre ',
+      duration: 5000
+    }
+  );
+  const toastsuccess = await  this.toast.create(
+    {
+      cssClass: "successToast",
+      message:' la commande a  ete enregistre  avec success',
       duration: 5000
     }
   );
@@ -135,7 +152,10 @@ window.addEventListener('offline', (event)=>{
   this.obs = await this.fact.postFacture(formated);
 
  this.obs.subscribe(
-   ()=> this.router.navigate(['nav-bar/impression-facture']),
+   ()=>{
+     toastsuccess.present();
+
+    },
   async (error)=>{
       let state = [];
 

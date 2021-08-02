@@ -101,7 +101,13 @@ return this.http.get(url,   {headers :auth}).pipe(
 
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
-    const load = await this.loadC.create();
+    const load = await this.loadC.create(
+      {
+        cssClass: 'loadingClass',
+        spinner: 'bubbles'
+      }
+
+    );
      load.present();
     const url = this.baseUrl+'/facture/';
     const token = await  this.storage.get('token');

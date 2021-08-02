@@ -13,6 +13,9 @@
 
   <ion-row>
     <ion-col size-md="6" offset-md=3  >
+
+
+
       <div class="content">
 
 
@@ -26,10 +29,10 @@
 
           <ion-item  class="ion-margin">
             <ion-label position=" floating" >Client</ion-label>
-            <ion-select   placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected">
+            <ion-select [interfaceOptions]="alertInterface"    placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected">
 
               <ng-container *ngFor="let item of clients|async"  >
-                <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
+                <ion-select-option color="secondary" [value]="item.id">{{item.nom}}</ion-select-option>
               </ng-container>
             </ion-select>
 
@@ -39,36 +42,40 @@
 
          <div class="list" *ngIf="content && clientSelected">
 
-             <ion-list>
-               <ion-item-sliding *ngFor="let item of facturation| async"  #sliding >
-                <ion-item-options side="start">
 
-                    <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
-                      <ion-icon  name="trash"></ion-icon>
-                    </ion-fab-button>
-
-
-                </ion-item-options>
-                 <ion-item >
-                  <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
-                  <ion-label class="ion-margin"  > {{item.quantite}} {{ item.produit }}</ion-label>
-                    <ion-label class="ion-margin"><h5 class="ion-margin">{{ item.date|date}}</h5></ion-label>
-                    <ion-label>
-                      {{ item.date |slice : 11:16}}
-                   </ion-label>
-                 </ion-item>
-                 <ion-item-options side="end" >
-
-
-                    <ion-fab-button  (click)="edit(item.id, isChecked, sliding)" color="secondary">
-                      <ion-icon  name="pencil"></ion-icon>
-                    </ion-fab-button>
+             <ion-list >
 
 
 
-                 </ion-item-options>
+                <ion-item-sliding #sliding  *ngFor="let item of facturation| async; index as i; trackBy: track">
 
-               </ion-item-sliding>
+                  <ion-item-options side="start">
+                      <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
+                        <ion-icon  name="trash"></ion-icon>
+                      </ion-fab-button>
+                  </ion-item-options>
+                   <ion-item >
+
+                    <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
+                    <ion-label class="ion-margin"  > {{item.quantite}} {{ item.produit }}</ion-label>
+                      <ion-label class="ion-margin"><h5 class="ion-margin">{{ item.date|date}}</h5></ion-label>
+                      <ion-label>
+                        {{ item.date |slice : 11:16}}
+                     </ion-label>
+                   </ion-item>
+                   <ion-item-options side="end" >
+
+                      <ion-fab-button  (click)="edit(item.id, isChecked, sliding)" color="secondary">
+                        <ion-icon  name="pencil"></ion-icon>
+                      </ion-fab-button>
+
+                   </ion-item-options>
+
+                 </ion-item-sliding>
+
+
+
+
              </ion-list>
 
 
