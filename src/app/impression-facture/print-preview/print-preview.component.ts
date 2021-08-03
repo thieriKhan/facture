@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
+
 import { map, tap } from 'rxjs/operators';
 import { FacturesService } from '../../services/factures.service';
+import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
+import {Platform} from '@ionic/angular';
 
 
 @Component({
@@ -15,7 +18,11 @@ export class PrintPreviewComponent implements OnInit {
   total: Observable<any> = this.totalsub.asObservable();
   date = Date.now();
 
-  constructor( private fact: FacturesService) { }
+  constructor(
+     private fact: FacturesService, 
+     private platform: Platform, 
+     private printer: Printer
+    ) { }
 
  async ngOnInit() {
   const client = await this.fact.selectedclient;
@@ -41,6 +48,43 @@ export class PrintPreviewComponent implements OnInit {
 
 
   }
+
+  print(){
+ // previous implementation of print function
+
+     if(this.platform.is('android') || this.platform.is('ios') ){
+      this.printMobile();
+     }else{
+      this.printWeb();
+     }
+     window.location.reload();
+  }
+
+
+
+
+  printMobile(){
+    const content =document.getElementsByClassName('print')[0].innerHTML;
+    this.printer.isAvailable().then(
+      ()=>{ console.log('printer is available');},
+     (error)=>{console.log('printer is not availabe', error);
+      }
+     );
+    const  options: PrintOptions = {
+         name: 'MyDocument',
+         duplex: true,
+         orientation: 'landscape',
+         monochrome: false
+    };
+    this.printer.print(content, options);
+   }
+   printWeb(){
+     const myBody = document.body.innerHTML;
+    document.body.innerHTML =  document.getElementsByClassName('print')[0].innerHTML;
+     window.print();
+     document.body.innerHTML = myBody;
+
+   }
 
 
 }

@@ -196,28 +196,6 @@ if(event.detail.checked){
    }
 
 
-   printMobile(){
-    const content = document.getElementById('maTable').innerHTML;
-    this.printer.isAvailable().then(
-      ()=>{ console.log('printer is available');},
-     (error)=>{console.log('printer is not availabe', error);
-      }
-     );
-    const  options: PrintOptions = {
-         name: 'MyDocument',
-         duplex: true,
-         orientation: 'landscape',
-         monochrome: false
-    };
-    this.printer.print(content, options);
-   }
-   printWeb(){
-     const myBody = document.body.innerHTML;
-    document.body.innerHTML =  document.getElementsByClassName('list')[0].innerHTML;
-     window.print();
-     document.body.innerHTML = myBody;
-
-   }
 
   async select(event){
      const val = event.detail.value;

@@ -1,13 +1,11 @@
 ion-content {
-  --background: linear-gradient( 80% var(--ion-color-secondary),   red );
-  --color: #3880ff;
-  --keyboard-offset: 0px;
-  --offset-bottom: 0px;
-  --offset-top: 20%;
-  --padding-bottom: 20%;
-  --padding-end: 0px;
-  --padding-start: 0px;
-  --padding-top: 0px;
+ 
+  --background: var(--ion-color-secondary);
+
+  --color: var(--ion-color-secondary-contrast);
+
+
+
 }
 
 
@@ -38,8 +36,44 @@ ion-header{
 }
 ion-grid{
   ion-row{
+   
+   
+    
+    
+    
     ion-col{
+      .login{
+        transform: translate(0%, 40%);
+
+      }
+       
+      
       ion-card{
+        ion-card-title{
+          font-weight: bold;
+        }
+        
+      
+        
+        --background: var(--ion-color-light) ;
+        ion-item{
+          --background: var(--ion-color-light);
+            --highlight-color-valid: var(--ion-color-secondary);
+           --color-activated:  var(--ion-color-secondary);
+           --color-focused: var(--ion-color-secondary);
+           --color: var(--ion-color-dark-shade); 
+         
+
+        }
+       ion-item.item-has-focus > ion-label{
+          color: var(--ion-color-secondary);
+
+         } 
+        // ion-item{
+        //   color: var(--ion-color-secondary);  
+        // }
+        
+
         .button{
           min-width:100px;
         }
@@ -50,3 +84,16 @@ ion-grid{
     }
   }
 }
+
+@media (max-width: 600px){
+
+.login{
+  transform: translate(-10%, 60%);
+
+}
+}
+
+
+
+  
+

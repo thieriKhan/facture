@@ -1,6 +1,6 @@
 <ion-toolbar color="secondary">
 
-    <ion-button slot="end" color="secondary" >
+    <ion-button slot="end" color="secondary" (click)="print()">
       imprimer
     </ion-button>
 
@@ -9,7 +9,7 @@
 <ion-content>
 
 
-<div class="content" id="print">
+<div class="content print" >
   <p>{{date| date}}</p>
   <h4>NOM DU CLIENT: thieri</h4>
 
@@ -39,9 +39,6 @@
     <div class="footer">
       <h4 >Total:{{total| async}}FCFA</h4>
     </div>
-
-
-
 
 
   </tfoot>

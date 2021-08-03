@@ -8,18 +8,19 @@
 
 
 <ion-grid >
-  <ion-row>
-    <ion-col size-md="6" offset-md="3">
-
-  <ion-card >
+  <ion-row  >
+    <ion-col size-md="6" offset-md="3" >
+      <div class=" login">
+        
+  <ion-card  >
     <ion-card-header>
 
-      <ion-card-title class="ion-text-center" >Login</ion-card-title>
+      <ion-card-title color="secondary" class="ion-text-center" >Login</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
-        <ion-item class="ion-margin">
-          <ion-label  position="floating">utlisateur<ion-text color="danger">*</ion-text></ion-label>
+        <ion-item class="ion-margin" >
+          <ion-label   position="floating">utlisateur<ion-text color="danger">*</ion-text></ion-label>
           <ion-input required formControlName="username" type="text" autofocus="true"></ion-input>
         </ion-item>
         <ion-item class="ion-margin" >
@@ -44,6 +45,9 @@
     </ion-card-content>
 
   </ion-card>
+
+      </div>
+
 
     </ion-col>
 

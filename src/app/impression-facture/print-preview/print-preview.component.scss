@@ -1,21 +1,19 @@
+
+@media print , (min-width : 600px){
+
+  
 .content-table {
   border-collapse: collapse;
 
   margin: 25px 20px;
   font-size: 0.8em;
-  min-width: 170px;
+ 
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   margin: auto;
   font-family: 'Courier New', monospace;
-  thead{
-    .first{
-      width: auto;
 
-
-    }
-  }
 }
 ion-button{
   position: absolute;
@@ -36,67 +34,110 @@ h4{
 p{
   font-family: 'Courier New', monospace;
 }
-
-
-
-
 .content-table thead tr {
 
   text-align: left;
   font-weight: bold;
 }
-
-.content-table  .first{
-
-  text-align: center;
-  font-weight: bold;
-}
-
 .content-table th,
 .content-table td {
   padding: 2.5vh  3.5vh;
 }
-
 .content-table tbody tr {
   border-bottom: 1px solid;
 }
-
-
-
 .content-table tbody tr:last-of-type {
   border-bottom: 2px solid
 }
 
-
-.content-table tbody tr.active-row {
+.content-table thead tr {
+  text-align: left;
   font-weight: bold;
 }
 
+.footer{
+  margin-top: 25px;
+  margin-left: 4px;
+border: 0.08em dashed ;
+padding: 3px ;
+h4{
+  margin: 0;
+  padding: 0;
+}
+}
 
-@media (max-width : 600px){
+
+}
+
+
+@media print , (max-width : 600px) {
+  
 
   .content>h4{
         font-size: 13px;
-        width: 50%;
+        width: 80%;
       margin: auto;
-      padding: 10px;
+      padding: 5px;
 
   }
+
 
 
   .content-table {
-
-    margin: 25px 0;
-    font-size: 0.65em;
-    max-width: 90px;
-    border-radius: 4px 4px 0 0;
+    border-collapse: collapse;
+    width: 90%;
+    font-size: 0.8em;
+    border-radius: 5px 5px 0 0;
     margin: auto;
 
-
   }
-.content-table th,
-.content-table td {
-  padding: 1.3vh  1.8vh;
+
+
+  ion-button{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  
+  p{
+    font-family: 'Courier New', monospace;
+  }
+  .content-table thead tr {
+  
+    text-align: left;
+    font-weight: bold;
+  }
+  .content-table th,
+  .content-table td {
+    padding: 1.5vh  2.5vh;
+  }
+  .content-table tbody tr {
+    border-bottom: 1px solid;
+  }
+  .content-table tbody tr:last-of-type {
+    border-bottom: 2px solid
+  }
+  
+  .content-table thead tr {
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .footer{
+    width: 20%;
+    margin-top: 25px;
+    margin-left: 4px;
+    border: 0.08em dashed ;
+    padding: 3px ;
+    h4{
+      margin: 0;
+      padding: 0;
+    }
+  }
+  
+
+
 }
-}
+
 
