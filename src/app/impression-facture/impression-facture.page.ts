@@ -1,14 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { FacturesService } from '../services/factures.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-import {Platform, ModalController, AlertController, IonCheckbox, IonItemSliding} from '@ionic/angular';
-import { tap } from 'rxjs/operators';
+import { Platform, ModalController, AlertController, IonCheckbox, IonItemSliding, ToastController, LoadingController } from '@ionic/angular';
+import { finalize, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
-import { Facture } from '../containers';
+import { Facture, UpdateFacture } from '../containers';
+import { StorageService } from '../services/storage.service';
 
 
 export interface Produit {
@@ -44,7 +45,10 @@ facturation: Observable<Facture[]>;
     private platform: Platform,
     private route: Router,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private storage: StorageService,
+    private toastC: ToastController,
+    private loadC: LoadingController
   ) {
 
     this.alertInterface = {
@@ -66,8 +70,8 @@ facturation: Observable<Facture[]>;
       {choix: ['']}
     );
 
-
   }
+
 
   printView(){
     this.icon = this.icon ==='list'? 'calendar': 'list';
@@ -81,9 +85,7 @@ if(event.detail.checked){
     this.fact.printItemID.push(event.detail.value);
   }
 }else{
-
   this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
-
 
 }
 
@@ -119,8 +121,11 @@ if(event.detail.checked){
 
   async ionViewDidEnter(){
      this.fact.selectedclient = this.clientSelected;
+
+
+
    }
-  async  edit(id,  checked: IonCheckbox, slide: IonItemSliding){
+  async  edit(id : number,  checked: IonCheckbox, slide: IonItemSliding){
     slide.close();
    const alert = await  this.alertCtrl.create({
     header: 'modification',
@@ -143,12 +148,48 @@ if(event.detail.checked){
         text: 'modifier',
         handler: async (data)=>{
 
+          const toast = await this.toastC.create({
+            message: 'desole cette facture n\' pas ete modifie',
+            cssClass: 'errorToast'
+          });
+          const load =  await this.loadC.create(
+            {
+              spinner: 'bubbles',
+              cssClass: 'loadingClass',
+
+            }
+          );
+          load.present();
+
           if(data.quantite.length !== 0){
-            const up = await  this.fact.updateFacture(id, data.quantite);
-            up.subscribe(async ()=>
+            const up = (await  this.fact.updateFacture(id, data.quantite)).pipe(
+              finalize(
+                ()=>{
+                  load.dismiss();
+                }
+              )
+            );
+            up.subscribe(
+              async ()=>
             {
              this.facturation = await this.fact.getFacture(this.fact.currentClient);
-            });
+            },
+
+            async (error)=>{
+               toast.present();
+            if(error.status !== 403){
+              let dt:   UpdateFacture[] = [];
+               dt = JSON.parse( await this.storage.get('unupdated')) || [];
+               const val = {id  , quantite: data.quantite};
+               if(!dt.includes(val)){
+                 dt.push(val);
+               }
+             await this.storage.set('unupdated',JSON.stringify(dt));
+              }
+            }
+
+
+            );
           }
 
 
@@ -175,11 +216,38 @@ if(event.detail.checked){
         {
           text: 'OUI',
           handler: async (data)=>{
-            const del = await this.fact.deleteFacture(id);
+            const toast = this.toastC.create({
+              message: 'desole cette facture n\' pas ete supprime',
+              cssClass: 'errorToast'
+            });
+            const load =  await this.loadC.create(
+              {
+                spinner: 'bubbles',
+                cssClass: 'loadingClass',
+
+              }
+            );
+            load.present();
+            const del = (await this.fact.deleteFacture(id)).pipe(
+              finalize(()=>{
+                load.dismiss();
+              })
+            );
             del.subscribe(
               async ()=>
          {
           this.facturation = await this.fact.getFacture(this.fact.currentClient);
+         },
+         async (error)=>{
+           (await toast).present();
+         if(error.status !== 403){
+           let dt: any[] = [];
+            dt = JSON.parse( await this.storage.get('undeleted')) || [];
+            if(!dt.includes(id)){
+              dt.push(id);
+            }
+          await this.storage.set('undeleted',JSON.stringify(dt));
+         }
          }
             );
 
@@ -204,8 +272,6 @@ if(event.detail.checked){
      .pipe(tap(
       (data: Facture[])=>{
        this.testons = data;
-
-
       }
     ));
      this.client = await this.fact.getUniqueClient(this.clientSelected);
@@ -215,6 +281,10 @@ if(event.detail.checked){
 
      return item.id;
    }
+
+
+
+
 
 
 

@@ -22,7 +22,7 @@ export class AjoutFacturePage implements OnInit {
   produits: Observable<any>;
   produitSelect: any;
   clientSelect: any;
-  alertInterface
+  alertInterface;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,7 +31,8 @@ export class AjoutFacturePage implements OnInit {
     private router: Router,
     private network: Network,
     private toast: ToastController,
-    private storage: StorageService) {
+    private storage: StorageService,
+    private loadC: LoadingController) {
 
 
       this.alertInterface = {
@@ -48,17 +49,6 @@ export class AjoutFacturePage implements OnInit {
     cssClass: 'errorToast',
     duration: 2000
   });
-
-window.addEventListener('online', async()=>{
-  const data =JSON.parse(await  this.storage.get('failed'))|| [];
-  this.failedPost(data);
-
-});
-
-window.addEventListener('offline', (event)=>{
-  toast.present();
-});
-
 
 
 
@@ -77,19 +67,6 @@ window.addEventListener('offline', (event)=>{
     );
   }
    async ionViewWillEnter(){
-    const toast = await this.toast.create({
-      message: 'vous etes hors ligne',
-      duration: 2000
-    });
-
-    window.addEventListener('online', async (event)=>{
-
-      const data =JSON.parse(await  this.storage.get('failed'))|| [];
-        this.failedPost(data);
-    });
-    window.addEventListener('offline', (event)=>{
-      toast.present();
-    });
 
   this.clients = await this.fact.getClient();
   this.produits = await this.fact.getProduit();
@@ -136,20 +113,32 @@ window.addEventListener('offline', (event)=>{
 
   const toastError = await  this.toast.create(
     {
-      cssClass: "errorToast",
+      cssClass: 'errorToast',
       message:'Erreur: desole la commande n\' pas ete enregistre ',
       duration: 5000
     }
   );
   const toastsuccess = await  this.toast.create(
     {
-      cssClass: "successToast",
+      cssClass: 'successToast',
       message:' la commande a  ete enregistre  avec success',
       duration: 5000
     }
   );
   const formated= {facture_client: form.client, produit: form.produit.id, quantite: form.quantite};
-  this.obs = await this.fact.postFacture(formated);
+  const load = await this.loadC.create(
+    {
+      cssClass: 'loadingClass',
+      spinner: 'bubbles'
+    }
+
+  );
+   load.present();
+  this.obs = await (await this.fact.postFacture(formated)).pipe(
+    finalize(
+      ()=>{ load.dismiss(); }
+    )
+  );
 
  this.obs.subscribe(
    ()=>{
@@ -159,30 +148,16 @@ window.addEventListener('offline', (event)=>{
   async (error)=>{
       let state = [];
 
-      state = JSON.parse( await  this.storage.get('failed'))|| [];
+      state = JSON.parse( await  this.storage.get('unposted'))|| [];
       state.push(formated);
-      await this.storage.set('failed',    JSON.stringify(state));
+      await this.storage.set('unposted',    JSON.stringify(state));
      toastError.present();
    }
  );
 
 
   }
+// soumettre les requettes echouees
 
-
-  async failedPost(data: any[]){
-    if(data.length > 0){
-      for( let i = 0 ; i <= data.length ; i++){
-        this.obs = await this.fact.postFacture(data[i]);
-        this.obs.subscribe(
-          async (val)=> {
-            data.splice(i);
-          }
-        );
-      }
-      await this.storage.set('failed',    JSON.stringify(data));
-    }
-
-  }
 }
 

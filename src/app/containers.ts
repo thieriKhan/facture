@@ -21,3 +21,8 @@ produit: string;
 quantite: number;
 
 }
+
+export interface UpdateFacture{
+  id: number,
+  quantite: number
+}

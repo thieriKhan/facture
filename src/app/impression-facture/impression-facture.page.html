@@ -58,8 +58,9 @@
 
                     <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
                     <ion-label class="ion-margin"  > {{item.quantite}} {{ item.produit }}</ion-label>
-                      <ion-label class="ion-margin"><h5 class="ion-margin">{{ item.date|date}}</h5></ion-label>
+
                       <ion-label>
+                        <h5 class="ion-margin">{{ item.date|date}}</h5>
                         {{ item.date |slice : 11:16}}
                      </ion-label>
                    </ion-item>

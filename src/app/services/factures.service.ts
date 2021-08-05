@@ -18,6 +18,7 @@ export class FacturesService {
   printItemID: string[]= [];
   selectedclient;
   currentClient;
+  progres = 0;
 
   constructor(
     private http: HttpClient,
@@ -39,10 +40,6 @@ export class FacturesService {
     const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
    return this.http.get(url,   {headers :auth}).pipe(
      map((val: any) => val.resp ),
-     tap((resp)=>{
-       console.log('fact', resp);
-     }),
-
      shareReplay()
    );
   }
@@ -79,7 +76,7 @@ export class FacturesService {
 return this.http.get(url,   {headers :auth }).pipe(
   map((val: any) => val.nom),
   shareReplay()
-);
+  );
 }
   //  recupperer tous les produits du backend
  async getProduit(): Promise<Observable<any>>{
@@ -101,16 +98,11 @@ return this.http.get(url,   {headers :auth}).pipe(
 
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
-    const load = await this.loadC.create(
-      {
-        cssClass: 'loadingClass',
-        spinner: 'bubbles'
-      }
 
-    );
-     load.present();
     const url = this.baseUrl+'/facture/';
     const token = await  this.storage.get('token');
+
+    // controler si le token existe toujours et est valide
     if(token == null){
       this.route.navigate(['login']);
     }
@@ -118,33 +110,24 @@ return this.http.get(url,   {headers :auth}).pipe(
 
 
    const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-  return this.http.post(url, form,{headers :auth } ).pipe(
-    finalize(
-      ()=>{ load.dismiss(); }
-    )
-  );
+  return this.http.post(url, form,{headers :auth } );
  }
 
 
 // modifier une facture
 
  async updateFacture(id, quantite): Promise<Observable<any>>{
-  const load = await this.loadC.create();
-   load.present();
+
   const url = this.baseUrl +  '/facturation/'+id;
   const token = await  this.storage.get('token');
+  // contoler si le token existe toujours et est valide
   if(token == null){
     this.route.navigate(['login']);
   }
-  const form = {'quantite': quantite}
+  const form = {  quantite} ;
  const credential = JSON.parse(token);
  const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-return this.http.put(url, form,{headers :auth } ).pipe(
-
-  finalize(
-    ()=>{ load.dismiss(); }
-  )
-);
+return this.http.put(url, form,{headers :auth } );
 }
 
 
@@ -153,9 +136,9 @@ return this.http.put(url, form,{headers :auth } ).pipe(
 async deleteFacture(id){
   const url = this.baseUrl + '/facturation/'+id;
   const token = await  this.storage.get('token');
+  // controler si le token existe toujour et est valide
   if(token == null){
     this.route.navigate(['login']);
-
   }
 
   const credential = JSON.parse(token);

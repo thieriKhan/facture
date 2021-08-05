@@ -14,7 +14,9 @@
         <ion-icon slot="icon-only"  name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
+
 </ion-header>
 <ion-content>
 
@@ -29,6 +31,8 @@
       <ion-tab-button tab="impression-facture" class="ion-no-padding marge">
 
         <ion-label>Imprimer</ion-label>
+
+
       </ion-tab-button>
 
 
@@ -41,6 +45,7 @@
 
 
   </ion-tabs>
+  <ion-progress-bar  type="determinate" [value]="start"   color="secondary"></ion-progress-bar>
 
 
 

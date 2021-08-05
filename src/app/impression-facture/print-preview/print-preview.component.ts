@@ -53,7 +53,7 @@ export class PrintPreviewComponent implements OnInit {
  // previous implementation of print function
 
      if(this.platform.is('android') || this.platform.is('ios') ){
-      this.printMobile();
+      this.printWeb();
      }else{
       this.printWeb();
      }
@@ -74,7 +74,7 @@ export class PrintPreviewComponent implements OnInit {
          name: 'MyDocument',
          duplex: true,
          orientation: 'landscape',
-         monochrome: false
+         monochrome: false,
     };
     this.printer.print(content, options);
    }
