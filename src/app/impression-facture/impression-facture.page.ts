@@ -1,15 +1,18 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { FacturesService } from '../services/factures.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-import { Platform, ModalController, AlertController, IonCheckbox, IonItemSliding, ToastController, LoadingController } from '@ionic/angular';
+import { Platform, ModalController, AlertController, IonCheckbox, IonItemSliding,
+   ToastController, LoadingController, GestureController } from '@ionic/angular';
 import { finalize, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
-import { Facture, UpdateFacture } from '../containers';
+import { Client, Facture, UpdateFacture } from '../containers';
 import { StorageService } from '../services/storage.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 
 export interface Produit {
@@ -33,6 +36,10 @@ client: Observable<any>;
 icon = 'list';
 content = true;
 test;
+displayCheckbox= false;
+deleteItem = false;
+selectedC;
+idC;
 
 
 facturation: Observable<Facture[]>;
@@ -44,26 +51,27 @@ facturation: Observable<Facture[]>;
     private printer: Printer,
     private platform: Platform,
     private route: Router,
+    private activeRoute: ActivatedRoute,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private storage: StorageService,
     private toastC: ToastController,
-    private loadC: LoadingController
+    private loadC: LoadingController,
+    private gesture: GestureController
   ) {
 
     this.alertInterface = {
-      cssClass: 'alertClass',
+      cssClass: 'alert',
       backdropDismiss: true,
       animated: true
     };
 
      }
-     load(nom){
-       console.log(nom);
-       this.trackBy = nom;
-     }
+
 
   ngOnInit() {
+
+
 
     this.icon = 'list';
     this.clientFom = this.formBuilder.group(
@@ -72,7 +80,6 @@ facturation: Observable<Facture[]>;
 
   }
 
-
   printView(){
     this.icon = this.icon ==='list'? 'calendar': 'list';
     this.content = this.icon ==='list'? true: false;
@@ -80,14 +87,16 @@ facturation: Observable<Facture[]>;
 
   changed(event){
 
-if(event.detail.checked){
-  if(!this.fact.printItemID.includes(event.detail.value)){
-    this.fact.printItemID.push(event.detail.value);
-  }
-}else{
-  this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
+    if(event.detail.checked){
+      this.deleteItem = false;
 
-}
+      if(!this.fact.printItemID.includes(event.detail.value)){
+      this.fact.printItemID.push(event.detail.value);
+      }
+    }else{
+      this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
+
+    }
 
 
 
@@ -116,7 +125,23 @@ if(event.detail.checked){
   }
 
   async ionViewWillEnter(){
-   this.clients = await  (await this.fact.getClient());
+    this.idC = this.activeRoute.snapshot.paramMap.get('id') ;
+
+   const client = (await this.fact.getClient())
+     .pipe(
+       tap((data: Client[]) => {
+
+         const dat = data.find((item: Client) => String(item.id) === this.idC);
+         if(dat){
+           this.selectedC = dat.nom;
+            console.log(this.selectedC);
+         }
+
+
+       })
+     );
+   this.clients = client;
+
    }
 
   async ionViewDidEnter(){
@@ -125,7 +150,7 @@ if(event.detail.checked){
 
 
    }
-  async  edit(id : number,  checked: IonCheckbox, slide: IonItemSliding){
+  async  edit(id: number,  checked: IonCheckbox, slide: IonItemSliding){
     slide.close();
    const alert = await  this.alertCtrl.create({
     header: 'modification',
@@ -137,6 +162,13 @@ if(event.detail.checked){
         placeholder: 'quantite',
         type: 'number',
         min: '1'
+      },
+      {name:'packaging',
+      placeholder: 'packaging',
+      type: 'radio',
+      value: [1,2,2,43,5,6],
+
+
       }
     ],
     buttons: [

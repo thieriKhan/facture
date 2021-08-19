@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { catchError, finalize,tap, map, shareReplay } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 
-import { Facture } from '../containers';
+import { Client, Facture } from '../containers';
 
 
 @Injectable({
@@ -46,7 +46,7 @@ export class FacturesService {
 
 // recuperer tous les clients
 
-  async getClient(): Promise<Observable<any>>{
+  async getClient(): Promise<Observable<Partial<Client[]>>>{
     const url = this.baseUrl+'/client/';
     const token = await  this.storage.get('token');
     if(token == null){
@@ -56,7 +56,7 @@ export class FacturesService {
    const credential = JSON.parse(token);
 
    const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-  return this.http.get(url,   {headers :auth }).pipe(
+  return this.http.get<Partial<Client[]>>(url,   {headers :auth }).pipe(
     map((val: any) => val),
     shareReplay()
   );
@@ -64,7 +64,7 @@ export class FacturesService {
 
 //  recuperer les donnees d'un client
 
- async getUniqueClient(id): Promise<Observable<any>>{
+ async getUniqueClient(id): Promise<Observable<Partial<Client>>>{
   const url = this.baseUrl +'/client/'+id;
   const token = await  this.storage.get('token');
   if(token == null){
@@ -73,7 +73,7 @@ export class FacturesService {
  const credential = JSON.parse(token);
 
  const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-return this.http.get(url,   {headers :auth }).pipe(
+return this.http.get<Partial<Client>>(url,   {headers :auth }).pipe(
   map((val: any) => val.nom),
   shareReplay()
   );

@@ -1,14 +1,16 @@
+import { PrintPreviewComponent } from './../impression-facture/print-preview/print-preview.component';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { LoginService } from './../services/login.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StorageService } from '../services/storage.service';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FacturesService } from '../services/factures.service';
 import {  Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { UpdateFacture, Facture } from '../containers';
 import { HttpClient } from '@angular/common/http';
+import { PopoverComponent } from '../components/popover/popover.component';
 
 
 
@@ -31,24 +33,31 @@ export class NavBarPage implements OnInit, OnDestroy {
     private toastC: ToastController,
     private loadC: LoadingController,
     private log: LoginService,
-    private http: HttpClient
+    private http: HttpClient,
+     private popoverC: PopoverController,
+
   ) {
 
   }
 
-  ngOnInit() {
+  ngOnInit() {}
 
+ async  showPopOver(ev: any){
 
+    const popover = await this.popoverC.create({
+      component: PopoverComponent,
+      cssClass: 'popover-class',
+      event: ev,
+      translucent: true
 
-
+    });
+    await popover.present();
   }
  async ionViewWillEnter(){
     this.user = await this.storage.get('user');
   }
 
-  logout(){
-    this.log.logout();
-  }
+
 
 async ionViewDidEnter(){
     const toast = await this.toastC.create({

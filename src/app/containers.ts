@@ -1,4 +1,15 @@
-export class Containers {
+export interface Client{
+  id: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  dateEnreg: string;
+}
+export interface Produit{
+  nom: string;
+  categorie: string;
+  packaging: string[];
+
 }
 
 export class User {
@@ -12,17 +23,21 @@ export class User {
 export class Token{
   constructor(private token: string){}
 }
+
+
 export interface Facture{
-client:  string;
+client:  number;
 date: string;
 id: number;
 montant: number;
-produit: string;
+produit: number;
 quantite: number;
+packaging: string;
 
 }
 
+
 export interface UpdateFacture{
-  id: number,
-  quantite: number
+  id: number;
+  quantite: number;
 }

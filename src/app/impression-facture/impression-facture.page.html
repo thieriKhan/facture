@@ -1,6 +1,4 @@
-<ion-header>
 
-</ion-header>
 
 <ion-content >
 
@@ -16,6 +14,7 @@
 
 
 
+
       <div class="content">
 
 
@@ -27,11 +26,14 @@
 
          <div class="select">
 
-          <ion-item  class="ion-margin">
-            <ion-label position=" floating" >Client</ion-label>
-            <ion-select [interfaceOptions]="alertInterface"    placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected">
 
-              <ng-container *ngFor="let item of clients|async"  >
+
+
+          <ion-item  class="ion-margin">
+            <ion-label  position=" floating" >Client</ion-label>
+            <ion-select interface="action-sheet" [interfaceOptions]="alertInterface" [value]="idC"   [selectedText]="selectedC"  placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected" >
+
+              <ng-container *ngFor="let item of clients|async"   >
                 <ion-select-option color="secondary" [value]="item.id">{{item.nom}}</ion-select-option>
               </ng-container>
             </ion-select>
@@ -47,24 +49,50 @@
 
 
 
-                <ion-item-sliding #sliding  *ngFor="let item of facturation| async; index as i; trackBy: track">
-
-                  <ion-item-options side="start">
+                <ion-item-sliding  class="ion-no-margin" #sliding  *ngFor="let item of facturation| async; index as i; trackBy: track">
+                  <ion-fab-button *ngIf="deleteItem" color="danger" (click)="delete(item.id, sliding)">
+                    <ion-icon  name="trash"></ion-icon>
+                  </ion-fab-button>
+                  <ion-item-options   (ionSwipe)="swipedFirst(sliding)" side="start">
                       <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
                         <ion-icon  name="trash"></ion-icon>
                       </ion-fab-button>
                   </ion-item-options>
-                   <ion-item >
 
-                    <ion-checkbox (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked><ion-icon slot="icon-only" name="receipt" ></ion-icon></ion-checkbox>
-                    <ion-label class="ion-margin"  > {{item.quantite}} {{ item.produit }}</ion-label>
+                  <ion-grid >
+                    <ion-row>
+                      <ion-col size="1" class="ion-self-center">
+                        <ion-checkbox   #check (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked>
+                        </ion-checkbox>
+                      </ion-col>
+                      <ion-col size="11">
 
-                      <ion-label>
-                        <h5 class="ion-margin">{{ item.date|date}}</h5>
-                        {{ item.date |slice : 11:16}}
-                     </ion-label>
-                   </ion-item>
-                   <ion-item-options side="end" >
+                        <ion-item class="ion-margin" (click)="edit(item.id, isChecked, sliding)"  class=" ion-no-margin"   lines="none"   button= "true" >
+
+                          <ion-icon size="large"  name="receipt"></ion-icon>
+
+
+                              <ion-label class="ion-margin">
+
+
+                                <h1  > {{item.quantite}}  {{ item.produit }}</h1>
+
+                                <h3>{{item.montant * item.quantite}} FCFA</h3>
+                                <!-- <ion-text style=" position: absolute; top: 50px; right: 15px;  display:block;">
+                                  <h5 > {{ item.date |slice : 11:16}}</h5>
+
+                                </ion-text> -->
+
+                             </ion-label>
+                           </ion-item>
+
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+
+
+
+                   <ion-item-options  (ionSwipe)="swipedSecond(sliding)" side="end" >
 
                       <ion-fab-button  (click)="edit(item.id, isChecked, sliding)" color="secondary">
                         <ion-icon  name="pencil"></ion-icon>

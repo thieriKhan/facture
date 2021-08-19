@@ -1,6 +1,9 @@
 ion-content {
- 
+
   --background: var(--ion-color-secondary);
+  background-image: url("../../assets/icon/favicon.png") ;
+
+  background-blend-mode: darken;
 
   --color: var(--ion-color-secondary-contrast);
 
@@ -36,43 +39,43 @@ ion-header{
 }
 ion-grid{
   ion-row{
-   
-   
-    
-    
-    
+
+
+
+
+
     ion-col{
       .login{
         transform: translate(0%, 40%);
 
       }
-       
-      
+
+
       ion-card{
         ion-card-title{
           font-weight: bold;
         }
-        
-      
-        
+
+
+
         --background: var(--ion-color-light) ;
         ion-item{
           --background: var(--ion-color-light);
             --highlight-color-valid: var(--ion-color-secondary);
            --color-activated:  var(--ion-color-secondary);
            --color-focused: var(--ion-color-secondary);
-           --color: var(--ion-color-dark-shade); 
-         
+           --color: var(--ion-color-dark-shade);
+
 
         }
        ion-item.item-has-focus > ion-label{
           color: var(--ion-color-secondary);
 
-         } 
+         }
         // ion-item{
-        //   color: var(--ion-color-secondary);  
+        //   color: var(--ion-color-secondary);
         // }
-        
+
 
         .button{
           min-width:100px;
@@ -95,5 +98,5 @@ ion-grid{
 
 
 
-  
+
 

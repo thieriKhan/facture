@@ -24,13 +24,18 @@
      <div class="ion-align-items-center ion-margin-top">
 
       <ion-card class="ion-padding ">
-        <ion-item class="ion-align-items-center">
-          <ion-title class="ion-align-self-center" color="secondary" >Ajouter une facture</ion-title>
+        <ion-item class="ion-align-items-center ion-padding ion-no-border" lines="nones">
+          <ion-card-title class="ion-align-self-center ion-padding" > <h1> Commande </h1></ion-card-title>
 
         </ion-item>
 
+
+
           <ion-item class="ion-margin">
-            <ion-label  >Client</ion-label>
+            <!-- <ion-button fill="transparent" class="ion-margin" >
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button> -->
+            <ion-label >  Client</ion-label>
             <ion-select [interfaceOptions]="alertInterface" required   placeholder="Select client" formControlName="client" >
 
               <ng-container *ngFor="let item of clients|async" >
@@ -44,11 +49,21 @@
         <ion-select [interfaceOptions]="alertInterface" required placeholder="Select produit" formControlName="produit" >
 
           <ng-container *ngFor="let item of produits|async" >
-            <ion-select-option [value]="item"> {{item.nom}}</ion-select-option>
+            <ion-select-option [value]="item.id"> {{item.nom}}</ion-select-option>
           </ng-container>
 
         </ion-select>
       </ion-item>
+
+      <ion-item class="ion-margin" >
+        <ion-label  >Packaging</ion-label>
+       <ion-select [interfaceOptions]="alertInterface" required placeholder="Select packaging" formControlName="packaging" >
+         <ng-container *ngFor="let item of produits|async" >
+           <ion-select-option [value]="item.id"> {{item.nom}}</ion-select-option>
+         </ng-container>
+
+       </ion-select>
+     </ion-item>
 
         <ion-item class="ion-margin ">
           <ion-label class="ion-align-items-start" position="floating">Quantite</ion-label>

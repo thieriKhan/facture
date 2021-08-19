@@ -1,4 +1,5 @@
-import { PrintPreviewModule } from "./impression-facture/print-preview/print-preview.module";
+import { PopoverModule } from './components/popover/popover.module';
+import { PrintPreviewModule } from './impression-facture/print-preview/print-preview.module';
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -21,7 +22,8 @@ import { HistoriquePipe } from './historique.pipe';
    AppRoutingModule, NgxDatatableModule,
     HttpClientModule, CommonModule,
     IonicStorageModule.forRoot(),
-    PrintPreviewModule
+    PrintPreviewModule,
+    PopoverModule
   ],
   providers: [Printer,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Network],
   bootstrap: [AppComponent],

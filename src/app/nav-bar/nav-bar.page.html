@@ -1,29 +1,37 @@
 <ion-header class="ion-no-border">
   <ion-toolbar >
 
+   <ion-label  slot="start">
+      <ion-icon slot="icon-only" name="person"></ion-icon>
+      {{user}}
+    </ion-label>
+
+<ion-buttons slot="end">
+  <ion-button (click)="showPopOver($event)"   slot="icon-only">
+    <ion-icon   name="ellipsis-vertical-outline"></ion-icon>
+  </ion-button>
+
+</ion-buttons>
 
 
 
-    <ion-label  slot="start"><ion-icon slot="icon-only" name="person"></ion-icon>
-      {{user}}</ion-label>
 
-
-    <ion-buttons class="ion-no-margin ion-no-padding"  slot="end" >
+    <!-- <ion-buttons class="ion-no-margin ion-no-padding"  slot="end" >
 
       <ion-button slot="end" class="ion-no-padding"class="ion-no-padding" (click)="logout()" >
-        <ion-icon slot="icon-only"  name="log-out"></ion-icon>
+        <ion-icon slot="icon-only"  name="logout"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
 
   </ion-toolbar>
 
 </ion-header>
-<ion-content>
+<ion-content fullscreen="true">
 
 
 
   <ion-tabs color="primary" class="ion-no-padding">
-    <ion-tab-bar slot="top"  >
+    <ion-tab-bar slot="bottom"  >
 
       <ion-tab-button tab="ajout-facture" >
         <ion-label>Ajouter</ion-label>

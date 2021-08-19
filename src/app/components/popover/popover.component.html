@@ -1,0 +1,35 @@
+
+  <!-- <ion-button  class="ion-no-h4adding"class="ion-no-h4adding" (click)="logout()" >
+    <ion-icon slot="icon-only"  name="logout"></ion-icon>
+  </ion-button> -->
+  <ion-content>
+
+    <div class="my-icon">
+      <ion-icon slot="icon-only" (click)="close()" name="close"></ion-icon>
+     </div>
+
+<ion-list>
+  <ion-item class="ion-magin" button lines="none" detail="false" (click)="ajoutClient()">
+      <ion-icon  name="add"></ion-icon>
+      <ion-label  class="ion-h4adding-left">  <h4>Ajouter un client</h4> </ion-label>
+  </ion-item>
+  <ion-item  class="ion-magin  " button lines="none"  detail="false" (click)="logout()">
+    <ion-icon   name="list"></ion-icon>
+    <ion-label  class="ion-h4adding-left"> <h4> Facture courante</h4></ion-label>
+  </ion-item>
+  <ion-item  class="ion-magin  " button lines="none"  detail="false" (click)="logout()">
+    <ion-icon   name="log-out"></ion-icon>
+    <ion-label  class="ion-h4adding-left"> <h4>  Se deconnecter</h4></ion-label>
+  </ion-item>
+
+
+
+  </ion-list>
+</ion-content>
+
+
+
+
+
+
+

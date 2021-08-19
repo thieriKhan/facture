@@ -25,10 +25,18 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+
+.popover-class{
+  --background: red;
+  position: absolute;
+  top: 0;
+  right:0;
+}
+
   ion-item.item-has-focus > ion-label{
           color: var(--ion-color-dark-shade);
 
-         } 
+         }
 
 .loadingClass{
   --spinner-color: var(--ion-color-secondary);
@@ -74,6 +82,11 @@
 
   .alert-button{
     color: var(--ion-color-secondary);
+
+
+  }
+  .alert-button-group-vertical{
+    flex-direction: row;
   }
   .alert-head{
     background: var(--ion-color-secondary-tint);
@@ -82,6 +95,7 @@
   .alert-button-role-cancel{
     color: var(--ion-color-danger-tint);
     opacity: 0.8;
+
 
   }
   .alert-input:focus{

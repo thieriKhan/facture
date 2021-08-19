@@ -16,6 +16,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'impression-facture/:id',
+        loadChildren: () => import('../impression-facture/impression-facture.module').then( m => m.ImpressionFacturePageModule),
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'ajout-facture',
         loadChildren: () => import('../ajout-facture/ajout-facture.module').then( m => m.AjoutFacturePageModule),
         canActivate: [AuthGuard]

@@ -11,13 +11,13 @@
   <ion-row  >
     <ion-col size-md="6" offset-md="3" >
       <div class=" login">
-        
+
   <ion-card  >
     <ion-card-header>
 
-      <ion-card-title color="secondary" class="ion-text-center" >Login</ion-card-title>
+      <ion-card-title  class="ion-text-center" >Login</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="ion-marging">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
         <ion-item class="ion-margin" >
           <ion-label   position="floating">utlisateur<ion-text color="danger">*</ion-text></ion-label>
@@ -32,11 +32,17 @@
 
 
         </ion-item>
-        <div class="button ion-align-items-center" >
+        <div class="button ion-align-items-center ion-margin" >
           <ion-button block color="secondary" type="submit" [disabled]="loginForm.invalid" class="ion-margin-bottom" expand="block">
             Login
           </ion-button>
         </div>
+        <ion-item  button detail="false" lines="nones">
+          <ion-text class="ion-margin " >
+            <p>mot de passe oublie</p>
+          </ion-text>
+        </ion-item>
+        
 
       </form>
 

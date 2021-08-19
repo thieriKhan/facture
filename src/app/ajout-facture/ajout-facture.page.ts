@@ -1,3 +1,4 @@
+import { Facture } from "./../containers";
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { catchError, finalize, tap } from 'rxjs/operators';
@@ -44,14 +45,11 @@ export class AjoutFacturePage implements OnInit {
 
  async ngOnInit() {
   this.init();
-  const toast = await this.toast.create({
-    message: 'vous etes hors ligne',
-    cssClass: 'errorToast',
-    duration: 2000
-  });
-
-
-
+  // const toast = await this.toast.create({
+  //   message: 'vous etes hors ligne',
+  //   cssClass: 'errorToast',
+  //   duration: 2000
+  // });
 
     this.clients = await this.fact.getClient() ;
 
@@ -62,7 +60,8 @@ export class AjoutFacturePage implements OnInit {
     this.ajoutForm = this.formBuilder.group({
       client: [''],
       produit: [''],
-      quantite: ['']
+      quantite: [''],
+      packaging: ['']
     }
     );
   }
@@ -74,26 +73,38 @@ export class AjoutFacturePage implements OnInit {
   }
 
  async onSubmit(){
-  const form =  await this.ajoutForm.value;
+  const form: Facture =  await this.ajoutForm.value;
+  console.log('form', form);
 
    if(form.quantite <1){
      return 0;
    }else{
     const alert = await  this.alertC.create(
       {
-        cssClass: 'alertctrl',
-        message: 'Voulez vous vraiment enregistrer commande',
+        cssClass: 'alert',
+        subHeader: 'Voulez vous  ajouter ce produit?',
+        message:'<strong>- valider</strong> pour proceder a la validation <br/>',
         header: 'confirmation',
-        buttons: [{
-          cssClass: 'alert',
+        buttons: [
+          {
+
           text: 'non',
            role: 'cancel'
               },
               {
+
                 text :'oui',
                 handler: ()=>{
                   this.post(form);
                   this.init();
+                }
+              },
+              {
+                text :'valider',
+                handler: async ()=>{
+                  await this.post(form);
+                  this.init();
+                  this.router.navigate(['nav-bar/impression-facture/', form.client]);
                 }
               }
           ]
@@ -109,7 +120,7 @@ export class AjoutFacturePage implements OnInit {
 
 
 
- async post(form){
+ async post(form: Facture){
 
   const toastError = await  this.toast.create(
     {
@@ -125,7 +136,7 @@ export class AjoutFacturePage implements OnInit {
       duration: 5000
     }
   );
-  const formated= {facture_client: form.client, produit: form.produit.id, quantite: form.quantite};
+
   const load = await this.loadC.create(
     {
       cssClass: 'loadingClass',
@@ -134,30 +145,33 @@ export class AjoutFacturePage implements OnInit {
 
   );
    load.present();
-  this.obs = await (await this.fact.postFacture(formated)).pipe(
+
+
+  this.obs = await (await this.fact.postFacture(form)).pipe(
     finalize(
       ()=>{ load.dismiss(); }
     )
   );
 
- this.obs.subscribe(
-   ()=>{
-     toastsuccess.present();
+  this.obs.subscribe(
+    ()=>{
+      toastsuccess.present();
 
-    },
-  async (error)=>{
-      let state = [];
+     },
+   async (error)=>{
+       let state = [];
 
-      state = JSON.parse( await  this.storage.get('unposted'))|| [];
-      state.push(formated);
-      await this.storage.set('unposted',    JSON.stringify(state));
-     toastError.present();
-   }
- );
+       state = JSON.parse( await  this.storage.get('unposted'))|| [];
+       state.push(form);
+       await this.storage.set('unposted',    JSON.stringify(state));
+      toastError.present();
+    }
+  );
+
 
 
   }
-// soumettre les requettes echouees
+
 
 }
 
