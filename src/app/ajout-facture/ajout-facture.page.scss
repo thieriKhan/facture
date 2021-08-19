@@ -1,12 +1,36 @@
-ion-card{
-  min-width: 300px;
+// ion-card{
+//   min-width: 300px;
+//   background: transparent;
+//   ion-card-title{
+//     --background: inherit;
+
+//   }
+
+
+// }
+ion-content{
+
+  // ion-item{
+  //   --background: transparent;
+  //   --border-radius: 30px;
+
+
+  // }
+
+    ion-searchbar{
+      --border-radius: 15px;
+    }
+    .client{
+      margin-left: 15px
+;    }
+
 
 
 }
-ion-button#cancel{
-  opacity: 0.5;
-  --background: var(--ion-color-danger-tint);
-}
+// ion-button#cancel{
+//   opacity: 0.5;
+//   --background: var(--ion-color-danger-tint);
+// }
 
 
 

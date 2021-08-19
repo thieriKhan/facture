@@ -1,0 +1,77 @@
+
+<ion-header>
+<ion-progress type="determinate" value='0'  reversed="true" color="primary"></ion-progress>
+  <ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()" >
+            <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- < routerDirection="forward" [component]="nextPage"  [componentProps]= "props" > -->
+        <ion-button (click)= "next()" >
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+          suivant
+        </ion-button>
+
+
+    </ion-buttons>
+    </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar color="secondary">
+
+      <ion-title class="  ion-text-center ion-margin-vertical"  >TOTAL: {{total}}FCFA</ion-title>
+
+  </ion-toolbar>
+
+
+<ion-list>
+  <ng-container *ngFor="let item of clientOrders">
+    <ion-item class="ion-margin-top">
+      <ion-label> {{getProduit(item.id).name}}</ion-label>
+      <ion-thumbnail slot="start">
+       <ion-img   [src]="getProduit(item.id).pictureUrl"></ion-img>
+      </ion-thumbnail>
+      <ion-label slot="end">
+        <h5 class="type "> <span class="code"  >  {{getProduit(item.id).containerUnits}}</span>    <span class="code" > {{getProduit(item.id).pieceUnits}}</span></h5>
+        <h5 class="type "> <span class="ion-margin-horizontal">{{item.containerQuantity}}</span>
+          <span class="ion-margin-horizontal" color="secondary">{{item.pieceQuantity}}</span> </h5>
+
+      </ion-label>
+
+    </ion-item>
+
+  </ng-container>
+
+  <!-- <ion-item >
+    <ion-label>Heineken</ion-label>
+    <ion-thumbnail slot="start">
+     <ion-img  src="../../assets/bg2.jpg"></ion-img>
+    </ion-thumbnail>
+    <ion-label class="lab" slot="end" class="ion-no-margin ion-no-padding">
+      <h5 class="type "> <span class="code"  >  12T</span>    <span class="code" > 24T</span></h5>
+      <h5 class="type "> <span class="ion-margin-horizontal">5</span> <span class="ion-margin-horizontal" color="secondary">4</span> </h5>
+
+    </ion-label>
+
+  </ion-item><ion-item>
+    <ion-label>Heineken</ion-label>
+    <ion-thumbnail slot="start">
+     <ion-img   src="../../assets/bg2.jpg"></ion-img>
+    </ion-thumbnail>
+    <ion-label slot="end">
+      <h5 class="type "> <span class="code"  >  12T</span>    <span class="code" > 24T</span></h5>
+      <h5 class="type "> <span class="ion-margin-horizontal">5</span> <span class="ion-margin-horizontal" color="secondary">4</span> </h5>
+
+    </ion-label>
+
+  </ion-item> -->
+</ion-list>
+
+</ion-content>
+

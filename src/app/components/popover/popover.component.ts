@@ -27,6 +27,55 @@ export class PopoverComponent implements OnInit {
     this.popC.dismiss();
   }
 
+  async ajoutProduit(){
+    this.popC.dismiss();
+    
+    const alert = await  this.alertCtrl.create({
+    header: 'Ajouter un produit',
+    cssClass: 'alert',
+    inputs: [
+      {
+
+        name: 'DetailPrice',
+        placeholder: 'prix en detail',
+        type: 'number'
+      },
+          {
+        name: 'containerPrice',
+        placeholder: 'prix en gros',
+        type: 'number'
+      },
+      {
+
+        name: 'containerQty',
+        placeholder: 'quantite en gros',
+        type: 'number'
+      },
+      {
+
+        name: 'detailQty',
+        placeholder: 'quantite en detail',
+        type: 'number'
+      }
+
+    ],
+    buttons: [
+      {
+        text: 'fermer',
+        role: 'cancel'
+      },
+      {
+        text: 'ajouter',
+        handler: async (data)=>{
+          console.log('modifie');
+        }
+
+
+    }]  });
+    alert.present();
+    
+  }
+
  async ajoutClient(){
    this.popC.dismiss();
     console.log('ajouter un client');
@@ -59,9 +108,9 @@ export class PopoverComponent implements OnInit {
         role: 'cancel'
       },
       {
-        text: 'ajouther',
+        text: 'ajouter',
         handler: async (data)=>{
-          console.log('modifie')
+          console.log('modifie');
         }
 
 

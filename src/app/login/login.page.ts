@@ -38,14 +38,14 @@ export class LoginPage implements OnInit, OnDestroy {
   }
   initLoginForm(){
     this.loginForm = this.formBuilder.group({
-      username : [''],
-      password : [''],
+      phone : [''],
+      code : [''],
 
     });
   }
   async onSubmitForm(){
    this.loginSubscription =  await this.log.login(this.loginForm);
-   const user = this.loginForm.get('username').value;
+   const user = this.loginForm.get('phone').value;
    this.storage.set('user', user);
   }
   ontogleHide(){

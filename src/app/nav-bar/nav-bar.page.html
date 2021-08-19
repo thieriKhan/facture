@@ -34,11 +34,25 @@
     <ion-tab-bar slot="bottom"  >
 
       <ion-tab-button tab="ajout-facture" >
-        <ion-label>Ajouter</ion-label>
+        <ion-icon name="medkit-outline"></ion-icon>
+        <ion-label> Clients </ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="impression-facture" class="ion-no-padding marge">
 
-        <ion-label>Imprimer</ion-label>
+      <ion-tab-button tab="items" class="ion-no-padding marge">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label> Produits</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="impression-facture" class="ion-no-padding marge">
+        <ion-icon name="hourglass-outline"></ion-icon>
+        <ion-label> En cours</ion-label>
+        <ion-badge  color="warning">55</ion-badge>
+
+      </ion-tab-button>
+      <ion-tab-button tab="activity" class="ion-no-padding marge">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+
+        <ion-label> Ventes</ion-label>
 
 
       </ion-tab-button>

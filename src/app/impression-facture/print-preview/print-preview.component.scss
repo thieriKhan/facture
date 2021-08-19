@@ -1,151 +1,273 @@
 
-@media print , (min-width : 600px){
-
-  
-.content-table {
-  border-collapse: collapse;
-
-  margin: 25px 20px;
-  font-size: 0.8em;
- 
-  border-radius: 5px 5px 0 0;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  margin: auto;
-  font-family: 'Courier New', monospace;
-
-}
-ion-button{
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.footer{
-  margin-top: 25px;
-  margin-left: 10px;
-border: 0.168em dashed ;
-padding: 7px ;
-h4{
-  margin: 0;
-  padding: 0;
-}
-}
-
-p{
-  font-family: 'Courier New', monospace;
-}
-.content-table thead tr {
-
-  text-align: left;
-  font-weight: bold;
-}
-.content-table th,
-.content-table td {
-  padding: 2.5vh  3.5vh;
-}
-.content-table tbody tr {
-  border-bottom: 1px solid;
-}
-.content-table tbody tr:last-of-type {
-  border-bottom: 2px solid
-}
-
-.content-table thead tr {
-  text-align: left;
-  font-weight: bold;
-}
-
-.footer{
-  margin-top: 25px;
-  margin-left: 4px;
-border: 0.08em dashed ;
-padding: 3px ;
-h4{
-  margin: 0;
-  padding: 0;
-}
-}
-
-
-}
-
-
-@media print , (max-width : 600px) {
-  ion-content{
-    position: relative;
-
-  }
-  
-
-  .content>h4{
-        font-size: 13px;
-        width: 80%;
-      margin: auto;
-      padding: 5px;
-
-  }
 
 
 
 
-  .content-table {
- 
-    border-collapse: collapse;
-    width: 90%;
-    font-size: 0.8em;
-    border-radius: 5px 5px 0 0;
-    margin: auto;
-
-  }
 
 
-  ion-button{
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 
-  
-  p{
-    font-family: 'Courier New', monospace;
-  }
-  .content-table thead tr {
-  
-    text-align: left;
-    font-weight: bold;
-  }
-  .content-table th,
-  .content-table td {
-    padding: 1.5vh  2.5vh;
-  }
-  .content-table tbody tr {
-    border-bottom: 1px solid;
-  }
-  .content-table tbody tr:last-of-type {
-    border-bottom: 2px solid
-  }
-  
-  .content-table thead tr {
-    text-align: left;
-    font-weight: bold;
-  }
+//   body{
+//     padding-top: 100px ;
 
-  .footer{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: auto;
-  
-    border: 0.08em dashed ;
-    padding: 3px ;
-    h4{
-      margin: 0;
-      padding: 0;
-    }
-  }
-  
+// }
+// .header{
+
+// display: flow-root;
+
+//     width:fit-content;
+//     margin: auto;
+// }
+// .flex2{
+//     width: fit-content;
+//     float: left;
+
+// }
+
+// .flex{
+//     float: right;
+// }
 
 
-}
 
+// body h2{
+//     width: fit-content;
+//     margin: auto;
+//     font-weight: bold;
+//     text-align: center;
+//     align-self: center;
+//     border-bottom: 1.5px solid black;
+// }
+
+
+
+// body h3{
+// font-family: 'Courier New', monospace;
+// }
+
+
+// .qrCode{
+//    width: 100px;
+//    margin:auto;
+//     margin-top: 90px;
+
+//     height: 100px;
+//     border: 1px solid black;
+//     display: flex;
+//     align-items: center;
+// }
+// .qrCode p{
+//     width: fit-content;
+//     margin:auto;
+// }
+
+
+// .myTable{
+
+
+//     border-collapse: collapse;
+//     width: 270px;
+//     margin: auto;
+
+// }
+
+// .myTable tbody tr td {
+//     font-size: 14px;
+// }
+// thead tr td:last-child, tbody tr td:last-child, tfoot tr td:last-child {
+//     text-align: right;
+// }
+// thead tr td:nth-child(2) , tbody tr td:nth-child(2), tfoot tr td:nth-child(2) {
+//     text-align: center;
+// }
+
+
+// tbody tr td:first-child {
+//     padding-top: 10px;
+// }
+// tbody tr:last-child td {
+//     padding-bottom: 10px;
+
+// }
+// .myTable  thead tr td{
+
+//     padding-bottom: 10px;
+//     border-bottom: 2px dashed grey;
+//     font-family: 'Courier New', monospace;
+// }
+// .myTable tbody tr:last-child td{
+//   border-bottom: 2px dashed grey;
+
+// }
+// .myTable tfoot tr td{
+//     font-size: 16px;
+
+//     padding-top: 10px;
+//     font-family: 'Courier New', monospace;
+// }
+
+// .client{
+//   width: fit-content ;
+
+//   height: 25px;
+// font-size: 16px;
+//   margin:auto;
+//   margin-bottom: 50px;
+// }
+
+
+
+
+//   .content>h4{
+//         font-size: 13px;
+//         width: 80%;
+//       margin: auto;
+//       padding: 5px;
+
+//   }
+
+
+
+
+//   .content-table {
+
+//     border-collapse: collapse;
+//     width: 90%;
+//     font-size: 0.8em;
+//     border-radius: 5px 5px 0 0;
+//     margin: auto;
+
+//   }
+
+
+
+
+
+//   p{
+//     font-family: 'Courier New', monospace;
+//   }
+//   .content-table thead tr {
+
+//     text-align: left;
+//     font-weight: bold;
+//   }
+//   .content-table th,
+//   .content-table td {
+//     padding: 1.5vh  2.5vh;
+//   }
+//   .content-table tbody tr {
+//     border-bottom: 1px solid;
+//   }
+//   .content-table tbody tr:last-of-type {
+//     border-bottom: 2px solid
+//   }
+
+//   .content-table thead tr {
+//     text-align: left;
+//     font-weight: bold;
+//   }
+
+//   .footer{
+//     margin-top: 50px;
+
+//     width: auto;
+
+//     border: 0.08em dashed ;
+//     padding: 6px ;
+//     h4{
+//       margin: 0;
+//       padding: 0;
+//     }
+//   }
+
+
+
+// }
+// @media print{
+//   ion-toolbar{
+//     display: none;
+//   }
+//   ion-label h4{
+//     margin-top: 16px;
+//     margin-bottom: 16px;
+//   }
+//   .content-print{
+//     margin-top: 20%;
+//   }
+
+
+
+
+
+
+
+
+
+
+
+// @media print , (min-width : 600px){
+
+
+// .content-table {
+//   border-collapse: collapse;
+
+//   margin: 25px 20px;
+//   font-size: 0.8em;
+
+//   border-radius: 5px 5px 0 0;
+//   overflow: hidden;
+//   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+//   margin: auto;
+//   font-family: 'Courier New', monospace;
+
+// }
+// ion-button{
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+// }
+// .footer{
+//   margin-top: 25px;
+//   margin-left: 10px;
+// border: 0.168em dashed ;
+// padding: 7px ;
+
+// }
+
+// p{
+//   font-family: 'Courier New', monospace;
+// }
+// .content-table thead tr {
+
+//   text-align: left;
+//   font-weight: bold;
+// }
+// .content-table th,
+// .content-table td {
+//   padding: 2.5vh  3.5vh;
+// }
+// .content-table tbody tr {
+//   border-bottom: 1px solid;
+// }
+// .content-table tbody tr:last-of-type {
+//   border-bottom: 2px solid
+// }
+
+// .content-table thead tr {
+//   text-align: left;
+//   font-weight: bold;
+// }
+
+// .footer{
+//   margin-top: 25px;
+//   margin-left: 4px;
+// border: 0.08em dashed ;
+// padding: 3px ;
+// h4{
+//   margin: 0;
+//   padding: 0;
+// }
+// }
+
+
+// }
 

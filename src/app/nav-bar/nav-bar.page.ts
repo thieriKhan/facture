@@ -43,7 +43,6 @@ export class NavBarPage implements OnInit, OnDestroy {
   ngOnInit() {}
 
  async  showPopOver(ev: any){
-
     const popover = await this.popoverC.create({
       component: PopoverComponent,
       cssClass: 'popover-class',

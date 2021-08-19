@@ -1,0 +1,33 @@
+
+
+.code{
+  text-shadow: 1px 1px 1px gray;
+}
+
+.type{
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  float: right;
+  span{
+    display: block;
+    padding: 1px
+  }
+
+}
+.total{
+
+  background-color: var(--ion-color-secondary);
+  color: var(--ion-color-secondary-contrast);
+  width: 90%;
+  
+  
+  margin: auto;
+  margin-top: 20px;
+ 
+  ion-label{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

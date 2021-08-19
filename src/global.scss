@@ -57,10 +57,14 @@
 
 }
 .alertError{
+  
   .alert-head{
-    background: var(--ion-color-danger-tint);
-    color: var(--ion-color-danger-contrast);
-    opacity: 0.7;
+
+    text-align: center;
+    
+
+   color: red;
+
   }
 
 }
@@ -79,10 +83,10 @@
 
 .alert{
   border-radius: 20px;
+ 
 
   .alert-button{
     color: var(--ion-color-secondary);
-
 
   }
   .alert-button-group-vertical{

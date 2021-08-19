@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start">
+      <ion-button   (click)="close()" class="ion-no-border ion-no-padding">
+        fermer
+      </ion-button>
+    </ion-buttons>
+
+
+      <ion-title class="ion-text-center"> {{produit.name}}</ion-title>
+      <ion-card-subtitle class="ion-text-center"  >{{montant}}FCFA</ion-card-subtitle>
+      <ion-buttons slot="end">
+        <ion-button
+          [disabled]="((container.isChecked === false) && (detail.isChecked === false)) ||
+                          ((detail.quantity === 0) && (container.quantity === 0) )"
+          (click)="save()" class="ion-no-border ion-no-padding">
+          ajouter
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+
+
+
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid fixed>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="ion-margin-top"  [color] ="detail.color" >
+          <ion-checkbox class="ion-no-margin" slot='start' (ionChange)="detailSelected()"  [(ngModel)]="detail.isChecked"  style=" opacity: 0;"></ion-checkbox>
+          <h5   >{{produit.pieceUnits}}</h5>
+        <h5 slot="end">{{produit.pieceSalePrice}}FCFA</h5>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row >
+      <ion-col size="12">
+        <ion-item  class="no-border ion-margin-horizontal" lines="none">
+          <button [disabled]="(detail.isChecked === false) "  style="background-color: transparent; border: 0">
+            <ion-icon style="height: 20px; width: 20px" (click)="reducePeice()" slot="end" name="remove"></ion-icon>
+          </button>
+          <ion-label  class="ion-text-center" >{{detail.quantity}}</ion-label>
+          <button [disabled]=" detail.isChecked === false"  style="background-color: transparent; border: 0">
+            <ion-icon style="height: 20px; width: 20px" (click)="addPeice()" slot="end" name="add"></ion-icon>
+          </button>
+
+        </ion-item>
+
+
+      </ion-col>
+    </ion-row>
+
+
+
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="ion-margin-top " [color]="container.color"  >
+          <ion-checkbox class="ion-no-margin" slot="start" (ionChange)="containerSelected()" [(ngModel)]="container.isChecked" style="opacity: 0"></ion-checkbox>
+
+          <h5 slot="start" class="ion-no-margin" >{{produit.containerUnits}}</h5>
+        <h6 slot="end">{{produit.containerSalePrice}}FCFA</h6>
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+
+
+
+    <ion-row >
+      <ion-col size="12">
+
+        <ion-item  class="no-border ion-margin-horizontal" lines="none">
+          <button [disabled]="(container.isChecked === false) "  style="background-color: transparent; border: 0">
+            <ion-icon style="height: 20px; width: 20px" (click)="reduceContainer()"  slot="end" name="remove"></ion-icon>
+          </button>
+          <ion-label  class="ion-text-center" >{{container.quantity}}</ion-label>
+          <button [disabled]="(container.isChecked === false) "  style="background-color: transparent; border: 0">
+            <ion-icon style="height: 20px; width: 20px" (click)="addContainer()" slot="end" name="add"></ion-icon>
+          </button>
+
+        </ion-item>
+
+
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+</ion-content>

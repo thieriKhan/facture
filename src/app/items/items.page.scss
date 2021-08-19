@@ -1,0 +1,30 @@
+ion-searchbar{
+  --border-radius: 20px;
+}
+
+
+.myRow{
+  margin-left: 0;
+  margin-right: 0;
+
+
+
+}
+.total{
+margin-top: 47px;
+margin-left: 0;
+margin-right: 0;
+padding-top: 3px;
+background-color: var(--ion-color-secondary);
+color: var(--ion-color-secondary-contrast);
+
+}
+ion-fab-button#print{
+  width: 10vw;
+  height: 10vw;
+  max-width: 50px;
+  max-height: 50px;
+  position: fixed;
+   bottom: 4%;
+   right: 4%;
+}

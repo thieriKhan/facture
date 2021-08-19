@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageService } from './storage.service';
 import { Observable } from 'rxjs';
-import { catchError, finalize,tap, map, shareReplay } from 'rxjs/operators';
+import { catchError,tap, map, shareReplay } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 
 import { Client, Facture } from '../containers';
@@ -14,11 +14,14 @@ import { Client, Facture } from '../containers';
   providedIn: 'root'
 })
 export class FacturesService {
-  baseUrl = 'http://192.168.8.100:8000/api';
+  baseUrl = 'http://ec2-35-180-31-148.eu-west-3.compute.amazonaws.com:1446';
   printItemID: string[]= [];
   selectedclient;
   currentClient;
   progres = 0;
+  allCurentsOrders: Facture[];
+
+
 
   constructor(
     private http: HttpClient,
@@ -43,63 +46,61 @@ export class FacturesService {
      shareReplay()
    );
   }
-
-// recuperer tous les clients
+  // recuperer tous les clients
 
   async getClient(): Promise<Observable<Partial<Client[]>>>{
-    const url = this.baseUrl+'/client/';
+    const url = this.baseUrl+'/api/v1/customers';
     const token = await  this.storage.get('token');
+
     if(token == null){
       this.route.navigate(['login']);
 
     }
    const credential = JSON.parse(token);
 
-   const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
+   const auth =  new HttpHeaders()
+   .set('Content-Type', 'application/json')
+   .set('Authorization', 'Bearer '+credential);
   return this.http.get<Partial<Client[]>>(url,   {headers :auth }).pipe(
-    map((val: any) => val),
+
     shareReplay()
   );
  }
 
-//  recuperer les donnees d'un client
 
- async getUniqueClient(id): Promise<Observable<Partial<Client>>>{
-  const url = this.baseUrl +'/client/'+id;
-  const token = await  this.storage.get('token');
-  if(token == null){
-    this.route.navigate(['login']);
-  }
- const credential = JSON.parse(token);
+   //  recupperer tous les produits du backend
+   async getProduit(): Promise<Observable<any>>{
+    const url = '/api/v1/stock';
+    const token = await  this.storage.get('token');
+    if(token == null){
+      this.route.navigate(['login']);
+    }
+   const credential = JSON.parse(token);
 
- const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-return this.http.get<Partial<Client>>(url,   {headers :auth }).pipe(
-  map((val: any) => val.nom),
-  shareReplay()
+   const auth =  new HttpHeaders()
+   .set('Authorization', 'Bearer '+credential);
+  return this.http.get(url,   {headers :auth}).pipe(
+
+    shareReplay()
   );
-}
-  //  recupperer tous les produits du backend
- async getProduit(): Promise<Observable<any>>{
-  const url = this.baseUrl + '/produit/';
-  const token = await  this.storage.get('token');
-  if(token == null){
-    this.route.navigate(['login']);
   }
- const credential = JSON.parse(token);
 
- const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-return this.http.get(url,   {headers :auth}).pipe(
-  map((val: any) => val),
-  shareReplay()
-);
+
+
+//  recuperer les donnees d'un client
+async getUniqueClient(id: string){
+  return (await this.getClient()).pipe(
+
+    map((data: Client[])=>  data.find((item)=> item.id ===  parseInt(id) ).name),
+
+  );
 }
 
 
 
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
-
-    const url = this.baseUrl+'/facture/';
+    const url = this.baseUrl+'/api/v1/sales';
     const token = await  this.storage.get('token');
 
     // controler si le token existe toujours et est valide
@@ -107,9 +108,10 @@ return this.http.get(url,   {headers :auth}).pipe(
       this.route.navigate(['login']);
     }
    const credential = JSON.parse(token);
+   const auth =  new HttpHeaders()
+   .set('Content-Type', 'application/json')
+   .set('Authorization', 'Bearer '+credential);
 
-
-   const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
   return this.http.post(url, form,{headers :auth } );
  }
 

@@ -26,7 +26,19 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'activity',
+        loadChildren: () => import('../activity/activity.module').then( m => m.ActivityPageModule)
+      },
+      {
+        path: 'items/:id',
+        loadChildren: () => import('../items/items.module').then( m => m.ItemsPageModule)
+      },
+      {
         path: '',
+        redirectTo: 'ajout-facture'
+      },
+      {
+        path: 'items',
         redirectTo: 'ajout-facture'
       }
     ]

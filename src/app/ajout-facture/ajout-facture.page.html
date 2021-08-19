@@ -1,21 +1,68 @@
 <ion-header>
-
+  <ion-toolbar>
+    <ion-title>empty</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid >
+
+
+    <ion-row>
+
+      <ion-col size="12">
+        <ion-title class="ion-margin-top  ion-text-center"><h1>Clients</h1></ion-title>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col size="12">
+
+<ion-list>
+
+
+  <ion-list-header class="ion-margin-bottom" >
+
+
+
+    <ion-searchbar class="ion-margin"  searchIcon="search-outline"  [(ngModel)]="term" placeholder="recherchez un client"  >
+
+    </ion-searchbar>
+  </ion-list-header>
+  <ng-container  *ngFor="let item of (clients |async)| filter: term " >
+    <ion-item class="ion-margin client" (click)="addProduct(item.id)"  detail>
+      <ion-label class="client"> <h2>  {{item.name }}</h2> </ion-label>
+    </ion-item>
+
+  </ng-container>
 
 
 
 
+
+
+</ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+
+
+
+
+
+
+<!--
 
 <ion-grid class="ion-align-self-baseline">
-  <!-- <ion-row>
+  <ion-row>
     <ion-col size="12">
       <div class="spacer">
 
       </div>
     </ion-col>
-  </ion-row> -->
+  </ion-row>
   <ion-row>
     <ion-col size-md="6" offset-md="3" size-sm="8" offset-sm="2">
 
@@ -32,14 +79,14 @@
 
 
           <ion-item class="ion-margin">
-            <!-- <ion-button fill="transparent" class="ion-margin" >
+            <ion-button fill="transparent" class="ion-margin" >
               <ion-icon slot="icon-only" name="add"></ion-icon>
-            </ion-button> -->
+            </ion-button>
             <ion-label >  Client</ion-label>
             <ion-select [interfaceOptions]="alertInterface" required   placeholder="Select client" formControlName="client" >
 
               <ng-container *ngFor="let item of clients|async" >
-                <ion-select-option [value]="item.id">{{item.nom}}</ion-select-option>
+                <ion-select-option [value]="item.id">{{item.name}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
@@ -49,21 +96,13 @@
         <ion-select [interfaceOptions]="alertInterface" required placeholder="Select produit" formControlName="produit" >
 
           <ng-container *ngFor="let item of produits|async" >
-            <ion-select-option [value]="item.id"> {{item.nom}}</ion-select-option>
+            <ion-select-option [value]="item.id"> {{item.name}}</ion-select-option>
           </ng-container>
 
         </ion-select>
       </ion-item>
 
-      <ion-item class="ion-margin" >
-        <ion-label  >Packaging</ion-label>
-       <ion-select [interfaceOptions]="alertInterface" required placeholder="Select packaging" formControlName="packaging" >
-         <ng-container *ngFor="let item of produits|async" >
-           <ion-select-option [value]="item.id"> {{item.nom}}</ion-select-option>
-         </ng-container>
 
-       </ion-select>
-     </ion-item>
 
         <ion-item class="ion-margin ">
           <ion-label class="ion-align-items-start" position="floating">Quantite</ion-label>
@@ -89,7 +128,7 @@
   </ion-row>
 
 
-</ion-grid>
+</ion-grid> -->
 
 
 </ion-content>

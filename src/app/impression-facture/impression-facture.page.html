@@ -2,28 +2,15 @@
 
 <ion-content >
 
-
-
-
-
 <ion-grid >
-
 
   <ion-row>
     <ion-col size-md="6" offset-md=3  >
 
-
-
-
       <div class="content">
-
-
          <div class="myicon" slot="end">
-
             <ion-icon style="width: 25px; height:25px" color="secondary" slot="icon-only" [name]="icon" (click)="printView()"></ion-icon>
-
          </div>
-
          <div class="select">
 
 
@@ -31,19 +18,24 @@
 
           <ion-item  class="ion-margin">
             <ion-label  position=" floating" >Client</ion-label>
-            <ion-select interface="action-sheet" [interfaceOptions]="alertInterface" [value]="idC"   [selectedText]="selectedC"  placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected" >
+            <ion-select  [interfaceOptions]="alertInterface" [value]="idC"   [selectedText]="selectedC"  placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected" >
 
               <ng-container *ngFor="let item of clients|async"   >
                 <ion-select-option color="secondary" [value]="item.id">{{item.nom}}</ion-select-option>
               </ng-container>
             </ion-select>
 
+
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-text-center ion-allign-justify">
+              <h1>COMMING SOON ....</h1>
+            </ion-label>
           </ion-item>
 
+
          </div>
-
          <div class="list" *ngIf="content && clientSelected">
-
 
              <ion-list >
 
@@ -53,7 +45,7 @@
                   <ion-fab-button *ngIf="deleteItem" color="danger" (click)="delete(item.id, sliding)">
                     <ion-icon  name="trash"></ion-icon>
                   </ion-fab-button>
-                  <ion-item-options   (ionSwipe)="swipedFirst(sliding)" side="start">
+                  <ion-item-options   side="end">
                       <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
                         <ion-icon  name="trash"></ion-icon>
                       </ion-fab-button>
@@ -67,7 +59,8 @@
                       </ion-col>
                       <ion-col size="11">
 
-                        <ion-item class="ion-margin" (click)="edit(item.id, isChecked, sliding)"  class=" ion-no-margin"   lines="none"   button= "true" >
+                        <!-- <ion-item class="ion-margin" (click)="edit(item.id, isChecked, sliding)"  class=" ion-no-margin"   lines="none"   > -->
+                          <ion-item class="ion-margin" (click)="edit2()"  class=" ion-no-margin"   lines="none"   >
 
                           <ion-icon size="large"  name="receipt"></ion-icon>
 
@@ -92,13 +85,6 @@
 
 
 
-                   <ion-item-options  (ionSwipe)="swipedSecond(sliding)" side="end" >
-
-                      <ion-fab-button  (click)="edit(item.id, isChecked, sliding)" color="secondary">
-                        <ion-icon  name="pencil"></ion-icon>
-                      </ion-fab-button>
-
-                   </ion-item-options>
 
                  </ion-item-sliding>
 

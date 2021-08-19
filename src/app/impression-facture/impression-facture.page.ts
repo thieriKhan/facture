@@ -1,17 +1,23 @@
+import { ItemsService } from "./../services/items.service";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { FacturesService } from '../services/factures.service';
-import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
+// import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 import { Platform, ModalController, AlertController, IonCheckbox, IonItemSliding,
    ToastController, LoadingController, GestureController } from '@ionic/angular';
 import { finalize, tap, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { Client, Facture, UpdateFacture } from '../containers';
 import { StorageService } from '../services/storage.service';
 import { ActivatedRoute } from '@angular/router';
+import { OrderDetailComponent } from '../components/order-detail/order-detail.component';
+import { ProduitComponent } from '../components/produit/produit.component';
+import { IonRouterOutlet } from '@ionic/angular';
+import { ModalBaseComponent } from '../components/modal-base/modal-base.component';
+
 
 
 
@@ -26,7 +32,7 @@ export interface Produit {
   styleUrls: ['./impression-facture.page.scss'],
 })
 export class ImpressionFacturePage implements OnInit {
-  alertInterface;
+alertInterface;
 clientFom: FormGroup;
 trackBy;
 testons: Facture[];
@@ -46,9 +52,10 @@ facturation: Observable<Facture[]>;
 
 
   constructor(
+    private routerOutlet: IonRouterOutlet,
     private fact: FacturesService,
     private formBuilder: FormBuilder,
-    private printer: Printer,
+
     private platform: Platform,
     private route: Router,
     private activeRoute: ActivatedRoute,
@@ -57,9 +64,8 @@ facturation: Observable<Facture[]>;
     private storage: StorageService,
     private toastC: ToastController,
     private loadC: LoadingController,
-    private gesture: GestureController
+    private item : ItemsService
   ) {
-
     this.alertInterface = {
       cssClass: 'alert',
       backdropDismiss: true,
@@ -68,11 +74,7 @@ facturation: Observable<Facture[]>;
 
      }
 
-
   ngOnInit() {
-
-
-
     this.icon = 'list';
     this.clientFom = this.formBuilder.group(
       {choix: ['']}
@@ -95,16 +97,13 @@ facturation: Observable<Facture[]>;
       }
     }else{
       this.fact.printItemID.splice(this.fact.printItemID.indexOf(event.detail.value),1);
-
     }
 
-
-
   }
-  async print(client) {
-    this.fact.selectedclient = client;
+  // async print(client) {
+  //   this.fact.selectedclient = client;
 
-   const ch =  document.querySelectorAll('ion-checkbox');
+  //  const ch =  document.querySelectorAll('ion-checkbox');
 
  // previous implementation of print function
 
@@ -116,16 +115,16 @@ facturation: Observable<Facture[]>;
     //  window.location.reload();
 
 
-    const printView = await this.modalCtrl.create({
-      backdropDismiss: true,
-      showBackdrop: true,
-      component: PrintPreviewComponent,
-    });
-     printView.present();
-  }
+  //   const detailPage = await this.modalCtrl.create({
+
+  //     component: ModalBaseComponent,
+
+  //   });
+  //    detailPage.present();
+  // }
 
   async ionViewWillEnter(){
-    this.idC = this.activeRoute.snapshot.paramMap.get('id') ;
+
 
    const client = (await this.fact.getClient())
      .pipe(
@@ -133,7 +132,7 @@ facturation: Observable<Facture[]>;
 
          const dat = data.find((item: Client) => String(item.id) === this.idC);
          if(dat){
-           this.selectedC = dat.nom;
+           this.selectedC = dat.name;
             console.log(this.selectedC);
          }
 
@@ -150,6 +149,15 @@ facturation: Observable<Facture[]>;
 
 
    }
+
+  async edit2(){
+     const modal =  await this.modalCtrl.create(
+       {
+         component: ProduitComponent
+       }
+     );
+     modal.present();
+   }
   async  edit(id: number,  checked: IonCheckbox, slide: IonItemSliding){
     slide.close();
    const alert = await  this.alertCtrl.create({
@@ -163,12 +171,10 @@ facturation: Observable<Facture[]>;
         type: 'number',
         min: '1'
       },
-      {name:'packaging',
+      {
+      name:'packaging',
       placeholder: 'packaging',
-      type: 'radio',
-      value: [1,2,2,43,5,6],
-
-
+      type: 'text',
       }
     ],
     buttons: [

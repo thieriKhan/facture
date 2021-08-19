@@ -1,0 +1,49 @@
+
+
+
+<ion-header>
+
+  <ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-nav-link routerDirection="forward" [component]="nextPage">
+          <ion-button >
+            <ion-icon slot="start" name="arrow-back"></ion-icon>
+
+          </ion-button>
+        </ion-nav-link>
+
+      </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-nav-link routerDirection="forward" [component]="nextPage">
+        <ion-button >
+          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+          Suivant
+        </ion-button>
+      </ion-nav-link>
+
+    </ion-buttons>
+    </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-justify-content-center">
+<ion-list class="ion-margin-top  ion-margin-horizontal">
+  <ion-radio-group name="auto" value="CASH">
+    <ion-list-header class="ion-margin-top">
+      <ion-label class="ion-text-capitalize ion-text-center"> <h1> Mode de paiement </h1></ion-label>
+    </ion-list-header>
+    <ion-item class="ion-margin-top">
+      <ion-label>CASH</ion-label>
+      <ion-radio value="CASH"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>CARTE DE CREDIT</ion-label>
+      <ion-radio value="CARETE DE CREDIT"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>
+</ion-content>
+
+
+

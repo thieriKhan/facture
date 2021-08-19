@@ -1,30 +1,312 @@
-<ion-toolbar color="secondary">
-   <ion-backdrop>
-     <ion-icon slot="start" name="add"></ion-icon>
-   </ion-backdrop>
 
-    <ion-button slot="end" color="secondary" (click)="print()">
-      imprimer
-    </ion-button>
+<ion-header>
+
+  <ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button color="ligth" (click)="closeModal()">
+            fermer
+        </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="print()">
+        imprimer
+      </ion-button>
+    </ion-buttons>
+
+    </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
 
 
-</ion-toolbar>
-<ion-content>
 
 
-<div class="content print" >
+<ion-content #mycontent style="padding-top: 100px ;" >
+<div id="print" class="print">
+  <!-- <style>
+
+
+body{
+  padding-top: 100px ;
+
+}
+.header{
+
+display: flow-root;
+
+  width:fit-content;
+  margin: auto;
+}
+.flex2{
+  width: fit-content;
+  float: left;
+
+}
+
+.flex{
+  float: right;
+}
+
+
+
+body h2{
+  width: fit-content;
+  margin: auto;
+  font-weight: bold;
+  text-align: center;
+  align-self: center;
+  border-bottom: 1.5px solid black;
+}
+
+
+
+body h3{
+font-family: 'Courier New', monospace;
+}
+
+
+.qrCode{
+ width: 100px;
+ margin:auto;
+  margin-top: 90px;
+
+  height: 100px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+}
+.qrCode p{
+  width: fit-content;
+  margin:auto;
+}
+
+
+.myTable{
+
+
+  border-collapse: collapse;
+  width: 270px;
+  margin: auto;
+
+}
+
+.myTable tbody tr td {
+  font-size: 14px;
+}
+thead tr td:last-child, tbody tr td:last-child, tfoot tr td:last-child {
+  text-align: right;
+}
+thead tr td:nth-child(2) , tbody tr td:nth-child(2), tfoot tr td:nth-child(2) {
+  text-align: center;
+}
+
+
+tbody tr td:first-child {
+  padding-top: 10px;
+}
+tbody tr:last-child td {
+  padding-bottom: 10px;
+
+}
+.myTable  thead tr td{
+
+  padding-bottom: 10px;
+  border-bottom: 2px dashed grey;
+  font-family: 'Courier New', monospace;
+}
+.myTable tbody tr td:last-child{
+  border-bottom: 2px dashed grey;
+
+}
+.myTable tfoot tr td{
+  font-size: 20px;
+
+  padding-top: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.client{
+width: fit-content ;
+
+height: 25px;
+
+margin:auto;
+margin-bottom: 50px;
+font-size: 14px;
+}
+
+
+
+  </style>
+ -->
+
+  <div class="header" style="display: flow-root;
+
+  width:fit-content;
+  margin: auto;">
+    <h2 style="
+
+    width: fit-content;
+  margin: auto;
+  font-weight: bold;
+  text-align: center;
+  align-self: center;
+  border-bottom: 1.5px solid black;">
+      EVENDOR INVOICE</h2>
+    <div class="flex2"
+    style="
+     width: fit-content;
+    float: left;"
+    >
+      <h4>N° Facture:</h4></div>
+
+    <div class="flex"
+    style=" float: right;">
+
+    <h4>441267</h4>
+
+    </div>
+
+
+</div>
+<div class="client"
+style="width: fit-content ;
+
+height: 25px;
+
+margin:auto;
+margin-bottom: 50px;
+font-size: 14px;"
+>
+<h4>Client: {{nomC }}</h4></div>
+
+
+
+<table class="myTable" style="
+
+border-collapse: collapse;
+width: 290px;
+margin: auto;">
+    <thead>
+        <tr>
+            <td style=" padding-bottom: 10px;
+            border-bottom: 2px dashed grey;
+            font-family: 'Courier New', monospace;">
+                Produit
+            </td>
+            <td style=" text-align: center;
+             padding-bottom: 10px;
+  border-bottom: 2px dashed grey;
+  font-family: 'Courier New', monospace;">
+                Qte
+            </td>
+            <td style=" text-align: right;
+             padding-bottom: 10px;
+  border-bottom: 2px dashed grey;
+  font-family: 'Courier New', monospace; ">
+                Prix
+            </td>
+        </tr>
+    </thead>
+    <tbody style="padding-bottom: 10px;">
+      <ng-container  *ngFor="let item of clientOrders" >
+
+          <tr *ngIf="item.containerQuantity > 0">
+            <td style="   font-size: 14px;
+              padding-top: 10px;
+            ">
+              {{getProduit(item.id).name}}({{getProduit(item.id).containerUnits}})
+            </td>
+            <td style=" font-size: 14px;  text-align: center;">
+              {{item.containerQuantity}}
+            </td>
+            <td style=" text-align: right;  font-size: 14px;">
+              {{item.containerQuantity * getProduit(item.id).containerSalePrice}}</td>
+        </tr>
+        <tr *ngIf=" item.pieceQuantity > 0">
+          <td style="padding-bottom: 10px;
+          "
+          >{{getProduit(item.id).name}}({{getProduit(item.id).pieceUnits}})</td>
+          <td style=" text-align: center; padding-bottom: 10px;  ">
+            {{item.pieceQuantity}}</td>
+          <td style="text-align: right; padding-bottom: 10px; "
+          >{{item.pieceQuantity * getProduit(item.id).pieceSalePrice}}</td>
+      </tr>
+
+
+
+
+      </ng-container>
+
+
+    </tbody>
+    <tfoot >
+        <tr class="dash">
+            <td colspan="2" align="right" style="
+            font-size: 20px;
+            padding-top: 10px;
+            font-family: 'Courier New', monospace;
+            border-top: 2px dashed grey;">
+              totalHT: </td>
+            <td style="
+            font-size: 20px;
+            padding-top: 10px;
+            font-family: 'Courier New', monospace;
+            border-top: 2px dashed grey;">
+              {{totalFac}}FCFA</td>
+        </tr>
+        <tr>
+          <td style="
+           font-size: 20px;
+          padding-top: 10px;
+          font-family: 'Courier New', monospace;" colspan="2"  align="right">totalTTc:</td>
+          <td style="
+          font-size: 20px;
+          padding-top: 10px;
+          font-family: 'Courier New', monospace;"
+          >{{totalTtc}}FCFA</td>
+      </tr>
+    </tfoot>
+</table>
+
+
+<div class="qrCode" style=" width: 100px;
+margin:auto;
+ margin-top: 90px;
+
+ height: 100px;
+ border: 1px solid black;
+ display: flex;
+ align-items: center;">
+<ion-button color="light" *ngIf="!navData.isMecfInvoiceGeneRated">
+  <ion-icon name="reload-outline"></ion-icon>
+</ion-button>
+
+ <!-- <qr-code   [value]="qrData" [size]="100" ></qr-code> -->
+  </div>
+
+
+
+
+</div>
+
+
+
+
+<!--
+<div class="content print ion-marging-top" >
   <p>{{date| date}}</p>
-  <h4>NOM DU CLIENT: </h4>
-
-<table class="content-table" >
+  <ion-label class="ion-text-center ion-margin-vertical"><h4  >NOM DU CLIENT: {{nomC| async}} </h4></ion-label> -->
+<!-- first implementation of my table *********************************************-->
+<!-- <table class="content-table" >
 
   <thead>
    <tr >
 
      <th class="first"> Produit</th>
-     <th>Quantite</th>
-     <th>Prix unitaire</th>
-     <th>Montant</th>
+     <th>Qte</th>
+     <th>Pkg</th>
+     <th>Mtnt</th>
 
    </tr>
   </thead>
@@ -34,7 +316,7 @@
 
       <td class="first">{{item.produit}}</td>
       <td>{{item.quantite}}</td>
-      <td>{{item.montant}}</td>
+      <td>24T</td>
       <td>{{item.montant * item.quantite}} </td>
     </tr>
   </tbody>
@@ -48,7 +330,7 @@
 </table>
 
 
-</div>
+</div> -->
 
 </ion-content>
 

@@ -1,8 +1,10 @@
 ion-content {
 
-  --background: var(--ion-color-secondary);
-  background-image: url("../../assets/icon/favicon.png") ;
 
+
+
+  // --background:linear-gradient(to left, red, orange, yellow, green, blue, indigo, violet);
+  background-image: url("../../assets/bg2.jpg") ;
   background-blend-mode: darken;
 
   --color: var(--ion-color-secondary-contrast);
