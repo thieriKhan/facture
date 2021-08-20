@@ -56,7 +56,7 @@ export class OrderDetailComponent implements OnInit {
     const alert = await this.alertCtrl.create({
       cssClass: 'alert',
       header: 'Confirmation',
-      message: 'En cofirmant , vous valider automatiquement l\'achat pas de retour possible',
+      message: 'En confirmant , vous validez automatiquement l\'achat. Pas de retour possible',
       buttons: [
         {
           role: 'cancel',
@@ -66,7 +66,7 @@ export class OrderDetailComponent implements OnInit {
           text: 'OUI',
           handler: async ()=>{
             alert.dismiss();
-            const navData = this.navParam.data.allData
+            const navData = this.navParam.data.allData;
             const order =  navData.map( data=> data.order);
             const formatedData =
               {

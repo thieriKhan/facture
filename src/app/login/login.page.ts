@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup} from '@angular/forms';
 
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 
 
@@ -28,14 +28,48 @@ export class LoginPage implements OnInit, OnDestroy {
 
 
 
-  constructor(private storage: StorageService,
+  constructor(
+    private storage: StorageService,
      private formBuilder: FormBuilder,
      private loadingCtrl: LoadingController,
       private http: HttpClient,
        private route: Router,
-       private log: LoginService) {
+       private log: LoginService,
+       private alertCtrl: AlertController) {
 
   }
+
+ async  changeBaseUrl(){
+    const alert =  await this.alertCtrl.create({
+      header: 'l\'api de base',
+      message: 'veullez entrer url',
+      cssClass: 'alert',
+      inputs: [
+        {
+          name: 'url',
+          type: 'text',
+          placeholder: 'url',
+
+        }
+      ],
+      buttons: [
+        {
+          text: 'fermer',
+          role: 'cancel'
+        },
+        {
+          text: 'changer',
+          handler: async (data)=>{
+            if(!(data.url.length === 0)){
+              await this.storage.set('url', data.url);
+            }
+            alert.dismiss();
+          }
+        }
+      ]
+  });
+  alert.present();
+}
   initLoginForm(){
     this.loginForm = this.formBuilder.group({
       phone : [''],

@@ -25,6 +25,7 @@ constructor(private http: HttpClient, private route: Router, private storage: St
 
 
 async getProduit(): Promise<Observable<any>>{
+  this.baseUrl = await this.storage.get('url');
   const url = this.baseUrl+'/api/v1/stock/';
   const token = await  this.storage.get('token');
   if(token == null){

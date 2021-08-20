@@ -6,14 +6,12 @@
 
 
   <ion-toolbar color="red">
-    <div  class="ion-margin-bottom  total" >
+    <div  class="ion-margin-bottom ion-padding-bottom  total" >
       <ion-note color="light">
         <h3 class="ion-margin-start ion-margin-top">{{currentClient| async }}</h3>
         <div *ngIf="!(currentClient)">
           <ion-skeleton-text color= "secondary" style="width: 400px; height: 26px; "></ion-skeleton-text>
-
         </div>
-
 
       </ion-note>
       <ion-title class="ion-text-center ion-margin-vertical"> {{montant}} FCFA </ion-title>

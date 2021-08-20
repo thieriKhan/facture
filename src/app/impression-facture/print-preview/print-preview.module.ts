@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrintPreviewComponent } from './print-preview.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {QriousModule} from 'angular-qrious';
+
 
 
 
@@ -14,9 +16,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
-
-    IonicModule
-
+    IonicModule,
+    QriousModule
   ]
 })
 export class PrintPreviewModule { }
+

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageService } from './storage.service';
 import { Observable } from 'rxjs';
-import { catchError,tap, map, shareReplay } from 'rxjs/operators';
+import { catchError, tap, map, shareReplay, finalize } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 
 import { Client, Facture } from '../containers';
@@ -30,25 +30,11 @@ export class FacturesService {
     private route: Router
   ) {}
 
-// recuperer toutes les factures
 
-  async getFacture<Facture>(client): Promise<Observable<any>>{
-     const url = this.baseUrl + '/facturation/'+client;
-     const token = await  this.storage.get('token');
-     if(token == null){
-      this.route.navigate(['login']);
-    }
-    const credential = JSON.parse(token);
-
-    const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-   return this.http.get(url,   {headers :auth}).pipe(
-     map((val: any) => val.resp ),
-     shareReplay()
-   );
-  }
   // recuperer tous les clients
 
   async getClient(): Promise<Observable<Partial<Client[]>>>{
+    this.baseUrl = await  this.storage.get('url');
     const url = this.baseUrl+'/api/v1/customers';
     const token = await  this.storage.get('token');
 
@@ -68,22 +54,7 @@ export class FacturesService {
  }
 
 
-   //  recupperer tous les produits du backend
-   async getProduit(): Promise<Observable<any>>{
-    const url = '/api/v1/stock';
-    const token = await  this.storage.get('token');
-    if(token == null){
-      this.route.navigate(['login']);
-    }
-   const credential = JSON.parse(token);
 
-   const auth =  new HttpHeaders()
-   .set('Authorization', 'Bearer '+credential);
-  return this.http.get(url,   {headers :auth}).pipe(
-
-    shareReplay()
-  );
-  }
 
 
 
@@ -100,6 +71,13 @@ async getUniqueClient(id: string){
 
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
+    const load =  await this.loadC.create(
+      {
+        cssClass: 'loadingClass',
+        spinner: 'bubbles'
+      }
+    );
+    this.baseUrl = await this.storage.get('url');
     const url = this.baseUrl+'/api/v1/sales';
     const token = await  this.storage.get('token');
 
@@ -112,27 +90,19 @@ async getUniqueClient(id: string){
    .set('Content-Type', 'application/json')
    .set('Authorization', 'Bearer '+credential);
 
-  return this.http.post(url, form,{headers :auth } );
+  return this.http.post(url, form,{headers :auth } )
+  .pipe(
+    finalize(()=> load.dismiss()),
+    catchError((error)=>{
+      console.log('error');
+       throw error;
+    })
+
+  );
  }
 
 
-// modifier une facture
-
- async updateFacture(id, quantite): Promise<Observable<any>>{
-
-  const url = this.baseUrl +  '/facturation/'+id;
-  const token = await  this.storage.get('token');
-  // contoler si le token existe toujours et est valide
-  if(token == null){
-    this.route.navigate(['login']);
-  }
-  const form = {  quantite} ;
- const credential = JSON.parse(token);
- const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
-return this.http.put(url, form,{headers :auth } );
-}
-
-
+// ------------------------------------------------ANCIENNE IMPLEMENTATION--------------------------------------------------
 // supprimer une facture
 
 async deleteFacture(id){
@@ -147,5 +117,59 @@ async deleteFacture(id){
   const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
   return this.http.delete(url, {headers :auth });
 }
+// recuperer toutes les factures a ne pas regarder, ancienne implementation
+
+async getFacture<Facture>(client): Promise<Observable<any>>{
+  const url = this.baseUrl + '/facturation/'+client;
+  const token = await  this.storage.get('token');
+  if(token == null){
+   this.route.navigate(['login']);
+ }
+ const credential = JSON.parse(token);
+
+ const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
+return this.http.get(url,   {headers :auth}).pipe(
+  map((val: any) => val.resp ),
+  shareReplay()
+);
+}
+
+
+// modifier une facture (non pris en compte pour le moment)
+
+async updateFacture(id, quantite): Promise<Observable<any>>{
+
+  const url = this.baseUrl +  '/facturation/'+id;
+  const token = await  this.storage.get('token');
+  // contoler si le token existe toujours et est valide
+  if(token == null){
+    this.route.navigate(['login']);
+  }
+  const form = {  quantite} ;
+ const credential = JSON.parse(token);
+ const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
+return this.http.put(url, form,{headers :auth } );
+}
+
+
+
+   //  recupperer tous les produits du backend
+  //  async getProduit(): Promise<Observable<any>>{
+
+  //   const url = '/api/v1/stock';
+  //   const token = await  this.storage.get('token');
+  //   if(token == null){
+  //     this.route.navigate(['login']);
+  //   }
+  //  const credential = JSON.parse(token);
+
+  //  const auth =  new HttpHeaders()
+  //  .set('Authorization', 'Bearer '+credential);
+  // return this.http.get(url,   {headers :auth}).pipe(
+
+  //   shareReplay()
+  // );
+  // }
+
 
 }

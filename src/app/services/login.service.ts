@@ -27,7 +27,9 @@ export class LoginService {
 
 
    async login(loginForm){
-     this.route.navigate(['nav-bar']);
+     this.baseUrl = await this.storage.get('url');
+
+
 
       let token: string;
        const load =  await this.loadingCtrl.create(
@@ -37,19 +39,14 @@ export class LoginService {
          }
        );
        await load.present();
-      // const url = 'http://192.168.8.100:8000/api/login/';
 
-      const url = this.baseUrl+'/api/v1/Auth/token/';
+      const url =this.baseUrl + '/api/v1/Auth/token/';
 
       const form = loginForm.value;
       const myHeader = new HttpHeaders()
-      // .set('Content-Type', 'text')
-  .set('Access-Control-Allow-Origin', '*');
-
-      console.log(myHeader);
+      .set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
       const send =this.http.post<any>(url, form,{headers: myHeader} );
-
-
 
 
       return   send.pipe(
