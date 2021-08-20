@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageService } from './storage.service';
 import { Observable } from 'rxjs';
 import { catchError, tap, map, shareReplay, finalize } from 'rxjs/operators';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 import { Client, Facture } from '../containers';
 
@@ -27,7 +27,8 @@ export class FacturesService {
     private http: HttpClient,
     private storage: StorageService,
     private loadC: LoadingController,
-    private route: Router
+    private route: Router,
+    private toastC : ToastController
   ) {}
 
 
@@ -71,6 +72,15 @@ async getUniqueClient(id: string){
 
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
+    const errorToast =  await this.toastC.create({
+      message: 'desole la rquette n\'as pas ete transmise pour raison inconue. '
+        ,
+        duration: 5000,
+        cssClass: 'errorToast'
+    }
+
+    );
+
     const load =  await this.loadC.create(
       {
         cssClass: 'loadingClass',
@@ -94,6 +104,7 @@ async getUniqueClient(id: string){
   .pipe(
     finalize(()=> load.dismiss()),
     catchError((error)=>{
+      errorToast.present();
       console.log('error');
        throw error;
     })
