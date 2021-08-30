@@ -42,7 +42,7 @@ export class LoginPage implements OnInit, OnDestroy {
  async  changeBaseUrl(){
     const alert =  await this.alertCtrl.create({
       header: 'l\'api de base',
-      message: 'veullez entrer url',
+
       cssClass: 'alert',
       inputs: [
         {

@@ -14,12 +14,17 @@
 
 
   /** secondary **/
-  --ion-color-secondary: #3dc2ff;
-  --ion-color-secondary-rgb: 61, 194, 255;
-  --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #36abe0;
-  --ion-color-secondary-tint: #50c8ff;
+
+    --ion-color-secondary: #3E5D84;
+    --ion-color-secondary-rgb: 62,93,132;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255,255,255;
+    --ion-color-secondary-shade: #375274;
+    --ion-color-secondary-tint: #516d90;
+
+
+
+
 
   /** tertiary **/
   --ion-color-tertiary: #5260ff;
@@ -52,6 +57,15 @@
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #cf3c4f;
   --ion-color-danger-tint: #ed576b;
+
+  /** text **/
+
+  --ion-color-text: #AEB354;
+  --ion-color-text-rgb: 174,179,84;
+  --ion-color-text-contrast: #000000;
+  --ion-color-text-contrast-rgb: 0,0,0;
+  --ion-color-text-shade: #999e4a;
+  --ion-color-text-tint: #b6bb65;
 
   /** dark **/
   --ion-color-dark: #222428;
@@ -248,4 +262,12 @@ ion-button{
 
     --ion-card-background: #1e1e1e;
   }
+}
+.ion-color-secondary {
+  --ion-color-base: var(--ion-color-secondary);
+  --ion-color-base-rgb: var(--ion-color-secondary-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade);
+  --ion-color-tint: var(--ion-color-secondary-tint);
 }

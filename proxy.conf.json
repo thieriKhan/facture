@@ -1,9 +1,9 @@
 {
   "/api/*": {
-    "target": "https://ec2-35-180-31-148.eu-west-3.compute.amazonaws.com:1446/",
+    "target": "http://ec2-35-180-31-148.eu-west-3.compute.amazonaws.com:1446/",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug",
-    "pathRewrite" : {"^/api" : "https://ec2-35-180-31-148.eu-west-3.compute.amazonaws.com:1446/api"}
+    "pathRewrite" : {"^/api" : "http://ec2-35-180-31-148.eu-west-3.compute.amazonaws.com:1446/api"}
   }
 }

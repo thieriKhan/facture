@@ -10,7 +10,7 @@ export class BaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('bonjour');
+
   }
 
 }

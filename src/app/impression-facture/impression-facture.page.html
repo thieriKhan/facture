@@ -2,10 +2,7 @@
 
 <ion-content >
 
-<ion-grid >
 
-  <ion-row>
-    <ion-col size-md="6" offset-md=3  >
 
       <div class="content">
          <div class="myicon" slot="end">
@@ -21,121 +18,41 @@
             <ion-select  [interfaceOptions]="alertInterface" [value]="idC"   [selectedText]="selectedC"  placeholder="Select client" (ionChange)="select($event)" [(ngModel)]="clientSelected" >
 
               <ng-container *ngFor="let item of clients|async"   >
-                <ion-select-option color="secondary" [value]="item.id">{{item.nom}}</ion-select-option>
+                <ion-select-option color="secondary" [value]="item.id">{{item.name}}</ion-select-option>
               </ng-container>
             </ion-select>
 
 
           </ion-item>
-          <ion-item>
-            <ion-label class="ion-text-center ion-allign-justify">
-              <h1>COMMING SOON ....</h1>
-            </ion-label>
-          </ion-item>
-
-
-         </div>
-         <div class="list" *ngIf="content && clientSelected">
-
-             <ion-list >
-
-
-
-                <ion-item-sliding  class="ion-no-margin" #sliding  *ngFor="let item of facturation| async; index as i; trackBy: track">
-                  <ion-fab-button *ngIf="deleteItem" color="danger" (click)="delete(item.id, sliding)">
-                    <ion-icon  name="trash"></ion-icon>
-                  </ion-fab-button>
-                  <ion-item-options   side="end">
-                      <ion-fab-button color="danger" (click)="delete(item.id, sliding)">
-                        <ion-icon  name="trash"></ion-icon>
-                      </ion-fab-button>
-                  </ion-item-options>
-
-                  <ion-grid >
-                    <ion-row>
-                      <ion-col size="1" class="ion-self-center">
-                        <ion-checkbox   #check (ionChange)= "changed($event)" class="ion-margin-end" [value]="item.id" #isChecked>
-                        </ion-checkbox>
-                      </ion-col>
-                      <ion-col size="11">
-
-                        <!-- <ion-item class="ion-margin" (click)="edit(item.id, isChecked, sliding)"  class=" ion-no-margin"   lines="none"   > -->
-                          <ion-item class="ion-margin" (click)="edit2()"  class=" ion-no-margin"   lines="none"   >
-
-                          <ion-icon size="large"  name="receipt"></ion-icon>
-
-
-                              <ion-label class="ion-margin">
-
-
-                                <h1  > {{item.quantite}}  {{ item.produit }}</h1>
-
-                                <h3>{{item.montant * item.quantite}} FCFA</h3>
-                                <!-- <ion-text style=" position: absolute; top: 50px; right: 15px;  display:block;">
-                                  <h5 > {{ item.date |slice : 11:16}}</h5>
-
-                                </ion-text> -->
-
-                             </ion-label>
-                           </ion-item>
-
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-
-
-
-
-                 </ion-item-sliding>
-
-
-
-
-             </ion-list>
 
 
 
          </div>
 
 
-        <div id="maTable" class="list" *ngIf=" !content && clientSelected ">
-          <h2 class="ion-text-center ion-margin">Facture de {{client | async}}</h2>
+         <ion-list>
+           <ng-container *ngFor="let item of selected.orderItems">
+            <ion-item>
+              <ion-thumbnail>
+                <img src="image" />
+              </ion-thumbnail>
+              <ion-label>Awesome Label </ion-label>
+            </ion-item>
 
-          <table class="content-table" >
-            <thead>
-                <tr>
-                  <th>Produit</th>
-                  <th>Pu(FCFA)</th>
-                  <th>Qte</th>
-                  <th>montant(FCFA)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let obs  of facturation |async" >
-                    <td>{{obs.produit }}</td>
-                    <td> {{obs.montant  }}</td>
-                    <td>{{obs.quantite}}</td>
-                    <td>{{obs.quantite * obs.montant }}</td>
-              </tr>
+           </ng-container>
 
-            </tbody>
-          </table>
-        </div>
+         </ion-list>
+
+
 
 
       </div>
 
 
 
-    </ion-col>
-  </ion-row>
-
-</ion-grid>
 
 
 
-<ion-fab-button id="print" color="secondary">
-  <ion-icon name="print" (click)="print(clientSelected)"></ion-icon>
-</ion-fab-button>
+
 
 </ion-content>

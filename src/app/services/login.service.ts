@@ -40,7 +40,7 @@ export class LoginService {
        );
        await load.present();
 
-      const url =this.baseUrl + '/api/v1/Auth/token/';
+      const url = this.baseUrl+'/api/v1/Auth/token/';
 
       const form = loginForm.value;
       const myHeader = new HttpHeaders()

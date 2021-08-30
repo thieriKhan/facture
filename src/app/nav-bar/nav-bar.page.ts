@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { FacturesService } from '../services/factures.service';
 import {  Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { UpdateFacture, Facture } from '../containers';
+import {  Facture , PostData} from '../containers';
 import { HttpClient } from '@angular/common/http';
 import { PopoverComponent } from '../components/popover/popover.component';
 
@@ -34,7 +34,7 @@ export class NavBarPage implements OnInit, OnDestroy {
     private loadC: LoadingController,
     private log: LoginService,
     private http: HttpClient,
-     private popoverC: PopoverController,
+    private popoverC: PopoverController,
 
   ) {
 
@@ -63,6 +63,10 @@ async ionViewDidEnter(){
       message: 'vous etes hors ligne',
       duration: 2000
     });
+    const toast2 = await this.toastC.create({
+      message: 'connexion etablie',
+      duration: 2000
+    });
 
     window.addEventListener('offline', (event)=>{
       toast.present();
@@ -71,28 +75,30 @@ async ionViewDidEnter(){
     window.addEventListener('online',async  ()=>{
 
       this.http.get('http://api.github.com').subscribe(
-        (data)=>{  console.log('data is', data);},
-        (error)=>{console.log('error is',error);}
-      );
-      // toutes les requettes post echoues
-      const failedPost =JSON.parse(await  this.storage.get('unposted'))|| [];
-      if(failedPost.length > 0){
-        this.failedPosted(failedPost);
-      }
 
+        async ()=>{
+          toast2.present();
+          const failedPost: PostData[] =JSON.parse(await  this.storage.get('unposted'))|| [];
+          if(failedPost.length > 0){
+            this.failedPosted(failedPost);
+          }
+
+      },
+        (error)=>{toast.present();}
+      );
 
         // toutes les requettes updates echouees
-     const failedUpdate = JSON.parse(await this.storage.get('unupdated'))|| [];
+    //  const failedUpdate = JSON.parse(await this.storage.get('unupdated'))|| [];
 
-     if(failedUpdate.length > 0){
-       this.failedUpdated(failedUpdate);
-     }
-      //  toutes les requettes deletes echouees
-      const failedDelete = JSON.parse(await this.storage.get('undeleted'))|| [];
-      if (failedDelete.length > 0){
-      this.failedDeleted(failedDelete);
-      this.start = this.fact.progres;
-      }
+    //  if(failedUpdate.length > 0){
+    //    this.failedUpdated(failedUpdate);
+    //  }
+    //   //  toutes les requettes deletes echouees
+    //   const failedDelete = JSON.parse(await this.storage.get('undeleted'))|| [];
+    //   if (failedDelete.length > 0){
+    //   this.failedDeleted(failedDelete);
+    //   this.start = this.fact.progres;
+    //   }
     });
 
 
@@ -100,45 +106,42 @@ async ionViewDidEnter(){
 
 
 
-  async failedUpdated(data: UpdateFacture[]){
+  // async failedUpdated(data: UpdateFacture[]){
 
-    if(data.length > 0){
-      for( let i = 0 ; i < data.length ; i++){
-        this.updateSub = ( await this.fact.updateFacture(data[i].id , data[i].quantite)).subscribe(
-          async (val)=> {
-            data.splice(i);
-          }
-        );
-        await this.storage.set('unupdated',    JSON.stringify(data));
-      }
+  //   if(data.length > 0){
+  //     for( let i = 0 ; i < data.length ; i++){
+  //       this.updateSub = ( await this.fact.updateFacture(data[i].id , data[i].quantite)).subscribe(
+  //         async (val)=> {
+  //           data.splice(i);
+  //         }
+  //       );
+  //       await this.storage.set('unupdated',    JSON.stringify(data));
+  //     }
 
-    }
+  //   }
 
-  }
-
-
-
-  async failedDeleted(data: number[]){
-      for( let i = 0 ; i < data.length ; i++){
-        this.deleteSub = ( await this.fact.deleteFacture(data[i])).subscribe(
-          async (val)=> {
-            this.fact.progres += 1/data.length;
-            data.splice(i);
-            await this.storage.set('undeleted', JSON.stringify(data)  );
-
-          }
-        );
-        this.fact.progres = 0;
-      }
+  // }
 
 
 
+  // async failedDeleted(data: number[]){
+  //     for( let i = 0 ; i < data.length ; i++){
+  //       this.deleteSub = ( await this.fact.deleteFacture(data[i])).subscribe(
+  //         async (val)=> {
+  //           this.fact.progres += 1/data.length;
+  //           data.splice(i);
+  //           await this.storage.set('undeleted', JSON.stringify(data)  );
 
-  }
+  //         }
+  //       );
+  //       this.fact.progres = 0;
+  //     }
+
+  // }
 
 
 
-  async failedPosted(data: Facture[]){
+  async failedPosted(data: PostData[]){
 
     if(data.length > 0){
 

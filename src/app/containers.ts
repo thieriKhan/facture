@@ -67,6 +67,12 @@ export interface Facture   {
   updatedAt: string;
   orderItems: Order[];
 }
+ export interface PostData{
+    customerId: number;
+    paymentMode: string;
+    comment: string;
+    orderItems: Order[];
+}
 
 export interface Order{
  id: string ;

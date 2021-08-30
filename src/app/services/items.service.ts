@@ -24,7 +24,7 @@ constructor(private http: HttpClient, private route: Router, private storage: St
  }
 
 
-async getProduit(): Promise<Observable<any>>{
+async getProduit(): Promise<Observable<Produit[]>>{
   this.baseUrl = await this.storage.get('url');
   const url = this.baseUrl+'/api/v1/stock/';
   const token = await  this.storage.get('token');
@@ -36,10 +36,17 @@ async getProduit(): Promise<Observable<any>>{
 
  const auth =  new HttpHeaders()
  .set('Authorization', 'Bearer '+credential);
-return this.http.get(url,   {headers :auth}).pipe(
+return this.http.get <Produit[]>(url,   {headers :auth}).pipe(
   retry(10),
   shareReplay()
 );
+}
+
+async getProduitUnique(id: string){
+  (await this.getProduit()).pipe(
+    map((data: Produit[])=> data.find(item => item.id === id) )
+  );
+
 }
 
 }

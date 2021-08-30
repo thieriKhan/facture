@@ -1,66 +1,55 @@
-<ion-header>
-
-</ion-header>
-
-<ion-content  >
 
 
+<ion-content class="ion-no-margin ion-no-padding">
 
 
-<ion-grid >
-  <ion-row  >
-    <ion-col size-md="6" offset-md="3" >
-      <div class=" login">
+<div class=" login ">
+  <div class="logo">
+    <ion-img  src="./assets/icon/favicon.png"></ion-img>
+    <ion-title class="ion-text-center"   >Login</ion-title>
+  </div>
 
-  <ion-card  >
-    <ion-card-header>
 
-      <ion-card-title  class="ion-text-center" >Login</ion-card-title>
-    </ion-card-header>
-    <ion-card-content class="ion-marging">
+
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
-        <ion-item class="ion-margin" >
-          <ion-label   position="floating">utlisateur<ion-text color="danger">*</ion-text></ion-label>
-          <ion-input required formControlName="phone" type="text" autofocus="true"></ion-input>
-        </ion-item>
-        <ion-item class="ion-margin" >
+        <div class="form ion-padding ">
+          <ion-item class="ion-margin" >
+            <ion-icon slot="start" name="call-outline"></ion-icon>
 
-          <ion-icon position= "inline" slot="end"   [name]="isVisible" (click)="ontogleHide()"></ion-icon>
-          <ion-label  position="floating">mot de passe<ion-text color="danger">*</ion-text></ion-label>
+            <ion-input placeholder="tel" required formControlName="phone" inputmode="tel" type="tel" autofocus="true"></ion-input>
+          </ion-item>
+          <ion-item class="ion-margin" >
 
-          <ion-input required formControlName="code" [type]="mytype" inputmode="password"></ion-input>
+            <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+            <ion-input required placeholder="code" formControlName="code" [type]="mytype" inputmode="password">
+            </ion-input>
 
+            <ion-icon slot="end"    [name]="isVisible" (click)="ontogleHide()"></ion-icon>
 
-        </ion-item>
-        <div class="button ion-align-items-center ion-margin" >
-          <ion-button block color="secondary" type="submit" [disabled]="loginForm.invalid" class="ion-margin-bottom" expand="block">
-            Login
-          </ion-button>
+          </ion-item>
+
         </div>
 
+<div class="footer ion-margin">
+  <ion-button  shape="round" color="secondary" type="submit" [disabled]="loginForm.invalid" class="ion-margin" expand="full">
+    Login
+  </ion-button>
+<div class="api ion-margin">
+  <ion-text class="ion-text-center" color="secondary"  (click)="changeBaseUrl()"   >
+    changer l'api
+  </ion-text>
 
-          <ion-text  (click)="changeBaseUrl()" expand="block" fill="undefined" expandand="undefined" >
-            changer l'api
-          </ion-text>
+</div>
 
+
+</div>
 
 
 
       </form>
 
-
-
-    </ion-card-content>
-
-  </ion-card>
-
       </div>
 
-
-    </ion-col>
-
-  </ion-row>
-</ion-grid>
 
 
 

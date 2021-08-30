@@ -3,70 +3,59 @@ ion-content {
 
 
 
-  // --background:linear-gradient(to left, red, orange, yellow, green, blue, indigo, violet);
-  background-image: url("../../assets/bg2.jpg") ;
-  background-blend-mode: darken;
+
+
 
   --color: var(--ion-color-secondary-contrast);
 
 
 
 }
-
-
 ion-img{
-  width: 300px;
-  height: 200px;
+  width: 150px;
+  height: 120px;
+  padding: 0;
 }
+.logo{
+  width: fit-content;
+  margin: auto;
+
+}
+ion-title{
+  font-weight: bold;
+  color: var(--ion-color-secondary);
+}
+
+
+
 .auth{
   float: right;
 }
 
 .button{
-  width: 60%;
+  width: 70%;
   margin: auto;
 
-
 }
 
-ion-header{
-  ion-toolbar{
-    .auth{
-      a{
-        text-decoration: none;
-      }
-
-    }
-  }
-}
-ion-grid{
-  ion-row{
 
 
 
 
 
-    ion-col{
-      .login{
-        transform: translate(0%, 40%);
-
-      }
 
 
-      ion-card{
-        ion-card-title{
-          font-weight: bold;
-        }
-
-
-
-        --background: var(--ion-color-light) ;
         ion-item{
-          --background: var(--ion-color-light);
-            --highlight-color-valid: var(--ion-color-secondary);
+          --background: transparent;
+          --highlight-color-valid: var(--ion-color-secondary);
            --color-activated:  var(--ion-color-secondary);
            --color-focused: var(--ion-color-secondary);
            --color: var(--ion-color-dark-shade);
+         --border-radius: 20px
+           ion-input{
+             --border-radius: 20px;
+           }
+
 
 
         }
@@ -74,30 +63,32 @@ ion-grid{
           color: var(--ion-color-secondary);
 
          }
-        // ion-item{
-        //   color: var(--ion-color-secondary);
-        // }
+
 
 
         .button{
           min-width:100px;
         }
-        ion-footer{
-          transform: translateX(40%);
-        }
-      }
+
+
+
+
+.form{
+  margin-top: 100px;
+  width: 85%;
+  margin: auto;
+  ion-item{
+    ion-icon{
+      float: right;
     }
   }
 }
-
-@media (max-width: 600px){
-
-.login{
-  transform: translateY( 60%);
+.api{
+  width:fit-content;
+  margin: auto;
+  margin-top: 30px;
 
 }
-}
-
 
 
 

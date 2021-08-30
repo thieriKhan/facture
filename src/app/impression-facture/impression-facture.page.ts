@@ -1,4 +1,4 @@
-import { ItemsService } from "./../services/items.service";
+import { ItemsService } from './../services/items.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
@@ -10,7 +10,7 @@ import { Platform, ModalController, AlertController, IonCheckbox, IonItemSliding
 import { finalize, tap, catchError } from 'rxjs/operators';
 import { Router, RouterOutlet } from '@angular/router';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
-import { Client, Facture, UpdateFacture } from '../containers';
+import { Client, Facture, PostData, UpdateFacture } from '../containers';
 import { StorageService } from '../services/storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { OrderDetailComponent } from '../components/order-detail/order-detail.component';
@@ -42,10 +42,17 @@ client: Observable<any>;
 icon = 'list';
 content = true;
 test;
-displayCheckbox= false;
+
 deleteItem = false;
 selectedC;
 idC;
+selected: PostData = {
+    customerId: 0,
+    paymentMode: '',
+    comment: '',
+    orderItems: [],
+};
+unposted: PostData[];
 
 
 facturation: Observable<Facture[]>;
@@ -55,7 +62,6 @@ facturation: Observable<Facture[]>;
     private routerOutlet: IonRouterOutlet,
     private fact: FacturesService,
     private formBuilder: FormBuilder,
-
     private platform: Platform,
     private route: Router,
     private activeRoute: ActivatedRoute,
@@ -64,7 +70,8 @@ facturation: Observable<Facture[]>;
     private storage: StorageService,
     private toastC: ToastController,
     private loadC: LoadingController,
-    private item : ItemsService
+    private item: ItemsService
+
   ) {
     this.alertInterface = {
       cssClass: 'alert',
@@ -100,42 +107,18 @@ facturation: Observable<Facture[]>;
     }
 
   }
-  // async print(client) {
-  //   this.fact.selectedclient = client;
 
-  //  const ch =  document.querySelectorAll('ion-checkbox');
-
- // previous implementation of print function
-
-    //  if(this.platform.is('android') || this.platform.is('ios') ){
-    //   this.printMobile();
-    //  }else{
-    //   this.printWeb();
-    //  }
-    //  window.location.reload();
-
-
-  //   const detailPage = await this.modalCtrl.create({
-
-  //     component: ModalBaseComponent,
-
-  //   });
-  //    detailPage.present();
-  // }
 
   async ionViewWillEnter(){
-
 
    const client = (await this.fact.getClient())
      .pipe(
        tap((data: Client[]) => {
-
          const dat = data.find((item: Client) => String(item.id) === this.idC);
          if(dat){
            this.selectedC = dat.name;
             console.log(this.selectedC);
          }
-
 
        })
      );
@@ -145,7 +128,6 @@ facturation: Observable<Facture[]>;
 
   async ionViewDidEnter(){
      this.fact.selectedclient = this.clientSelected;
-
 
 
    }
@@ -158,170 +140,83 @@ facturation: Observable<Facture[]>;
      );
      modal.present();
    }
-  async  edit(id: number,  checked: IonCheckbox, slide: IonItemSliding){
-    slide.close();
-   const alert = await  this.alertCtrl.create({
-    header: 'modification',
-    cssClass: 'alert',
-    inputs: [
-      {
-
-        name: 'quantite',
-        placeholder: 'quantite',
-        type: 'number',
-        min: '1'
-      },
-      {
-      name:'packaging',
-      placeholder: 'packaging',
-      type: 'text',
-      }
-    ],
-    buttons: [
-      {
-        text: 'fermer',
-        role: 'cancel'
-      },
-      {
-        text: 'modifier',
-        handler: async (data)=>{
-
-          const toast = await this.toastC.create({
-            message: 'desole cette facture n\' pas ete modifie',
-            cssClass: 'errorToast'
-          });
-          const load =  await this.loadC.create(
-            {
-              spinner: 'bubbles',
-              cssClass: 'loadingClass',
-
-            }
-          );
-          load.present();
-
-          if(data.quantite.length !== 0){
-            const up = (await  this.fact.updateFacture(id, data.quantite)).pipe(
-              finalize(
-                ()=>{
-                  load.dismiss();
-                }
-              )
-            );
-            up.subscribe(
-              async ()=>
-            {
-             this.facturation = await this.fact.getFacture(this.fact.currentClient);
-            },
-
-            async (error)=>{
-               toast.present();
-            if(error.status !== 403){
-              let dt:   UpdateFacture[] = [];
-               dt = JSON.parse( await this.storage.get('unupdated')) || [];
-               const val = {id  , quantite: data.quantite};
-               if(!dt.includes(val)){
-                 dt.push(val);
-               }
-             await this.storage.set('unupdated',JSON.stringify(dt));
-              }
-            }
 
 
-            );
-          }
-
-
-
-        }
-      }
-
-    ]
-   });
-   alert.present();
-
-   }
-  async delete(id, slide: IonItemSliding){
-    slide.close();
-    const alert = await  this.alertCtrl.create({
-      header: 'Confirmation',
-      cssClass: 'alert',
-      message: 'voulez vous vraiment suprimer cette commande?',
-      buttons: [
-        {
-          text: 'NON',
-          role: 'cancel'
-        },
-        {
-          text: 'OUI',
-          handler: async (data)=>{
-            const toast = this.toastC.create({
-              message: 'desole cette facture n\' pas ete supprime',
-              cssClass: 'errorToast'
-            });
-            const load =  await this.loadC.create(
-              {
-                spinner: 'bubbles',
-                cssClass: 'loadingClass',
-
-              }
-            );
-            load.present();
-            const del = (await this.fact.deleteFacture(id)).pipe(
-              finalize(()=>{
-                load.dismiss();
-              })
-            );
-            del.subscribe(
-              async ()=>
-         {
-          this.facturation = await this.fact.getFacture(this.fact.currentClient);
-         },
-         async (error)=>{
-           (await toast).present();
-         if(error.status !== 403){
-           let dt: any[] = [];
-            dt = JSON.parse( await this.storage.get('undeleted')) || [];
-            if(!dt.includes(id)){
-              dt.push(id);
-            }
-          await this.storage.set('undeleted',JSON.stringify(dt));
-         }
-         }
-            );
-
-
-          }
-        }
-      ]
-     });
-
-     await alert.present();
-
-
-
-   }
 
 
 
   async select(event){
      const val = event.detail.value;
      this.fact.currentClient = val;
-     this.facturation = await(await this.fact.getFacture(val))
-     .pipe(tap(
-      (data: Facture[])=>{
-       this.testons = data;
-      }
-    ));
-     this.client = await this.fact.getUniqueClient(this.clientSelected);
+     this.unposted = JSON.parse( await this.storage.get('unposted'));
+     this.fact.pending = this.unposted.length;
+     this.selected = this.unposted.find(item=> item.customerId = val);
+
+
    }
+   async getProduct(id: string){
+    return this.item.getProduitUnique(id);
 
-   track(index, item){
-
-     return item.id;
    }
 
 
 
+  // async delete(id, slide: IonItemSliding){
+  //   slide.close();
+  //   const alert = await  this.alertCtrl.create({
+  //     header: 'Confirmation',
+  //     cssClass: 'alert',
+  //     message: 'voulez vous vraiment suprimer cette commande?',
+  //     buttons: [
+  //       {
+  //         text: 'NON',
+  //         role: 'cancel'
+  //       },
+  //       {
+  //         text: 'OUI',
+  //         handler: async (data)=>{
+  //           const toast = this.toastC.create({
+  //             message: 'desole cette facture n\' pas ete supprime',
+  //             cssClass: 'errorToast'
+  //           });
+  //           const load =  await this.loadC.create(
+  //             {
+  //               spinner: 'bubbles',
+  //               cssClass: 'loadingClass',
+
+  //             }
+  //           );
+  //           load.present();
+  //           const del = ();
+  //           del.subscribe(
+  //             async ()=>
+  //        {
+
+  //        },
+  //        async (error)=>{
+  //          (await toast).present();
+  //        if(error.status !== 403){
+  //          let dt: any[] = [];
+  //           dt = JSON.parse( await this.storage.get('undeleted')) || [];
+  //           if(!dt.includes(id)){
+  //             dt.push(id);
+  //           }
+  //         await this.storage.set('undeleted',JSON.stringify(dt));
+  //        }
+  //        }
+  //           );
+
+
+  //         }
+  //       }
+  //     ]
+  //    });
+
+  //    await alert.present();
+
+
+
+  //  }
 
 
 
