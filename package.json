@@ -24,6 +24,7 @@
     "@capacitor/core": "3.0.2",
     "@capacitor/haptics": "1.0.2",
     "@capacitor/keyboard": "1.0.2",
+    "@capacitor/splash-screen": "^1.1.1",
     "@ionic-native/core": "^5.35.0",
     "@ionic-native/network": "^5.34.0",
     "@ionic-native/printer": "^5.35.0",
