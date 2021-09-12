@@ -1,3 +1,4 @@
+import { StorageService } from "./../../services/storage.service";
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { IonNavLink, NavParams, AlertController } from '@ionic/angular';
@@ -29,7 +30,8 @@ export class OrderDetailComponent implements OnInit {
     private item: ItemsService,
     private navParam: NavParams,
     private alertCtrl: AlertController,
-    private fact: FacturesService
+    private fact: FacturesService,
+    private storage: StorageService
     ) { }
 
   ngOnInit() {
@@ -75,14 +77,17 @@ export class OrderDetailComponent implements OnInit {
                 comment: '',
                 orderItems: order
               };
-              console.log('form', formatedData);
               this.postFactSub = (await this.fact.postFacture(formatedData)).subscribe(
                 async (data)=>{
-                  console.log('success', data);
                   this.props = data;
                   await  this.nav.push(this.nextPage, this.props );
+                },
+                (error)=>{
+                  this.modalCtrl.dismiss({done: true});
                 }
               );
+              await this.storage.remove('allOrders');
+              await this.storage.remove('montant');
 
 
           }

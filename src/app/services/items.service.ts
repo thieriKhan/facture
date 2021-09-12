@@ -3,7 +3,7 @@ import { ClientOrder } from './../containers';
 import { Router } from '@angular/router';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, retry, shareReplay, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 import { Produit } from '../containers';
@@ -13,6 +13,7 @@ import { Produit } from '../containers';
 })
 export class ItemsService {
   allProducts: Produit[];
+  itemsBSub: BehaviorSubject<Produit[]> = new BehaviorSubject([]);
   total  = 0;
   currentClient;
   currentClintid;
@@ -34,8 +35,9 @@ async getProduit(): Promise<Observable<Produit[]>>{
  const credential = JSON.parse(token);
 
 
- const auth =  new HttpHeaders()
- .set('Authorization', 'Bearer '+credential);
+//  const auth =  new HttpHeaders()
+//  .set('Authorization', 'Bearer '+credential);
+const auth =  new HttpHeaders({Authorization: 'Token '+credential});
 return this.http.get <Produit[]>(url,   {headers :auth}).pipe(
   retry(10),
   shareReplay()

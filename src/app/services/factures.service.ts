@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageService } from './storage.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, tap, map, shareReplay, finalize, retry } from 'rxjs/operators';
 import { LoadingController, ToastController } from '@ionic/angular';
 
@@ -21,6 +21,7 @@ export class FacturesService {
   progres = 0;
   allCurentsOrders: Facture[];
   pending: number;
+  customerBSub: BehaviorSubject<Client[]> = new BehaviorSubject([]);
 
 
 
@@ -37,7 +38,7 @@ export class FacturesService {
 
   async getClient(): Promise<Observable<Partial<Client[]>>>{
     this.baseUrl = await  this.storage.get('url');
-    const url = this.baseUrl+'/api/v1/customers';
+    const url = this.baseUrl+'/api/v1/customers/';
     const token = await  this.storage.get('token');
 
     if(token == null){
@@ -46,10 +47,37 @@ export class FacturesService {
     }
    const credential = JSON.parse(token);
 
-   const auth =  new HttpHeaders()
-   .set('Content-Type', 'application/json')
-   .set('Authorization', 'Bearer '+credential);
+   const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+
+  //  const auth =  new HttpHeaders()
+  //  .set('Content-Type', 'application/json')
+  //  .set('Authorization', 'Bearer '+credential);
   return this.http.get<Partial<Client[]>>(url,   {headers :auth }).pipe(
+
+    shareReplay()
+  );
+ }
+
+
+ // ajouter un  client
+
+  async addClient(data): Promise<Observable<Partial<Client[]>>>{
+    this.baseUrl = await  this.storage.get('url');
+    const url = this.baseUrl+'/api/v1/customers/';
+    const token = await  this.storage.get('token');
+
+    if(token == null){
+      this.route.navigate(['login']);
+
+    }
+   const credential = JSON.parse(token);
+
+   const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+
+  //  const auth =  new HttpHeaders()
+  //  .set('Content-Type', 'application/json')
+  //  .set('Authorization', 'Bearer '+credential);
+  return this.http.post<Partial<Client[]>>(url,data,   {headers :auth }).pipe(
 
     shareReplay()
   );
@@ -98,9 +126,10 @@ async getUniqueClient(id: string){
       this.route.navigate(['login']);
     }
    const credential = JSON.parse(token);
-   const auth =  new HttpHeaders()
-   .set('Content-Type', 'application/json')
-   .set('Authorization', 'Bearer '+credential);
+  //  const auth =  new HttpHeaders()
+  //  .set('Content-Type', 'application/json')
+  //  .set('Authorization', 'Bearer '+credential);
+    const auth =  new HttpHeaders({Authorization: 'Token '+credential});
 
   return this.http.post(url, form,{headers :auth } )
   .pipe(
@@ -132,7 +161,7 @@ async deleteFacture(id){
   }
 
   const credential = JSON.parse(token);
-  const auth =  new HttpHeaders({Authorization: 'Token '+credential.token});
+  const auth =  new HttpHeaders({Authorization: 'Token '+credential});
   return this.http.delete(url, {headers :auth });
 }
 

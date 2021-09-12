@@ -11,6 +11,7 @@ import { finalize } from 'rxjs/operators';
 import {  Facture , PostData} from '../containers';
 import { HttpClient } from '@angular/common/http';
 import { PopoverComponent } from '../components/popover/popover.component';
+import { ItemsService } from '../services/items.service';
 
 
 
@@ -35,12 +36,16 @@ export class NavBarPage implements OnInit, OnDestroy {
     private log: LoginService,
     private http: HttpClient,
     private popoverC: PopoverController,
+    private item: ItemsService
 
   ) {
 
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    this.item.allCurrentClientsOrders = JSON.parse((await this.storage.get('allOrders')))|| [];
+
+  }
 
  async  showPopOver(ev: any){
     const popover = await this.popoverC.create({

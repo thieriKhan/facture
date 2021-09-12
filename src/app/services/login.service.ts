@@ -44,9 +44,8 @@ export class LoginService {
 
       const form = loginForm.value;
       const myHeader = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-      const send =this.http.post<any>(url, form,{headers: myHeader} );
+      .set('Content-Type', 'application/json');
+      const send =this.http.post<any>(url, form);
 
 
       return   send.pipe(
@@ -58,6 +57,7 @@ export class LoginService {
        async  (data)=> {
          this.isLogin = true;
          token =  JSON.stringify(data.token);
+         console.log('token', data.token);
         const userData = JSON.stringify(data);
 
          await this.storage.set('token', token);

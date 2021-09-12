@@ -24,7 +24,7 @@
 
     </ion-searchbar>
   </ion-list-header>
-  <ng-container  *ngFor="let item of (clients |async)| filter: term " >
+  <ng-container  *ngFor="let item of (clients$ |async)| filter: term " >
     <ion-item class="ion-margin client" (click)="addProduct(item.id)"  detail>
       <ion-label class="client"> <h2>  {{item.name }}</h2> </ion-label>
     </ion-item>

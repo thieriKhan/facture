@@ -1,3 +1,4 @@
+import { StorageService } from "./../services/storage.service";
 
 import { Client, Produit, Order } from "./../containers";
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +11,7 @@ import { FacturesService } from '../services/factures.service';
 import { ItemsService } from '../services/items.service';
 import { timeStamp } from "console";
 import { tap } from "rxjs/operators";
+import { stringify } from "querystring";
 
 @Component({
   selector: 'app-items',
@@ -26,7 +28,7 @@ export class ItemsPage implements OnInit {
   currentClient: Observable< string>;
   getOrder: Order ;
   itemSub: Subscription = new Subscription();
-  produits$: Observable<Produit[]>;
+  produits$: Observable<Produit[]> = this.item.itemsBSub.asObservable();
   term: string;
   idClient;
 
@@ -35,30 +37,33 @@ export class ItemsPage implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private fact: FacturesService,
-    private item: ItemsService
+    private item: ItemsService,
+    private storage: StorageService
     ) { }
 
  async  ngOnInit() {
    this.command = [];
-   this.produits$ = (await this.item.getProduit()).pipe(
-     tap(data => this.item.allProducts = data)
-   );
-  this.itemSub =  (await this.item.getProduit()).subscribe(
-    (data: Produit[])=>{
-      this.item.allProducts = data;
-    }
-  );
+   this.montant =  parseInt(await this.storage.get('montant'))|| 0;
+   this.command = JSON.parse(await this.storage.get( 'command')) || [];
+
+  // this.itemSub =  (await this.item.getProduit()).subscribe(
+  //   (data: Produit[])=>{
+  //     this.item.allProducts = data;
+  //   }
+  // );
 
   }
 
   async ionViewWillEnter(){
-    // this.montant = this.item.total;
-    this.produits$ = await this.item.getProduit();
-    this.itemSub =  (await this.item.getProduit()).subscribe(
-      (data: Produit[])=>{
-        this.item.allProducts = data;
+
+    this.itemSub  = (await this.item.getProduit()).pipe(
+      tap(data => this.item.allProducts = data)
+    ).subscribe(
+      (items)=>{
+        this.item.itemsBSub.next(items);
       }
     );
+
     this.idClient = this.activatedRoute.snapshot.paramMap.get('id');
     this.currentClient = (await this.fact.getUniqueClient(this.idClient)).pipe(
       tap((data: string)=> {
@@ -88,6 +93,9 @@ export class ItemsPage implements OnInit {
       com.montant= prev.montant;
       return  com;
      }).montant;
+     this.storage.set('montant', this.montant.toString());
+     this.storage.set('command', JSON.stringify(this.command) );
+     this.storage.set('allOrders', JSON.stringify(this.item.allCurrentClientsOrders) );
 
   }
 
@@ -105,9 +113,14 @@ export class ItemsPage implements OnInit {
 
    });
      detailPage.present();
-    await   detailPage.onWillDismiss();
-     this.command = [];
-     this.montant = 0;
+   const data =  await   detailPage.onWillDismiss();
+
+   if (data.data?.done){
+    this.command = [];
+    this.montant = 0;
+
+   }
+
 
   }
 

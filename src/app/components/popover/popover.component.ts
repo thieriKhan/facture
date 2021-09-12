@@ -1,7 +1,8 @@
-import { LoginService } from "./../../services/login.service";
+import { FacturesService } from './../../services/factures.service';
+import { LoginService } from './../../services/login.service';
 import { Component, OnInit } from '@angular/core';
 
-import {PopoverController, AlertController } from '@ionic/angular'
+import {PopoverController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-popover',
@@ -13,7 +14,8 @@ export class PopoverComponent implements OnInit {
   constructor(
     private log: LoginService,
     private popC: PopoverController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private facts : FacturesService
 
   ) { }
 
@@ -27,54 +29,54 @@ export class PopoverComponent implements OnInit {
     this.popC.dismiss();
   }
 
-  async ajoutProduit(){
-    this.popC.dismiss();
-    
-    const alert = await  this.alertCtrl.create({
-    header: 'Ajouter un produit',
-    cssClass: 'alert',
-    inputs: [
-      {
+  // async ajoutProduit(){
+  //   this.popC.dismiss();
 
-        name: 'DetailPrice',
-        placeholder: 'prix en detail',
-        type: 'number'
-      },
-          {
-        name: 'containerPrice',
-        placeholder: 'prix en gros',
-        type: 'number'
-      },
-      {
+  //   const alert = await  this.alertCtrl.create({
+  //   header: 'Ajouter un produit',
+  //   cssClass: 'alert',
+  //   inputs: [
+  //     {
 
-        name: 'containerQty',
-        placeholder: 'quantite en gros',
-        type: 'number'
-      },
-      {
+  //       name: 'DetailPrice',
+  //       placeholder: 'prix en detail',
+  //       type: 'number'
+  //     },
+  //         {
+  //       name: 'containerPrice',
+  //       placeholder: 'prix en gros',
+  //       type: 'number'
+  //     },
+  //     {
 
-        name: 'detailQty',
-        placeholder: 'quantite en detail',
-        type: 'number'
-      }
+  //       name: 'containerQty',
+  //       placeholder: 'quantite en gros',
+  //       type: 'number'
+  //     },
+  //     {
 
-    ],
-    buttons: [
-      {
-        text: 'fermer',
-        role: 'cancel'
-      },
-      {
-        text: 'ajouter',
-        handler: async (data)=>{
-          console.log('modifie');
-        }
+  //       name: 'detailQty',
+  //       placeholder: 'quantite en detail',
+  //       type: 'number'
+  //     }
+
+  //   ],
+  //   buttons: [
+  //     {
+  //       text: 'fermer',
+  //       role: 'cancel'
+  //     },
+  //     {
+  //       text: 'ajouter',
+  //       handler: async (data)=>{
+  //         console.log('modifie');
+  //       }
 
 
-    }]  });
-    alert.present();
-    
-  }
+  //   }]  });
+  //   alert.present();
+
+  // }
 
  async ajoutClient(){
    this.popC.dismiss();
@@ -85,21 +87,20 @@ export class PopoverComponent implements OnInit {
     inputs: [
       {
 
-        name: 'nom',
+        name: 'name',
         placeholder: 'nom',
         type: 'text'
       },
-          {
-
-        name: 'prenom',
-        placeholder: 'prenom',
-        type: 'text'
-      },
-          {
-
+      {
         name: 'email',
         placeholder: 'email',
         type: 'email'
+      },
+      {
+
+        name: 'phone',
+        placeholder: 'Tel',
+        type: 'number'
       }
     ],
     buttons: [
@@ -110,7 +111,13 @@ export class PopoverComponent implements OnInit {
       {
         text: 'ajouter',
         handler: async (data)=>{
-          console.log('modifie');
+         (await ( this.facts.addClient(data))).subscribe(
+          );
+          (await this.facts.getClient()).subscribe(
+            (clients)=>{
+              this.facts.customerBSub.next(clients);
+            }
+          );
         }
 
 

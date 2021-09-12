@@ -1,9 +1,9 @@
-import { Facture, Client, Produit } from "./../containers";
-import { Component, OnInit } from '@angular/core';
+import { Facture, Client, Produit } from './../containers';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { FacturesService } from '../services/factures.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Network } from '@ionic-native/network/ngx';
@@ -18,11 +18,12 @@ import { StorageService } from '../services/storage.service';
 export class AjoutFacturePage implements OnInit {
   ajoutForm: FormGroup;
   obs: Observable<any>;
-  clients: Observable<Client[]>;
+  clients$: Observable<Client[]> = this.fact.customerBSub.asObservable();
   clientsCached: Promise<any>;
   produits: Observable<Produit[]>;
   alertInterface;
-  list= ["bonjour",'bonsoit', 'demain'];
+  clientSubs: Subscription;
+
 
   term: string;
 
@@ -52,13 +53,17 @@ export class AjoutFacturePage implements OnInit {
   //   duration: 2000
   // });
 
-    this.clients = await this.fact.getClient() ;
 
 
     // this.produits = await this.fact.getProduit();
   }
  async ionViewWillEnter(){
-    this.clients = await this.fact.getClient();
+   this.clientSubs =  ( await this.fact.getClient()).subscribe(
+        (data)=>{
+          this.fact.customerBSub.next(data);
+        }
+
+    );
   }
 
   // init(){
@@ -71,11 +76,14 @@ export class AjoutFacturePage implements OnInit {
   // }
 
   addProduct(id: string){
-    this.router.navigate(['nav-bar/items', id])
+    this.router.navigate(['nav-bar/items', id]);
+  }
+  ngOnDestroy(){
+    this.clientSubs.unsubscribe();
   }
 //    async ionViewWillEnter(){
 
-//   this.clients = await this.fact.getClient();
+//   this.clients$ = await this.fact.getClient();
 //   this.produits = await this.fact.getProduit();
 
 //   }
