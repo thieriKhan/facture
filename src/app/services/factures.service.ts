@@ -45,13 +45,19 @@ export class FacturesService {
       this.route.navigate(['login']);
 
     }
-   const credential = JSON.parse(token);
+   const credential = token;
+   let auth;
+   if (this.baseUrl === 'https://thieri-factures.herokuapp.com'){
+     auth =  new HttpHeaders({Authorization: 'Token '+credential});
+   }else{
 
-   const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+     auth =  new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer '+credential);
 
-  //  const auth =  new HttpHeaders()
-  //  .set('Content-Type', 'application/json')
-  //  .set('Authorization', 'Bearer '+credential);
+   }
+
+
   return this.http.get<Partial<Client[]>>(url,   {headers :auth }).pipe(
 
     shareReplay()
@@ -70,14 +76,19 @@ export class FacturesService {
       this.route.navigate(['login']);
 
     }
-   const credential = JSON.parse(token);
+   const credential = token;
+   let auth;
+   if (this.baseUrl === 'https://thieri-factures.herokuapp.com'){
+     auth =  new HttpHeaders({Authorization: 'Token '+credential});
+   }else{
 
-   const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+     auth =  new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer '+credential);
 
-  //  const auth =  new HttpHeaders()
-  //  .set('Content-Type', 'application/json')
-  //  .set('Authorization', 'Bearer '+credential);
+   }
   return this.http.post<Partial<Client[]>>(url,data,   {headers :auth }).pipe(
+	retry(3),
 
     shareReplay()
   );
@@ -102,7 +113,7 @@ async getUniqueClient(id: string){
 // ajouter une facture dans le backend
   async postFacture(form): Promise<Observable<any>>{
     const errorToast =  await this.toastC.create({
-      message: 'desole la rquette n\'as pas ete transmise pour raison inconue. '
+      message: 'desole la rquette n\'as pas ete transmise pour raison inconnue. '
         ,
         duration: 5000,
         cssClass: 'errorToast'
@@ -118,18 +129,24 @@ async getUniqueClient(id: string){
     );
     load.present();
     this.baseUrl = await this.storage.get('url');
-    const url = this.baseUrl+'/api/v1/sales';
+    const url = this.baseUrl+'/api/v1/sales/';
     const token = await  this.storage.get('token');
 
     // controler si le token existe toujours et est valide
     if(token == null){
       this.route.navigate(['login']);
     }
-   const credential = JSON.parse(token);
-  //  const auth =  new HttpHeaders()
-  //  .set('Content-Type', 'application/json')
-  //  .set('Authorization', 'Bearer '+credential);
-    const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+   const credential = token;
+   let auth;
+   if (this.baseUrl === 'https://thieri-factures.herokuapp.com'){
+     auth =  new HttpHeaders({Authorization: 'Token '+credential});
+   }else{
+
+     auth =  new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer '+credential);
+
+   }
 
   return this.http.post(url, form,{headers :auth } )
   .pipe(
@@ -139,9 +156,10 @@ async getUniqueClient(id: string){
       errorToast.present();
       load.dismiss();
 
-     const  state = JSON.parse( await  this.storage.get('unposted'))|| [];
+     const  state =  await  this.storage.get('unposted')|| [];
        state.push(form);
-       await this.storage.set('unposted',    JSON.stringify(state));
+
+       await this.storage.set('unposted',   state);
        throw error;
     })
 
@@ -160,7 +178,7 @@ async deleteFacture(id){
     this.route.navigate(['login']);
   }
 
-  const credential = JSON.parse(token);
+  const credential = token;
   const auth =  new HttpHeaders({Authorization: 'Token '+credential});
   return this.http.delete(url, {headers :auth });
 }

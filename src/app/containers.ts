@@ -69,6 +69,7 @@ export interface Facture   {
 }
  export interface PostData{
     customerId: number;
+ createdBy: number;
     paymentMode: string;
     comment: string;
     orderItems: Order[];

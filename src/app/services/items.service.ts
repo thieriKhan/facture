@@ -32,12 +32,18 @@ async getProduit(): Promise<Observable<Produit[]>>{
   if(token == null){
     this.route.navigate(['login']);
   }
- const credential = JSON.parse(token);
+ const credential = token;
+ let auth;
+ if (this.baseUrl === 'https://thieri-factures.herokuapp.com'){
+   auth =  new HttpHeaders({Authorization: 'Token '+credential});
+ }else{
 
+   auth =  new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Authorization', 'Bearer '+credential);
 
-//  const auth =  new HttpHeaders()
-//  .set('Authorization', 'Bearer '+credential);
-const auth =  new HttpHeaders({Authorization: 'Token '+credential});
+ }
+
 return this.http.get <Produit[]>(url,   {headers :auth}).pipe(
   retry(10),
   shareReplay()

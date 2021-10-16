@@ -62,7 +62,10 @@ this.navData = navdata
   }
   ionViewWillEnter(){
     this.nomC = this.item.currentClient;
-    this.clientOrders = this.item.allCurrentClientsOrders.find(item => item.idClient = this.item.currentClintid).orders;
+    
+    const  navdata = this.navParam.data;
+    this.clientOrders = navdata.orderItems;
+    // this.clientOrders = this.item.allCurrentClientsOrders.find(item => item.idClient = this.item.currentClintid).orders;
     this.products=  this.item.allProducts;
 
 
@@ -71,7 +74,8 @@ this.navData = navdata
 
 
   closeModal(){
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({done: true});
+
   }
 
  async print(){
@@ -84,7 +88,7 @@ this.navData = navdata
               this.printWeb();
         }
 
-
+        this.modalCtrl.dismiss({done: true});
   }
 
 async  printMobile(){

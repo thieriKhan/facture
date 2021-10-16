@@ -8,6 +8,7 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { Router } from '@angular/router';
 import { Network } from '@ionic-native/network/ngx';
 import { StorageService } from '../services/storage.service';
+import { ItemsService } from '../services/items.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class AjoutFacturePage implements OnInit {
     private alertC: AlertController,
     private router: Router,
     private network: Network,
+    private item: ItemsService,
     private toast: ToastController,
     private storage: StorageService,
     private loadC: LoadingController) {
@@ -75,8 +77,11 @@ export class AjoutFacturePage implements OnInit {
   //   );
   // }
 
-  addProduct(id: string){
+ async addProduct(id: string){
+    const items = await this.item.getProduit();
+    items.subscribe(data => this.storage.set('products', data));
     this.router.navigate(['nav-bar/items', id]);
+
   }
   ngOnDestroy(){
     this.clientSubs.unsubscribe();

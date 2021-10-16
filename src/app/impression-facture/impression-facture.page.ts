@@ -1,3 +1,4 @@
+import { LoginService } from "./../services/login.service";
 import { ItemsService } from './../services/items.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -50,6 +51,7 @@ selected: PostData = {
     customerId: 0,
     paymentMode: '',
     comment: '',
+    createdBy: parseInt( this.log.getUser().phone),
     orderItems: [],
 };
 unposted: PostData[];
@@ -68,9 +70,10 @@ facturation: Observable<Facture[]>;
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private storage: StorageService,
-    private toastC: ToastController,
-    private loadC: LoadingController,
-    private item: ItemsService
+
+
+    private item: ItemsService,
+    private log: LoginService
 
   ) {
     this.alertInterface = {
@@ -117,7 +120,6 @@ facturation: Observable<Facture[]>;
          const dat = data.find((item: Client) => String(item.id) === this.idC);
          if(dat){
            this.selectedC = dat.name;
-            console.log(this.selectedC);
          }
 
        })
@@ -148,7 +150,7 @@ facturation: Observable<Facture[]>;
   async select(event){
      const val = event.detail.value;
      this.fact.currentClient = val;
-     this.unposted = JSON.parse( await this.storage.get('unposted'));
+     this.unposted =  await this.storage.get('unposted');
      this.fact.pending = this.unposted.length;
      this.selected = this.unposted.find(item=> item.customerId = val);
 

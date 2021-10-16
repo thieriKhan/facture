@@ -14,8 +14,12 @@
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()">
         <div class="form ion-padding ">
-          <ion-item class="ion-margin" >
-            <ion-icon slot="start" name="call-outline"></ion-icon>
+          <ion-item class="ion-margin">
+		
+		<ion-icon slot="start"   name="call-outline"></ion-icon>
+		
+		
+            
 
             <ion-input placeholder="tel" required formControlName="phone" inputmode="tel" type="tel" autofocus="true"></ion-input>
           </ion-item>

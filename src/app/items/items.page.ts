@@ -1,17 +1,18 @@
-import { StorageService } from "./../services/storage.service";
+import { StorageService } from './../services/storage.service';
 
-import { Client, Produit, Order } from "./../containers";
+import { Client, Produit, Order } from './../containers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { IonCheckbox, ModalController } from "@ionic/angular";
+import { IonCheckbox, ModalController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
 import { ProduitComponent } from '../components/produit/produit.component';
 import { ModalBaseComponent } from '../components/modal-base/modal-base.component';
 import { FacturesService } from '../services/factures.service';
 import { ItemsService } from '../services/items.service';
-import { timeStamp } from "console";
-import { tap } from "rxjs/operators";
-import { stringify } from "querystring";
+import { timeStamp } from 'console';
+import { tap } from 'rxjs/operators';
+import { stringify } from 'querystring';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-items',
@@ -21,6 +22,7 @@ import { stringify } from "querystring";
 export class ItemsPage implements OnInit {
   currentOrder: Order[];
   command: Command[];
+
   items: Observable<any>;
   montant = 0;
   currentData;
@@ -31,6 +33,7 @@ export class ItemsPage implements OnInit {
   produits$: Observable<Produit[]> = this.item.itemsBSub.asObservable();
   term: string;
   idClient;
+  allProducts: Produit[];
 
   constructor(
     private modalCtrl: ModalController,
@@ -38,13 +41,25 @@ export class ItemsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fact: FacturesService,
     private item: ItemsService,
-    private storage: StorageService
+    private storage: StorageService,
+    private log: LoginService
     ) { }
 
  async  ngOnInit() {
-   this.command = [];
-   this.montant =  parseInt(await this.storage.get('montant'))|| 0;
-   this.command = JSON.parse(await this.storage.get( 'command')) || [];
+   this.allProducts =await this.storage.get('products');
+   if (this.allProducts === null || this.allProducts === undefined){   
+    const products = await this.item.getProduit();
+    products.subscribe(
+    data => this.allProducts = data
+  );
+   }
+        
+  
+ 
+  this.idClient = this.activatedRoute.snapshot.paramMap.get('id');
+   this.log.setUser((await this.storage.get('userData')).phone);
+  
+
 
   // this.itemSub =  (await this.item.getProduit()).subscribe(
   //   (data: Produit[])=>{
@@ -52,10 +67,61 @@ export class ItemsPage implements OnInit {
   //   }
   // );
 
+
+
   }
+
+  async getComand(){
+          this.allProducts =await this.storage.get('products');
+   if (this.allProducts === null || this.allProducts === undefined){   
+    const products = await this.item.getProduit();
+    products.subscribe(
+    data => this.allProducts = data
+  );
+   }
+    this.idClient = this.activatedRoute.snapshot.paramMap.get('id');
+     this.command = [];
+  //  this.montant = await this.storage.get('montant')|| 0;
+  //  this.command = await this.storage.get('command');
+   const command  = await this.storage.get( 'allOrders');
+   if(command != null || command != undefined) {
+      const order: Order[] =  command.find(cmd => cmd.idClient=== this.idClient )?.orders || [];
+    if(order.length !== 0 ){
+
+      for (let i of order) {
+       const prod =  this.allProducts?.find(item=> item.id === i.id);
+       const containerPrice = prod.containerSalePrice;
+        const piecePrice = prod.pieceSalePrice;
+      const montant = (i.containerQuantity * containerPrice) + (i.pieceQuantity *piecePrice);
+      this.command.push({montant, order: i});
+    }
+
+
+    }else{
+     this.command = [];
+    }
+  }else{
+    this.command = [];
+  }
+  
+  }
+
 
   async ionViewWillEnter(){
 
+  await this.getComand();
+
+  this.montant = 0;
+  for (let i of this.command) {
+    this.montant += i.montant;
+
+  }
+
+
+
+
+
+    this.log.setUser((await this.storage.get('userData')).phone);
     this.itemSub  = (await this.item.getProduit()).pipe(
       tap(data => this.item.allProducts = data)
     ).subscribe(
@@ -64,7 +130,6 @@ export class ItemsPage implements OnInit {
       }
     );
 
-    this.idClient = this.activatedRoute.snapshot.paramMap.get('id');
     this.currentClient = (await this.fact.getUniqueClient(this.idClient)).pipe(
       tap((data: string)=> {
         this.item.currentClient = data;
@@ -79,7 +144,7 @@ export class ItemsPage implements OnInit {
     });
     modal.present();
   const { data} =  await  modal.onWillDismiss();
-  if(data){
+  if(data != undefined){
     this.currentData = data;
     const isInclude = this.command.find(item=> item.order.id === data.order.id);
     if(isInclude === undefined ){
@@ -93,9 +158,9 @@ export class ItemsPage implements OnInit {
       com.montant= prev.montant;
       return  com;
      }).montant;
-     this.storage.set('montant', this.montant.toString());
-     this.storage.set('command', JSON.stringify(this.command) );
-     this.storage.set('allOrders', JSON.stringify(this.item.allCurrentClientsOrders) );
+     this.storage.set('montant', this.montant);
+     this.storage.set('command',this.command );
+     this.storage.set('allOrders',this.item.allCurrentClientsOrders);
 
   }
 
@@ -103,6 +168,10 @@ export class ItemsPage implements OnInit {
 
 
 
+  }
+  ionViewDidLeave(){
+    this.command = []
+   
   }
   async print() {
     this.item.currentClintid = this.idClient;
@@ -114,8 +183,20 @@ export class ItemsPage implements OnInit {
    });
      detailPage.present();
    const data =  await   detailPage.onWillDismiss();
+   this.getComand();
+
+   if(data.data?.total){
+     this.montant = data.data.total; 
+   }
 
    if (data.data?.done){
+     const allCmd = await this.storage.get('allOrders');
+     if( allCmd != null || allCmd != undefined){
+       const removeCmd = allCmd.filter(item => item.idClient !== this.idClient);
+       this.storage.set('allOrders', removeCmd);
+       }
+     
+    
     this.command = [];
     this.montant = 0;
 
@@ -125,6 +206,8 @@ export class ItemsPage implements OnInit {
   }
 
 }
+
+
 interface Command {
   montant: number;
   order: Order;

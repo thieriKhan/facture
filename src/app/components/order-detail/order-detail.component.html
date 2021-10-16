@@ -30,8 +30,10 @@
   </ion-toolbar>
 
 
+
 <ion-list>
-  <ng-container *ngFor="let item of clientOrders">
+  <ng-container *ngFor="let item of clientBSubject|async">
+    <ion-item-sliding>
     <ion-item class="ion-margin-top">
       <ion-label> {{getProduit(item.id).name}}</ion-label>
       <ion-thumbnail slot="start">
@@ -46,7 +48,14 @@
 
     </ion-item>
 
+      <ion-item-options side="start" >
+        <ion-item-option color="white"  >
+          <ion-icon color="danger" (click)="deleteItem(item.id)"  slot="icon-only" name="trash"></ion-icon></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
   </ng-container>
+
 
   <!-- <ion-item >
     <ion-label>Heineken</ion-label>

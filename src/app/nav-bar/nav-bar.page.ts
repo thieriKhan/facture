@@ -43,7 +43,7 @@ export class NavBarPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.item.allCurrentClientsOrders = JSON.parse((await this.storage.get('allOrders')))|| [];
+    this.item.allCurrentClientsOrders = (await this.storage.get('allOrders'))|| [];
 
   }
 
@@ -60,7 +60,6 @@ export class NavBarPage implements OnInit, OnDestroy {
  async ionViewWillEnter(){
     this.user = await this.storage.get('user');
   }
-
 
 
 async ionViewDidEnter(){
@@ -83,7 +82,7 @@ async ionViewDidEnter(){
 
         async ()=>{
           toast2.present();
-          const failedPost: PostData[] =JSON.parse(await  this.storage.get('unposted'))|| [];
+          const failedPost: PostData[] =await  this.storage.get('unposted')|| [];
           if(failedPost.length > 0){
             this.failedPosted(failedPost);
           }
@@ -158,7 +157,7 @@ async ionViewDidEnter(){
             console.log('b',data);
             data.splice(i, 1);
             console.log('a',data);
-           await  this.storage.set('unposted',    JSON.stringify(data));
+           await  this.storage.set('unposted',   data);
           }
         );
 

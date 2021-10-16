@@ -23,10 +23,13 @@ export class LoginService {
   constructor(private http: HttpClient,
      private alertController: AlertController,
       private loadingCtrl: LoadingController,
-       private route: Router, private  storage: StorageService) { }
+       private route: Router, private  storage: StorageService) {
+
+        }
 
 
    async login(loginForm){
+    this.user = { phone: '', code:''}
      this.baseUrl = await this.storage.get('url');
 
 
@@ -56,9 +59,12 @@ export class LoginService {
       )).subscribe(
        async  (data)=> {
          this.isLogin = true;
-         token =  JSON.stringify(data.token);
-         console.log('token', data.token);
-        const userData = JSON.stringify(data);
+         this.user.phone = data.phone;
+
+
+         token =  data.token;
+
+        const userData = data;
 
          await this.storage.set('token', token);
          await this.storage.set('user', data.firstName);
@@ -70,8 +76,6 @@ export class LoginService {
       },
      async  (error: HttpErrorResponse) => {
         let message = 'umknown error';
-        console.log('network error:', error , error.error, error.message, error.status, error.headers, error.url, error.type)
-
 
         if(error.status === 400 || error.status === 401){
           message = 'identifiant ou mot de passe incorect';
@@ -94,6 +98,15 @@ export class LoginService {
 
 
   }
+  setUser(user: string){
+    this.user = {
+      phone: user,
+      code: '',
+    }
+  }
+   getUser(){
+     return this.user;
+   }
 
   async logout(){
     try{
